@@ -1,7 +1,17 @@
-<template><h1>로그인</h1></template>
+<template>
+	<auth-header></auth-header>
+	<auth-login-form></auth-login-form>
+</template>
 
 <script>
-export default {};
+import AuthHeader from '@/components/common/AuthHeader.vue';
+import AuthLoginForm from '@/components/auth/AuthLogin.vue';
+export default {
+	components: {
+		AuthHeader,
+		AuthLoginForm,
+	},
+};
 </script>
 
 <style></style>

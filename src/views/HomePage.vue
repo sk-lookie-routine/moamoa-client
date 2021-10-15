@@ -1,7 +1,9 @@
-<template><h1>홈</h1></template>
+<template>
+	<main-header></main-header>
+</template>
 
 <script>
 export default {};
 </script>
 
-<style></style>
+<style scoped></style>

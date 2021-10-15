@@ -1,7 +1,17 @@
-<template><h1>회원가입</h1></template>
+<template>
+	<auth-header></auth-header>
+	<auth-signup></auth-signup>
+</template>
 
 <script>
-export default {};
+import AuthHeader from '@/components/common/AuthHeader.vue';
+import AuthSignup from '@/components/auth/AuthSignup.vue';
+export default {
+	components: {
+		AuthHeader,
+		AuthSignup,
+	},
+};
 </script>
 
 <style></style>

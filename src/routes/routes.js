@@ -1,7 +1,7 @@
 export default [
 	{
 		path: '/',
-		redirect: '/home',
+		component: () => import('@/views/DefaultPage.vue'),
 	},
 	{
 		path: '/home',
@@ -22,5 +22,9 @@ export default [
 		path: '/login',
 		name: 'login',
 		component: () => import('@/views/AuthLoginPage.vue'),
+	},
+	{
+		path: '/:notFound(.*)',
+		component: () => import('@/views/NotFoundPage.vue'),
 	},
 ];

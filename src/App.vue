@@ -9,7 +9,7 @@ export default {
 </script>
 
 <style>
-@import './assets/css/color.css';
-@import './assets/css/reset.css';
-@import './assets/css/common.css';
+@import '../src/assets/css/color.css';
+@import '../src/assets/css/common.css';
+@import '../src/assets/css/reset.css';
 </style>

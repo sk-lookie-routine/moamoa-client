@@ -1,0 +1,28 @@
+/*
+typo
+*/
+
+.study-goal-text {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--orange-dark);
+}
+
+.error-text {
+  font-size: 1.4rem;
+  color: var(--orange-dark);
+}
+
+/*
+style
+*/
+
+.box-with-underline {
+  border-bottom: .1rem solid var(--gray04);
+}
+
+.box-with-background {
+  background-color: var(--gray06);
+  padding: 2.8rem 3rem;
+  border-radius: 1rem;
+}

@@ -17,6 +17,10 @@ typo
 style
 */
 
+.bottom-padding {
+  padding-bottom: 1rem;
+}
+
 .box-with-underline {
   border-bottom: .1rem solid var(--gray04);
 }
@@ -25,4 +29,10 @@ style
   background-color: var(--gray06);
   padding: 2.8rem 3rem;
   border-radius: 1rem;
+}
+
+.card-list {
+	display: flex;
+	flex-direction: column;
+	gap: 3rem;
 }

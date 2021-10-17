@@ -24,9 +24,14 @@ export default [
 		component: () => import('@/views/AuthLoginPage.vue'),
 	},
 	{
-		path: '/studies',
-		name: 'studies',
+		path: '/posts',
+		name: 'posts',
 		component: () => import('@/views/StudyListPage.vue'),
+	},
+	{
+		path: '/post-write',
+		name: 'post-write',
+		component: () => import('@/views/StudyPostWritePage.vue'),
 	},
 	{
 		path: '/rooms',

@@ -1,5 +1,7 @@
 <template>
-	<h1>공지사항</h1>
+	<div class="main-container">
+		<div class="box-with-underline bottom-padding"><h1>공지사항</h1></div>
+	</div>
 </template>
 
 <script>

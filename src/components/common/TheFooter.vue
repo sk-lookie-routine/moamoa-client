@@ -1,163 +1,141 @@
 <template>
 	<footer>
-		<div class="container">
-			<div class="left">
-				<div class="left_top">
-					<router-link to="/"><img src="@/assets/img/logo.svg" /></router-link>
-					<router-link to="/" class="link">
-						<div class="left_top_text">MOAMOA</div></router-link
-					>
+		<div class="main-container">
+			<div class="footer-container">
+				<div class="footer__context">
+					<div class="footer__logo">
+						<router-link to="/home">
+							<img class="logo-img" src="@/assets/img/logo.svg" />
+							<div class="logo-text">MOAMOA</div>
+						</router-link>
+					</div>
+					<div class="footer__explain">
+						MOAMOA는 스터디의 개설부터 관리까지 체계적으로 도와주는 온라인
+						스터디 매칭 플랫폼입니다.
+					</div>
+					<div class="footer__email">routine_2020@naver.com</div>
 				</div>
-				<div class="left_main">
-					MOAMOA는 스터디의 개설부터 관리까지 체계적으로 도와주는 온라인 스터디
-					매칭 플랫폼입니다.
+				<div class="footer__nav">
+					<div class="nav__container">
+						<div class="nav__title">MOAMOA</div>
+						<div class="nav__list">
+							<li>모아모아 소개</li>
+							<li>공지사항</li>
+							<li>자주 묻는 질문</li>
+							<li>건의/문의하기</li>
+						</div>
+					</div>
+					<div class="nav__container">
+						<div class="nav__title">커뮤니티</div>
+						<div class="nav__list">
+							<li>인스타그램</li>
+							<li>블로그</li>
+							<li>스터디 일지 모음</li>
+						</div>
+					</div>
+					<div class="nav__container">
+						<div class="nav__title">법적 고지</div>
+						<div class="nav__list">
+							<li>이용 약관</li>
+							<li>개인정보 처리방침</li>
+						</div>
+					</div>
 				</div>
-				<div class="left_email">routine_2020@naver.com</div>
 			</div>
-			<div class="right">
-				<div class="right_1">
-					<router-link to="/" class="link"
-						><div class="right_1_title">MOAMOA</div></router-link
-					>
-					<div class="right_1_list">
-						<li>모아모아 소개</li>
-						<li>공지사항</li>
-						<li>자주 묻는 질문</li>
-						<li>건의/문의하기</li>
-					</div>
-				</div>
-				<div class="right_2">
-					<div class="right_2_title">커뮤니티</div>
-					<div class="right_2_list">
-						<li>인스타그램</li>
-						<li>블로그</li>
-						<li>스터디 일지 모음</li>
-					</div>
-				</div>
-				<div class="right_3">
-					<div class="right_3_title">법적 고지</div>
-					<div class="right_3_list">
-						<li>이용 약관</li>
-						<li>개인정보 처리방침</li>
-					</div>
-				</div>
-			</div>
+			<div class="footer__line"></div>
+			<div class="footer__rights">© 2021 MOAMOA. All rights reserved.</div>
 		</div>
-		<div class="footer_decoration"></div>
-		<div class="rights">© 2021 MOAMOA. All rights reserved.</div>
 	</footer>
 </template>
 
 <style scoped>
 footer {
-	height: 38.3rem;
+	background-color: var(--gray06);
+	width: 100%;
+	padding: 5.2rem 0 4.5rem 0;
 }
-.container {
+
+.footer-container {
 	display: flex;
 	justify-content: space-between;
 }
-.link {
-	text-decoration: none;
+
+.footer__logo,
+.footer__explain,
+.footer__email,
+.footer__nav {
+	font-size: 1.6rem;
+	font-family: Noto Sans KR;
+}
+
+.footer__context {
 	display: flex;
+	flex-direction: column;
+	width: 27.5rem;
 }
-.left {
-	width: 70rem;
+
+.footer__logo {
+	margin-bottom: 2.1rem;
 }
-.left_top {
-	display: flex;
-}
-.left_top_text {
+
+.footer__logo a {
 	display: flex;
 	align-items: center;
-	font-family: 'Krona One', sans-serif;
-	color: #757575;
-	padding: 0 1rem;
-	font-size: 1.6rem;
-	line-height: 2rem;
 }
-.left_main {
-	margin-top: 2.1rem;
-	font-family: noto-sans-cjk-kr, sans-serif;
-	font-size: 1.6rem;
-	line-height: 2.3rem;
-	color: #757575;
-	width: 30rem;
-	height: 7rem;
+
+.logo-img {
+	width: 4.2rem;
+	height: 4.2rem;
+	margin-right: 1rem;
 }
-.left_email {
-	margin-top: 2.5rem;
-	font-family: noto-sans-cjk-kr, sans-serif;
-	font-size: 1.6rem;
-	line-height: 2.3rem;
-	color: #a1a1a1;
+
+.logo-text {
+	font-family: Krona One;
+	color: var(--black);
 }
-.right {
+
+.footer__explain {
+	line-height: 143%;
+	color: var(--gray01);
+	margin-bottom: 2.5rem;
+}
+
+.footer__email {
+	color: var(--gray02);
+}
+
+.footer__nav {
 	display: flex;
-	width: 70rem;
-	justify-content: space-evenly;
+	gap: 7rem;
 }
-.right_1_title,
-.right_2_title,
-.right_3_title {
-	font-family: noto-sans-cjk-kr, sans-serif;
+
+.nav__title {
 	font-weight: bold;
-	font-size: 1.6rem;
-	line-height: 2.3rem;
-	color: #757575;
+	color: var(--gray01);
 	margin-bottom: 3.3rem;
 }
-.right_1_list,
-.right_2_list,
-.right_3_list {
-	font-family: noto-sans-cjk-kr, sans-serif;
-	font-size: 1.6rem;
-	line-height: 2.3rem;
-	color: #a1a1a1;
-	list-style: none;
+
+.nav__list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.7rem;
+	color: var(--gray02);
 }
-li {
-	margin-bottom: 0.7rem;
+
+.nav__list li {
+	line-height: 143%;
 }
-.footer_decoration {
-	margin-top: 7rem;
-	border: 0.01rem solid #bebebe;
-	background: #bebebe;
+
+.footer__line {
+	width: 100%;
+	border: 0.1rem solid var(--gray03);
+	margin: 7rem 0 1.5rem 0;
 }
-.rights {
-	margin-top: 1.5rem;
-	font-family: noto-sans-cjk-kr, sans-serif;
-	font-weight: bold;
+
+.footer__rights {
+	color: var(--gray04);
 	font-size: 1.4rem;
-	line-height: 2rem;
-	color: #d8d8d8;
-	float: right;
-}
-@media (max-width: 500px) {
-	footer {
-		height: 90rem;
-		display: flex;
-		flex-direction: column;
-		margin: 0 auto;
-	}
-	.container {
-		display: flex;
-		flex-direction: column;
-	}
-	.right_1_title,
-	.right_2_title,
-	.right_3_title {
-		margin-top: 3.6rem;
-	}
-	.right {
-		display: flex;
-		flex-direction: column;
-	}
-	.footer_decoration {
-		/* margin:0 auto; */
-		width: 32.7rem;
-	}
-	.rights {
-		margin-bottom: 5.2rem;
-	}
+	width: 100%;
+	text-align: right;
 }
 </style>

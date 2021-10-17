@@ -55,7 +55,7 @@
 		<router-link to="/signup-form">회원가입 form 페이지 이동</router-link>
 	</li>
 	<li>
-		<router-link to="/studies">스터디 목록 이동</router-link>
+		<router-link to="/posts">스터디 목록 이동</router-link>
 	</li>
 	<li>
 		<router-link to="/rooms">스터디 룸 이동</router-link>

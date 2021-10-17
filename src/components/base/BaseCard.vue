@@ -15,10 +15,6 @@
 				<base-tag tag-name="태그이름"></base-tag>
 				<base-tag tag-name="만약에 태그가 길다면"></base-tag>
 				<base-tag tag-name="태그이름"></base-tag>
-				<base-tag tag-name="만약에 태그가 길다면"></base-tag>
-				<base-tag tag-name="태그이름"></base-tag>
-				<base-tag tag-name="만약에 태그가 길다면"></base-tag>
-				<base-tag tag-name="태그이름"></base-tag>
 			</ul>
 		</div>
 	</div>
@@ -46,6 +42,7 @@ export default {};
 }
 
 .card__contents {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -76,8 +73,21 @@ export default {};
 }
 
 .card__tags {
+	width: 100%;
+	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.6rem;
+	overflow: hidden;
+}
+
+.card__tags::after {
+	position: absolute;
+	right: 0;
+	content: '';
+	width: 8rem;
+	height: 100%;
+	white-space: nowrap;
+	background: linear-gradient(to right, transparent, rgb(255, 255, 255));
 }
 </style>

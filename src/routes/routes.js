@@ -24,6 +24,21 @@ export default [
 		component: () => import('@/views/AuthLoginPage.vue'),
 	},
 	{
+		path: '/studies',
+		name: 'studies',
+		component: () => import('@/views/StudyListPage.vue'),
+	},
+	{
+		path: '/rooms',
+		name: 'rooms',
+		component: () => import('@/views/StudyRoomPage.vue'),
+	},
+	{
+		path: '/notice',
+		name: 'notice',
+		component: () => import('@/views/NoticePage.vue'),
+	},
+	{
 		path: '/:notFound(.*)',
 		component: () => import('@/views/NotFoundPage.vue'),
 	},

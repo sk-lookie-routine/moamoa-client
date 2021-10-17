@@ -5,7 +5,7 @@
 
 <script>
 import AuthHeader from '@/components/common/AuthHeader.vue';
-import AuthLoginForm from '@/components/auth/AuthLogin.vue';
+import AuthLoginForm from '@/components/views/auth/AuthLogin.vue';
 export default {
 	components: {
 		AuthHeader,

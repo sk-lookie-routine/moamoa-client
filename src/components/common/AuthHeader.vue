@@ -4,7 +4,7 @@
 			><img src="@/assets/img/logo.svg" class="icon"
 		/></router-link>
 		<router-link to="/" class="text">MOAMOA</router-link>
-		<!-- <div class="menu_icon"><img src="../../assets/img/menu_icon.svg" /></div> -->
+		<!-- <div class="menu_icon"><img src="../../assets/img/icon_menu.svg" /></div> -->
 	</header>
 </template>
 

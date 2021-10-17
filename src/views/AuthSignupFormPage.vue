@@ -7,7 +7,7 @@
 			<img :src="randomProfile.name" />
 			<div class="text">랜덤 변경</div>
 			<button @click="randomImage">
-				<img src="@/assets/img/random_btn.svg" class="randomBtn" />
+				<img src="@/assets/img/btn_random.svg" class="randomBtn" />
 			</button>
 		</div>
 		<div class="profile_info">
@@ -41,10 +41,10 @@
 				@click="changePage"
 				class="startBtn"
 			>
-				<img src="@/assets/img/start_btn.svg" />
+				<img src="@/assets/img/btn_start.svg" />
 			</button>
 			<button v-else>
-				<img src="@/assets/img/start_btn_deactive.svg" />
+				<img src="@/assets/img/btn_start_detactive.svg" />
 			</button>
 		</div>
 		<the-footer></the-footer>

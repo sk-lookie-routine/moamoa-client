@@ -53,6 +53,7 @@ footer {
 	background-color: var(--gray06);
 	width: 100%;
 	padding: 5.2rem 0 4.5rem 0;
+	margin-top: 26rem;
 }
 
 .footer-container {
@@ -137,5 +138,12 @@ footer {
 	font-size: 1.4rem;
 	width: 100%;
 	text-align: right;
+}
+
+@media (max-width: 1024px) {
+	.footer-container,
+	.footer__nav {
+		flex-direction: column;
+	}
 }
 </style>

@@ -1,26 +1,25 @@
 <template>
 	<ul class="tabs">
-		<li class="tab tab--active">{{ firstTab }}</li>
+		<li class="tab-text tab--active" @click="tabClicked">{{ firstTab }}</li>
 		<div class="divide-line"></div>
-		<li class="tab">{{ secondTab }}</li>
+		<li class="tab-text" @click="tabClicked">{{ secondTab }}</li>
 	</ul>
 </template>
 
 <script>
 export default {
 	props: ['firstTab', 'secondTab'],
+	methods: {
+		tabClicked() {
+			this.$emit('tabClicked');
+		},
+	},
 };
 </script>
 
 <style scoped>
 .tabs {
 	display: flex;
-}
-
-.tab {
-	font-size: 2rem;
-	font-weight: bold;
-	color: var(--gray03);
 }
 
 .tab--active {

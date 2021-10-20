@@ -1,10 +1,19 @@
 <template>
-	<button>{{ label }}</button>
+	<button><slot></slot></button>
 </template>
 
 <script>
 export default {
-	props: ['label', 'size'],
+	props: {
+		size: {
+			type: String,
+			default: 'big',
+			validator: function (value) {
+				// 값이 항상 아래 세 개의 문자열 중 하나여야 합니다.
+				return ['big', 'small'].indexOf(value) !== -1;
+			},
+		},
+	},
 };
 </script>
 

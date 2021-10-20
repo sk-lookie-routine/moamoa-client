@@ -3,14 +3,17 @@
 		<div class="input-container box-with-underline bottom-padding">
 			<input type="text" name="title" placeholder="스터디 제목" />
 		</div>
+		<div class="error-text">필수 입력 항목입니다.</div>
 		<div class="input-container box-with-underline bottom-padding">
 			<label for="deadline">모집 마감 일자 :</label>
 			<input type="date" name="deadline" />
 		</div>
+		<div class="error-text">필수 입력 항목입니다.</div>
 		<div class="input-container box-with-underline bottom-padding">
 			<label for="period">스터디 기간 :</label>
 			<input type="date" name="period" />
 		</div>
+		<div class="error-text">필수 입력 항목입니다.</div>
 		<div class="input-container box-with-underline bottom-padding">
 			<label for="count">모집 인원:</label>
 			<select name="count">
@@ -20,10 +23,12 @@
 				<option value="4">4명</option>
 			</select>
 		</div>
+		<div class="error-text">필수 입력 항목입니다.</div>
 		<div class="input-container box-with-underline bottom-padding">
 			<label for="goal">스터디 목표:</label>
 			<input type="text" name="goal" placeholder="한 줄로 소개하세요." />
 		</div>
+		<div class="error-text">필수 입력 항목입니다.</div>
 		<div class="textarea-container">
 			<label for="introduction">스터디 소개:</label>
 			<textarea
@@ -52,15 +57,15 @@
 			<label for="tag">태그</label>
 			<div class="tags">
 				<span class="tag-icon">#</span>
-				<base-tag tagName="어쩌라고"></base-tag>
-				<base-tag tagName="다른 길쭉한 태그 갑니다"></base-tag>
-				<base-tag tagName="또 다른 길죾한 태그"></base-tag>
-				<base-tag tagName="어쩌라고"></base-tag>
+				<base-tag :canRemove="true">또 다른 길 태그</base-tag>
+				<base-tag :canRemove="true">어쩌라고</base-tag>
+				<base-tag :canRemove="true">또 다른 길 태그</base-tag>
+				<base-tag :canRemove="true">어쩌라고</base-tag>
 				<input type="text" name="tag" placeholder="태그를 입력하세요." />
 			</div>
 		</div>
 		<div class="btn-container">
-			<base-button label="모집글 등록하기"></base-button>
+			<base-button>모집글 등록하기</base-button>
 		</div>
 	</form>
 	<the-footer></the-footer>
@@ -90,9 +95,20 @@ export default {};
 	margin-top: 1rem;
 }
 
-.input-container,
+.input-container {
+	margin-bottom: 1rem;
+}
+
 .textarea-container {
 	margin-bottom: 4.6rem;
+}
+
+.input-container {
+	margin-top: 2.1rem;
+}
+
+.input-container:nth-child(3) {
+	margin-top: 5.2rem;
 }
 
 .btn-container {
@@ -121,5 +137,9 @@ export default {};
 .tags input {
 	font-size: 1.6rem;
 	width: auto;
+}
+
+.error-text {
+	visibility: hidden;
 }
 </style>

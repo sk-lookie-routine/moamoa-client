@@ -1,10 +1,18 @@
 <template>
-	<div class="tag">{{ tagName }}</div>
+	<div class="tag">
+		<div><slot></slot></div>
+		<img v-if="canRemove" src="@/assets/img/icon_cancel.svg" />
+	</div>
 </template>
 
 <script>
 export default {
-	props: ['tagName'],
+	props: {
+		canRemove: {
+			type: Boolean,
+			default: false,
+		},
+	},
 };
 </script>
 
@@ -18,5 +26,8 @@ export default {
 	background-color: var(--gray05);
 	padding: 0.8rem 1.6rem;
 	border-radius: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
 }
 </style>

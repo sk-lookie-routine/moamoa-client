@@ -13,20 +13,100 @@
 				<button class="create-study-btn">개설하기</button>
 			</router-link>
 		</div>
-		<ul class="card-list">
-			<base-card></base-card>
-			<base-card></base-card>
-			<base-card></base-card>
+		<ul class="card-column-list card-list-gap">
+			<li v-for="post in unrecruitedPosts" :key="post.key">
+				<base-card
+					:title="post.title"
+					:period="post.period"
+					:peopleRegisterCount="post.peopleRegisterCount"
+					:peopleTotalCount="post.peopleTotalCount"
+					:tags="post.tags"
+				></base-card>
+			</li>
 		</ul>
+		<create-study-jumbotron></create-study-jumbotron>
 	</div>
 	<the-footer></the-footer>
 </template>
 
 <script>
 import SearchBar from '@/components/views/studylist/SearchBar.vue';
+import CreateStudyJumbotron from '@/components/views/studylist/CreateStudyJumbotron.vue';
 
 export default {
-	components: { SearchBar },
+	components: { SearchBar, CreateStudyJumbotron },
+	data() {
+		return {
+			unrecruitedPosts: [
+				{
+					key: '1',
+					title: '무슨무슨 스터디무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '2',
+					title: 'eeee 스터디무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '3',
+					title: 'eeee 스터디ewgrfgrf무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+			],
+			recruitedPosts: [
+				{
+					key: '1',
+					title: '무슨무슨 스터디무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '2',
+					title: 'eeee 스터디무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '3',
+					title: 'eeee 스터디ewgrfgrf무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '2',
+					title: 'eeee 스터디무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '3',
+					title: 'eeee 스터디ewgrfgrf무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+			],
+		};
+	},
 };
 </script>
 
@@ -49,5 +129,11 @@ export default {
 	color: white;
 	padding: 1rem 2rem;
 	background-color: var(--orange-dark);
+}
+
+@media (max-width: 768px) {
+	.create-study-btn {
+		display: none;
+	}
 }
 </style>

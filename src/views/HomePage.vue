@@ -1,27 +1,109 @@
 <template>
 	<main>
-		<the-carousel></the-carousel>
-		<div class="tabs-and-btn-container">
-			<base-tab
-				firstTab="모집중인 스터디"
-				secondTab="모집 완료된 스터디"
-			></base-tab>
-			<button class="all-btn">전체보기</button>
+		<the-banner></the-banner>
+		<div class="main-container">
+			<div class="tabs-and-btn-container">
+				<div class="mid-title">모집중인 스터디</div>
+				<router-link to="/posts">
+					<button class="all-btn">전체보기</button></router-link
+				>
+			</div>
+			<ul class="card-grid-list card-list-gap">
+				<li v-for="post in unrecruitedPosts" :key="post.key">
+					<base-card
+						:title="post.title"
+						:period="post.period"
+						:peopleRegisterCount="post.peopleRegisterCount"
+						:peopleTotalCount="post.peopleTotalCount"
+						:tags="post.tags"
+					></base-card>
+				</li>
+			</ul>
+			<study-guide-jumbotron></study-guide-jumbotron>
 		</div>
-		<ul class="card-list">
-			<base-card></base-card>
-			<base-card></base-card>
-			<base-card></base-card>
-		</ul>
 	</main>
 	<the-footer></the-footer>
 </template>
 
 <script>
-import TheCarousel from '@/components/views/home/TheCarousel.vue';
+import TheBanner from '@/components/views/home/TheBanner.vue';
+import StudyGuideJumbotron from '@/components/views/home/StudyGuideJumbotron.vue';
 export default {
 	components: {
-		TheCarousel,
+		TheBanner,
+		StudyGuideJumbotron,
+	},
+	data() {
+		return {
+			unrecruitedPosts: [
+				{
+					key: '1',
+					title: '무슨무슨 스터디무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '2',
+					title: 'eeee 스터디무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '3',
+					title: 'eeee 스터디ewgrfgrf무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+			],
+			recruitedPosts: [
+				{
+					key: '1',
+					title: '무슨무슨 스터디무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '2',
+					title: 'eeee 스터디무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '3',
+					title: 'eeee 스터디ewgrfgrf무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '2',
+					title: 'eeee 스터디무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+				{
+					key: '3',
+					title: 'eeee 스터디ewgrfgrf무슨무',
+					period: '2021.12.03~2021.12.31',
+					peopleRegisterCount: 4,
+					peopleTotalCount: 5,
+					tags: ['만약에 태그가 길다면', '어쩌고 저쩌고', '어쩌고 저쩌고'],
+				},
+			],
+		};
 	},
 };
 </script>
@@ -31,7 +113,12 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin: 4.4rem 2.4rem;
+	margin: 4.4rem 0rem;
+}
+
+.mid-title {
+	font-size: 2rem;
+	font-weight: bold;
 }
 
 .all-btn {
@@ -40,5 +127,16 @@ export default {
 	font-size: 1.6rem;
 	font-size: 16px;
 	background-color: transparent;
+}
+
+.card-grid-list {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 1024px) {
+	.card-grid-list {
+		grid-template-columns: 1fr;
+	}
 }
 </style>

@@ -22,6 +22,10 @@ export default {
 	display: flex;
 }
 
+.tabs:hover {
+	cursor: pointer;
+}
+
 .tab--active {
 	color: var(--black);
 }

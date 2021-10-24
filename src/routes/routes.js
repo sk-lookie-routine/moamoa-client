@@ -26,7 +26,7 @@ export default [
 	{
 		path: '/posts',
 		name: 'posts',
-		component: () => import('@/views/StudyListPage.vue'),
+		component: () => import('@/views/StudyPostListPage.vue'),
 	},
 	{
 		path: '/post-write',
@@ -36,12 +36,17 @@ export default [
 	{
 		path: '/rooms',
 		name: 'rooms',
-		component: () => import('@/views/StudyRoomPage.vue'),
+		component: () => import('@/views/StudyRoomListPage.vue'),
 	},
 	{
 		path: '/notice',
 		name: 'notice',
 		component: () => import('@/views/NoticePage.vue'),
+	},
+	{
+		path: '/post/:postId',
+		name: 'post',
+		component: () => import('@/views/StudyPostPage.vue'),
 	},
 	{
 		path: '/:notFound(.*)',

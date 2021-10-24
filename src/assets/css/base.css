@@ -7,7 +7,11 @@ typo
 	color: var(--gray03);
 }
 
-.study-goal-text {
+.p-text--em {
+  font-weight: bold;
+}
+
+.p-text--red {
   font-size: 1.8rem;
   font-weight: bold;
   color: var(--orange-dark);
@@ -35,11 +39,11 @@ style
   padding-bottom: 1rem;
 }
 
-.box-with-underline {
+.box--underline {
   border-bottom: .1rem solid var(--gray04);
 }
 
-.box-with-background {
+.box--gray-background {
   background-color: var(--gray06);
   padding: 2.8rem 3rem;
   border-radius: 1rem;

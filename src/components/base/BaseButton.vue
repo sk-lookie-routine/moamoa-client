@@ -1,5 +1,7 @@
 <template>
-	<button><slot></slot></button>
+	<button :class="buttonClass">
+		<slot></slot>
+	</button>
 </template>
 
 <script>
@@ -9,9 +11,14 @@ export default {
 			type: String,
 			default: 'big',
 			validator: function (value) {
-				// 값이 항상 아래 세 개의 문자열 중 하나여야 합니다.
+				console.log(value);
 				return ['big', 'small'].indexOf(value) !== -1;
 			},
+		},
+	},
+	computed: {
+		buttonClass() {
+			return this.size === 'big' ? 'btn--big' : 'btn--small';
 		},
 	},
 };
@@ -26,7 +33,19 @@ button {
 	background-color: var(--orange-dark);
 	box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
 	border-radius: 1rem;
-	padding: 1.6rem 0;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+.btn--big {
 	width: 32rem;
+	padding: 1.6rem 0;
+}
+
+.btn--small {
+	width: 25rem;
+	padding: 1.4rem 0;
 }
 </style>

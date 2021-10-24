@@ -2,6 +2,7 @@
 	<div class="form-container main-container">
 		<study-post-form></study-post-form>
 	</div>
+	<the-footer></the-footer>
 </template>
 
 <script>

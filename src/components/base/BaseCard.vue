@@ -30,9 +30,9 @@
 <script>
 export default {
 	props: {
-		hasMoreBtn: {
-			type: Boolean,
-			default: false,
+		id: {
+			type: String,
+			required: true,
 		},
 		title: {
 			type: String,
@@ -54,6 +54,10 @@ export default {
 			type: Array,
 			required: true,
 		},
+		hasMoreBtn: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	data() {
 		return {
@@ -72,6 +76,10 @@ export default {
 	padding: 3.6rem;
 	display: flex;
 	justify-content: space-between;
+}
+
+.card:hover {
+	cursor: pointer;
 }
 
 .card__thumbnail {

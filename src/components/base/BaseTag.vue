@@ -1,7 +1,11 @@
 <template>
-	<div class="tag">
+	<div class="tag" :class="{ 'tag-animation': canRemove }">
 		<div><slot></slot></div>
-		<img v-if="canRemove" src="@/assets/img/icon_cancel.svg" />
+		<img
+			@click="deleteBtnClicked"
+			v-if="canRemove"
+			src="@/assets/img/icon_cancel.svg"
+		/>
 	</div>
 </template>
 
@@ -11,6 +15,11 @@ export default {
 		canRemove: {
 			type: Boolean,
 			default: false,
+		},
+	},
+	methods: {
+		deleteBtnClicked() {
+			this.$emit('delete');
 		},
 	},
 };
@@ -29,5 +38,25 @@ export default {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem;
+}
+
+.tag img:hover {
+	cursor: pointer;
+}
+
+.tag-animation {
+	animation: zoom-out 200ms ease-out;
+}
+
+@keyframes zoom-out {
+	0% {
+		transform: scale(0, 0);
+	}
+	70% {
+		transform: scale(1.2, 1.2);
+	}
+	100% {
+		transform: scale(1, 1);
+	}
 }
 </style>

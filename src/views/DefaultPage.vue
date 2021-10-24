@@ -1,6 +1,6 @@
 <template>
 	<h1>개발용 페이지(이후 렌딩페이지)</h1>
-	<h2 class="box-with-underline">h2제목 테스트</h2>
+	<h2 class="box--underline">h2제목 테스트</h2>
 	<h3>h3제목 테스트</h3>
 	<base-tab></base-tab>
 	<p class="box-with-background">

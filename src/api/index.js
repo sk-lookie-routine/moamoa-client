@@ -9,7 +9,11 @@ function createPost(postData) {
 }
 
 /*
-function getPost() {
+function fetchPost() {
+	return instance.post('/api/study');
+}
+
+function fetchPostById(id) {
 	return instance.post('/api/study');
 }
 */

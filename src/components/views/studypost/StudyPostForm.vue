@@ -108,7 +108,7 @@
 			</div>
 		</div>
 		<div class="btn-container">
-			<base-button>모집글 등록하기</base-button>
+			<base-button type="submit">모집글 등록하기</base-button>
 		</div>
 	</form>
 </template>

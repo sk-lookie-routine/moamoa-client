@@ -1,17 +1,42 @@
 <template>
 	<ul class="tabs">
-		<li class="tab-text tab--active" @click="tabClicked">{{ firstTab }}</li>
+		<li
+			class="tab-text"
+			:class="{ 'tab--active': isFirstTabClicked }"
+			@click="firstTabClicked"
+		>
+			{{ firstTab }}
+		</li>
 		<div class="divide-line"></div>
-		<li class="tab-text" @click="tabClicked">{{ secondTab }}</li>
+		<li
+			class="tab-text"
+			:class="{ 'tab--active': isSecondTabClicked }"
+			@click="SecondTabClicked"
+		>
+			{{ secondTab }}
+		</li>
 	</ul>
 </template>
 
 <script>
 export default {
 	props: ['firstTab', 'secondTab'],
+	data() {
+		return {
+			isFirstTabClicked: true,
+			isSecondTabClicked: false,
+		};
+	},
 	methods: {
-		tabClicked() {
-			this.$emit('tabClicked');
+		firstTabClicked() {
+			this.isFirstTabClicked = true;
+			this.isSecondTabClicked = false;
+			this.$emit('firstTabClicked');
+		},
+		SecondTabClicked() {
+			this.isFirstTabClicked = false;
+			this.isSecondTabClicked = true;
+			this.$emit('SecondTabClicked');
 		},
 	},
 };

@@ -49,6 +49,11 @@ export default [
 		component: () => import('@/views/StudyPostPage.vue'),
 	},
 	{
+		path: '/apply',
+		name: 'apply',
+		component: () => import('@/views/StudyApplyPage.vue'),
+	},
+	{
 		path: '/:notFound(.*)',
 		component: () => import('@/views/NotFoundPage.vue'),
 	},

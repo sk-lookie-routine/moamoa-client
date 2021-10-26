@@ -35,8 +35,13 @@ button {
 	border-radius: 1rem;
 }
 
-button:hover {
-	cursor: pointer;
+.btn--small {
+	width: 25rem;
+	padding: 1.4rem 0;
+}
+
+button:disable {
+	background-color: var(--gray03);
 }
 
 .btn--big {

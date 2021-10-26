@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import router from '@/routes/index.js';
+//import store from '@/store/index.js';
 import App from './App.vue';
 
 import '@/assets/css/color.css';
@@ -16,6 +17,7 @@ import BaseCard from '@/components/base/BaseCard.vue';
 import BaseTab from '@/components/base/BaseTab.vue';
 import BaseTag from '@/components/base/BaseTag.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
+import BaseDialog from '@/components/base/BaseDialog.vue';
 
 const app = createApp(App);
 
@@ -26,7 +28,9 @@ app.component('base-card', BaseCard);
 app.component('base-tab', BaseTab);
 app.component('base-tag', BaseTag);
 app.component('base-button', BaseButton);
+app.component('base-dialog', BaseDialog);
 
 app.use(router);
+//app.use(store);
 
 app.mount('#app');

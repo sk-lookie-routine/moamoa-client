@@ -8,13 +8,15 @@
 			<base-tab
 				firstTab="모집중인 스터디"
 				secondTab="모집 완료된 스터디"
+				@firstTabClicked="showUnRecruitedPostList"
+				@SecondTabClicked="showRecruitedPostList"
 			></base-tab>
 			<router-link to="/post-write">
 				<button class="create-study-btn">개설하기</button>
 			</router-link>
 		</div>
 		<ul class="card-column-list card-list-gap">
-			<li v-for="post in unrecruitedPosts" :key="post.id">
+			<li v-for="post in postList" :key="post.id">
 				<base-card
 					@click="showPostPage(post.id)"
 					:id="post.id"
@@ -32,12 +34,17 @@
 </template>
 
 <script>
-import SearchBar from '@/components/views/studylist/SearchBar.vue';
-import CreateStudyJumbotron from '@/components/views/studylist/CreateStudyJumbotron.vue';
+import SearchBar from '@/components/views/studypostlist/SearchBar.vue';
+import CreateStudyJumbotron from '@/components/views/studypostlist/CreateStudyJumbotron.vue';
 
 export default {
 	components: { SearchBar, CreateStudyJumbotron },
 	inject: ['unrecruitedPosts', 'recruitedPosts'],
+	data() {
+		return {
+			postList: this.unrecruitedPosts,
+		};
+	},
 	methods: {
 		showPostPage(postId) {
 			this.$router.push({
@@ -46,6 +53,12 @@ export default {
 					postId,
 				},
 			});
+		},
+		showUnRecruitedPostList() {
+			this.postList = this.unrecruitedPosts;
+		},
+		showRecruitedPostList() {
+			this.postList = this.recruitedPosts;
 		},
 	},
 };

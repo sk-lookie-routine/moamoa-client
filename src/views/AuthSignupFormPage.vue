@@ -1,5 +1,6 @@
 <template>
 	<auth-header></auth-header>
+	<auth-modal v-if="!isAllFilled"></auth-modal>
 	<div class="signup-form">
 		<div class="title">회원가입</div>
 		<div class="decoration"></div>
@@ -39,7 +40,7 @@
 			<base-button
 				class="base-button"
 				v-if="nickname !== '' && desc !== ''"
-				@click="changePage"
+				@click="changeIsAllFilled"
 			>
 				MOAMOA 시작하기
 			</base-button>
@@ -52,12 +53,14 @@
 <script>
 import AuthHeader from '@/components/common/AuthHeader.vue';
 import TheFooter from '@/components/common/TheFooter.vue';
+import AuthModal from '@/components/views/auth/AuthModal.vue';
 export default {
-	components: { AuthHeader, TheFooter },
+	components: { AuthHeader, TheFooter, AuthModal },
 	data() {
 		return {
 			nickname: '',
 			desc: '',
+			isAllFilled: false,
 			randomProfile: {
 				name: require('../assets/img/profile/profile_sc_o.svg'),
 			},
@@ -81,8 +84,8 @@ export default {
 		};
 	},
 	methods: {
-		changePage() {
-			this.$router.push('/login');
+		changeIsAllFilled() {
+			this.isAllFilled = true;
 		},
 		randomImage() {
 			let randomNumber = Math.floor(Math.random() * this.imgList.length);

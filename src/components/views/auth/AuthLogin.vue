@@ -1,26 +1,26 @@
 <template>
-	<div class="auth-form">
-		<div class="auth-text">소셜 계정으로 간편 로그인</div>
-		<div class="box--underline"></div>
-		<div class="auth-buttons">
-			<button class="kakao-login-btn">
-				<img src="@/assets/img/icon.svg" />
-				<div class="kakao-login-btn-text">카카오 로그인</div>
-			</button>
-			<button class="google-login-btn" @click="googleLoginBtn">
-				<img src="@/assets/img/icon_google.svg" />
-				<div class="google-login-btn-text">구글 아이디로 로그인</div>
-			</button>
-		</div>
-		<div class="auth-isMember">
-			아직 MOAMOA의 회원이 아니신가요?
-			<router-link to="/signup-form" class="auth-link">회원가입</router-link>
-		</div>
-		<div class="auth-etc">
-			귀하는 MOAMOA의 이용약관과 개인정보처리방침을 읽고 이해했으며 그에
-			동의함을 확인합니다.
-		</div>
-	</div>
+  <div class="auth-form">
+    <div class="auth-text">소셜 계정으로 간편 로그인</div>
+    <div class="box--underline"></div>
+    <div class="auth-buttons">
+      <button class="kakao-login-btn">
+        <img src="@/assets/img/icon.svg" />
+        <div class="kakao-login-btn-text">카카오 로그인</div>
+      </button>
+      <button class="google-login-btn" @click="googleLoginBtn">
+        <img src="@/assets/img/icon_google.svg" />
+        <div class="google-login-btn-text">구글 아이디로 로그인</div>
+      </button>
+    </div>
+    <div class="auth-isMember">
+      아직 MOAMOA의 회원이 아니신가요?
+      <router-link to="/signup-form" class="auth-link">회원가입</router-link>
+    </div>
+    <div class="auth-etc">
+      귀하는 MOAMOA의 이용약관과 개인정보처리방침을 읽고 이해했으며 그에
+      동의함을 확인합니다.
+    </div>
+  </div>
 </template>
 
 <script>

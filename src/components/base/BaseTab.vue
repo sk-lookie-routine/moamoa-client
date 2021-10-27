@@ -43,6 +43,12 @@ export default {
 </script>
 
 <style scoped>
+.tab-text {
+	font-size: 2rem;
+	font-weight: bold;
+	color: var(--gray03);
+}
+
 .tabs {
 	display: flex;
 }

@@ -1,16 +1,16 @@
 <template>
-	<auth-header></auth-header>
-	<auth-signup></auth-signup>
+  <auth-header></auth-header>
+  <auth-signup></auth-signup>
 </template>
 
 <script>
 import AuthHeader from '@/components/common/AuthHeader.vue';
 import AuthSignup from '@/components/views/auth/AuthSignup.vue';
 export default {
-	components: {
-		AuthHeader,
-		AuthSignup,
-	},
+  components: {
+    AuthHeader,
+    AuthSignup,
+  },
 };
 </script>
 

@@ -1,11 +1,6 @@
 /*
 typo
 */
-.tab-text {
-	font-size: 2rem;
-	font-weight: bold;
-	color: var(--gray03);
-}
 
 .p-text--em {
   font-weight: bold;

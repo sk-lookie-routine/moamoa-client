@@ -4,12 +4,18 @@
     <div class="jumbotron-text">
       <span class="jumbotron-text--em">스터디장</span>이 되어보세요!
     </div>
-    <base-button>스터디 개설하기</base-button>
+    <base-button @click="movePage">스터디 개설하기</base-button>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    movePage() {
+      this.$router.push({ name: 'post-write' });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -24,6 +30,7 @@ export default {};
 .jumbotron-text:first-child {
   margin-bottom: 1.7rem;
 }
+
 .jumbotron-text:nth-child(2) {
   margin-bottom: 4rem;
 }

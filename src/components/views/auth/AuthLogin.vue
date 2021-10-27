@@ -1,22 +1,22 @@
 <template>
-	<div class="auth_form">
-		<div class="auth_text">소셜 계정으로 간편 로그인</div>
-		<div class="auth_text_decoration"></div>
-		<div class="auth_buttons">
-			<button class="kbtn"><img src="@/assets/img/kakao_login.svg" /></button>
-			<button class="gbtn" @click="googleLoginBtn" id="google-login">
-				<img src="@/assets/img/google_login.svg" />
-			</button>
-		</div>
-		<div class="auth_isMember">
-			아직 MOAMOA의 회원이 아니신가요?
-			<router-link to="/signup-form" class="auth_link">회원가입</router-link>
-		</div>
-		<div class="auth_etc">
-			귀하는 MOAMOA의 이용약관과 개인정보처리방침을 읽고 이해했으며 그에
-			동의함을 확인합니다.
-		</div>
-	</div>
+  <div class="auth_form">
+    <div class="auth_text">소셜 계정으로 간편 로그인</div>
+    <div class="auth_text_decoration"></div>
+    <div class="auth_buttons">
+      <button class="kbtn"><img src="@/assets/img/kakao_login.svg" /></button>
+      <button class="gbtn" @click="googleLoginBtn" id="google-login">
+        <img src="@/assets/img/google_login.svg" />
+      </button>
+    </div>
+    <div class="auth_isMember">
+      아직 MOAMOA의 회원이 아니신가요?
+      <router-link to="/signup-form" class="auth_link">회원가입</router-link>
+    </div>
+    <div class="auth_etc">
+      귀하는 MOAMOA의 이용약관과 개인정보처리방침을 읽고 이해했으며 그에
+      동의함을 확인합니다.
+    </div>
+  </div>
 </template>
 
 <script>/* eslint-disable */
@@ -29,9 +29,9 @@ export default {
   },
   methods: {
     async googleLoginBtn() {
-      let url = "http://localhost:8080/oauth2/authorization/naver";
+      let url = "http://ec2-13-209-32-104.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google";
       let options={
-        method:'POST',
+        method:'GET',
         url:url,
       }
       let res = await axios(options);
@@ -48,9 +48,9 @@ export default {
       //     method: "POST",
       //   }
       // );
-      let url = "http://localhost:8080/oauth2/authorization/naver";
+      let url = "http://ec2-13-209-32-104.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google";
       let options={
-        method:'POST',
+        method:'GET',
         url:url,
       }
       let res = await axios(options);

@@ -1,117 +1,149 @@
 <template>
-	<div class="auth_form">
-		<div class="auth_text">소셜 계정으로 간편 회원가입</div>
-		<div class="auth_text_decoration"></div>
-		<div class="auth_buttons">
-			<button class="kbtn"><img src="@/assets/img/kakao_signup.svg" /></button>
-			<button class="gbtn"><img src="@/assets/img/google_signup.svg" /></button>
-		</div>
-		<div class="auth_isMember">
-			이미 MOAMOA의 회원이신가요?
-			<router-link to="/login" class="auth_link">로그인</router-link>
-		</div>
-		<div class="auth_etc">
-			귀하는 MOAMOA의 이용약관과 개인정보처리방침을 읽고 이해했으며 그에
-			동의함을 확인합니다.
-		</div>
-	</div>
+  <div class="auth_form">
+    <div class="auth-text">소셜 계정으로 간편 회원가입</div>
+    <div class="box--underline"></div>
+    <div class="auth-buttons">
+      <button class="kakao-signup-btn">
+        <img src="@/assets/img/icon_kakao.svg" />
+        <div class="kakao-signup-btn-text">카카오 아이디로 가입하기</div>
+      </button>
+      <button class="google-signup-btn" @click="googleLoginBtn">
+        <img src="@/assets/img/icon_google.svg" />
+        <div class="google-signup-btn-text">구글 아이디로 가입하기</div>
+      </button>
+    </div>
+    <div class="auth-isMember">
+      이미 MOAMOA의 회원이신가요?
+      <router-link to="/login" class="auth-link">로그인</router-link>
+    </div>
+    <div class="auth-etc">
+      귀하는 MOAMOA의 이용약관과 개인정보처리방침을 읽고 이해했으며 그에
+      동의함을 확인합니다.
+    </div>
+  </div>
 </template>
 
 <script></script>
 
 <style scoped>
-.auth_text {
-	font-family: noto-sans-cjk-kr, sans-serif;
-	font-weight: 700;
-	font-style: normal;
-	font-size: 1.8rem;
-	line-height: 2.7rem;
-	margin: 0 auto;
-	padding-top: 16.6rem;
-	padding-bottom: 0.7rem;
-	/* margin: 16.6rem 62.3rem 0 62.2rem; */
-	width: 21.7rem;
-	height: 2.7rem;
-	color: #4e4e4e;
+* {
+  font-family: noto-sans-cjk-kr, sans-serif;
 }
-.auth_text_decoration {
-	border: 0.7px solid #d8d8d8;
-	background: #d8d8d8;
-	width: 50rem;
-	margin: 0 auto;
+.auth-form {
+  width: 100%;
 }
-.auth_buttons {
-	margin: 0 auto;
-	/* margin: 6rem 57.2rem 7.8rem 57.6rem; */
-	display: flex;
-	flex-direction: column;
+.auth-text {
+  font-family: noto-sans-cjk-kr, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.8rem;
+  line-height: 2.7rem;
+  margin: 0 auto;
+  padding-top: 16.6rem;
+  padding-bottom: 0.7rem;
+  width: 21.7rem;
+  height: 2.7rem;
+  color: var(--black);
 }
-.kbtn {
-	margin-top: 6rem;
-	margin-bottom: 1.2rem;
+.box--underline {
+  margin: 0 47rem;
+  margin-top: 3.3rem;
 }
-.gbtn {
-	margin-bottom: 9rem;
+.auth-buttons {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.kakao-signup-btn {
+  margin-top: 6rem;
+  margin-bottom: 1.2rem;
+  width: 29.2rem;
+  height: 4.4rem;
+  background: #fee500;
+  color: #3c1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.kakao-signup-btn-text {
+  font-size: 1.2rem;
+  margin-right: 7.3rem;
+}
+.google-signup-btn-text {
+  font-size: 1.2rem;
+  margin-right: 7.8rem;
+}
+.kakao-signup-btn img,
+.google-signup-btn img {
+  border: 1px solid red;
+  margin-left: 1.2rem;
+}
+.google-signup-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9rem;
+  width: 29.2rem;
+  height: 4.4rem;
+  border: 1px solid black;
 }
 button {
-	background: none;
-	border: none;
-	width: 29.2rem;
-	height: 4.4rem;
-	margin: 0 auto;
+  background: none;
+  border: none;
+  width: 29.2rem;
+  height: 4.4rem;
+  margin: 0 auto;
 }
 button:hover {
-	cursor: pointer;
+  cursor: pointer;
 }
-.auth_isMember {
-	font-family: noto-sans-cjk-kr, sans-serif;
-	font-weight: 300;
-	font-style: normal;
-	display: flex;
-	flex-direction: row;
-	margin: 0 auto;
-	/* margin: 1.4rem 56.9rem 0 56.9rem; */
-	align-items: center;
-	font-size: 1.2rem;
-	line-height: 1.7rem;
-	width: 30.2rem;
-	height: 2.9rem;
-	background: #fbfbfb;
-	border-radius: 1rem;
-	justify-content: center;
-	color: #a1a1a1;
+.auth-isMember {
+  font-family: noto-sans-cjk-kr, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  display: flex;
+  margin: 0 auto;
+  /* margin: 1.4rem 56.9rem 0 56.9rem; */
+  align-items: center;
+  font-size: 1.2rem;
+  line-height: 1.7rem;
+  width: 30.2rem;
+  height: 2.9rem;
+  background: var(--gray06);
+  border-radius: 1rem;
+  justify-content: center;
+  color: var(--gray02);
 }
-.auth_link {
-	padding-left: 2.2rem;
-	font-weight: bold;
-	font-size: 1.2rem;
-	line-height: 1.7rem;
-	color: #ff5c4e;
-	text-decoration: none;
-	width: 4.5rem;
-	height: 1.7rem;
+.auth-link {
+  padding-left: 2.2rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1.7rem;
+  color: var(--orange-dark);
+  text-decoration: none;
+  height: 1.7rem;
 }
-.auth_etc {
-	margin: 0 auto;
-	padding-top: 6.9rem;
-	padding-bottom: 19.4rem;
-	/* margin: 7.6rem 48.1rem 19rem 48.1rem; */
-	font-family: noto-sans-cjk-kr, sans-serif;
-	font-weight: 300;
-	font-style: normal;
-	font-size: 1.2rem;
-	line-height: 1.4rem;
-	color: #a1a1a1;
-	width: 48rem;
-	height: 1.8rem;
+.auth-etc {
+  margin: 0 auto;
+  padding-top: 6.9rem;
+  padding-bottom: 19.4rem;
+  /* margin: 7.6rem 48.1rem 19rem 48.1rem; */
+  font-family: noto-sans-cjk-kr, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  color: var(--gray02);
+  width: 48rem;
+  height: 1.8rem;
 }
 @media (max-width: 500px) {
-	.auth_text_decoration {
-		width: 34.3rem;
-	}
-	.auth_etc {
-		width: 26rem;
-		text-align: center;
-	}
+  .auth-text-decoration {
+    width: 34.3rem;
+  }
+  .auth-etc {
+    width: 26rem;
+    text-align: center;
+  }
 }
 </style>

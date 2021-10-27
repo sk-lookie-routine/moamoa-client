@@ -1,16 +1,17 @@
 <template>
   <auth-header></auth-header>
-  <div class="signup_form">
+  <auth-modal v-if="!isAllFilled"></auth-modal>
+  <div class="signup-form">
     <div class="title">회원가입</div>
     <div class="decoration"></div>
-    <div class="profile_img">
+    <div class="profile-img">
       <img :src="randomProfile.name" />
       <div class="text">랜덤 변경</div>
-      <button @click="randomImage">
-        <img src="@/assets/img/btn_random.svg" class="randomBtn" />
+      <button @click="randomImage" class="randomBtn">
+        <img src="@/assets/img/btn_random.svg" />
       </button>
     </div>
-    <div class="profile_info">
+    <div class="profile-info">
       <div class="nickname">
         닉네임 :
         <input
@@ -35,31 +36,31 @@
         <div class="decoration"></div>
       </div>
     </div>
-    <div class="moaBtn">
-      <button
+    <div class="start-btn">
+      <base-button
+        class="base-button"
         v-if="nickname !== '' && desc !== ''"
-        @click="changePage"
-        class="startBtn"
+        @click="changeIsAllFilled"
       >
-        <img src="@/assets/img/btn_start.svg" />
-      </button>
-      <button v-else>
-        <img src="@/assets/img/btn_start_detactive.svg" />
-      </button>
+        MOAMOA 시작하기
+      </base-button>
+      <button v-else disabled>MOAMOA 시작하기</button>
     </div>
-    <the-footer></the-footer>
   </div>
+  <the-footer></the-footer>
 </template>
 
 <script>
 import AuthHeader from '@/components/common/AuthHeader.vue';
 import TheFooter from '@/components/common/TheFooter.vue';
+import AuthModal from '@/components/views/auth/AuthModal.vue';
 export default {
-  components: { AuthHeader, TheFooter },
+  components: { AuthHeader, TheFooter, AuthModal },
   data() {
     return {
       nickname: '',
       desc: '',
+      isAllFilled: false,
       randomProfile: {
         name: require('../assets/img/profile/profile_sc_o.svg'),
       },
@@ -83,8 +84,8 @@ export default {
     };
   },
   methods: {
-    changePage() {
-      this.$router.push('/login');
+    changeIsAllFilled() {
+      this.isAllFilled = true;
     },
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
@@ -96,7 +97,7 @@ export default {
 </script>
 
 <style scoped>
-.signup_form {
+.signup-form {
   padding: 10.8rem 12rem 0 12rem;
   display: float;
   height: 129.7rem;
@@ -106,15 +107,15 @@ export default {
   font-weight: bold;
   font-size: 2.2rem;
   line-height: 3.4rem;
-  color: #4e4e4e;
+  color: var(--black);
 }
 .decoration {
   margin: 1.6rem 0 0 0;
   padding: 0;
-  border: 0.7px solid #d8d8d8;
-  background: #d8d8d8;
+  border: 0.7px solid var(--gray04);
+  background: var(--gray04);
 }
-.profile_img {
+.profile-img {
   margin-top: 4.9rem;
   margin-bottom: 6.1rem;
   position: relative;
@@ -128,7 +129,7 @@ export default {
   font-family: Spoqa Han Sans Neo;
   font-size: 1.2rem;
   line-height: 1.4rem;
-  color: #ff994e;
+  color: var(--orange);
   position: absolute;
   right: 0;
 }
@@ -137,6 +138,7 @@ export default {
   right: 0;
   bottom: 0;
   transition: all ease 0.5s;
+  background: none;
 }
 input:focus {
   /* input 클릭 시 테두리 삭제 */
@@ -151,14 +153,14 @@ input:focus {
   font-weight: bold;
   font-size: 1.8rem;
   line-height: 2.6rem;
-  color: #4e4e4e;
+  color: var(--black);
 }
 .description {
   font-family: Spoqa Han Sans Neo;
   font-weight: bold;
   font-size: 1.8rem;
   line-height: 2.6rem;
-  color: #4e4e4e;
+  color: var(--black);
   margin-top: 5.4rem;
 }
 .text_ph,
@@ -166,24 +168,19 @@ input:focus {
   font-family: Spoqa Han Sans Neo;
   font-size: 1.8rem;
   line-height: 2.6rem;
-  color: #4e4e4e;
+  color: var(--black);
   border: none;
 }
-.moaBtn {
+.start-btn {
   justify-content: center;
   display: flex;
   margin-bottom: 26rem;
 }
-.moaBtn img {
-  width: 32rem;
-  height: 5.8rem;
-}
 button {
   margin-top: 10rem;
   border: none;
-  background: none;
 }
-.startBtn:hover {
+.base-button:hover {
   cursor: pointer;
 }
 @media (max-width: 500px) {

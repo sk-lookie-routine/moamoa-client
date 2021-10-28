@@ -1,5 +1,5 @@
 <template>
-	<div>슬라이더</div>
+  <div>슬라이더</div>
 </template>
 
 <script>
@@ -8,7 +8,7 @@ export default {};
 
 <style scoped>
 div {
-	background-color: var(--gray04);
-	height: 48rem;
+  background-color: var(--gray04);
+  height: 48rem;
 }
 </style>

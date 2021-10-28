@@ -1,32 +1,32 @@
 <template>
-	<div class="main-container">
-		<div class="box--underline bottom-padding"><h1>스터디룸</h1></div>
-		<div class="tabs-container">
-			<base-tab firstTab="참여중인 스터디" secondTab="완료한 스터디"></base-tab>
-		</div>
-		<ul class="card-column-list card-list-gap">
-			<li v-for="post in joiningStudyRooms" :key="post.id">
-				<base-card
-					:title="post.title"
-					:period="post.period"
-					:peopleRegisterCount="post.peopleRegisterCount"
-					:peopleTotalCount="post.peopleTotalCount"
-					:tags="post.tags"
-				></base-card>
-			</li>
-		</ul>
-	</div>
-	<the-footer></the-footer>
+  <div class="main-container">
+    <div class="box--underline bottom-padding"><h1>스터디룸</h1></div>
+    <div class="tabs-container">
+      <base-tab firstTab="참여중인 스터디" secondTab="완료한 스터디"></base-tab>
+    </div>
+    <ul class="card-column-list card-list-gap">
+      <li v-for="post in joiningStudyRooms" :key="post.id">
+        <base-card
+          :title="post.title"
+          :period="post.period"
+          :peopleRegisterCount="post.peopleRegisterCount"
+          :peopleTotalCount="post.peopleTotalCount"
+          :tags="post.tags"
+        ></base-card>
+      </li>
+    </ul>
+  </div>
+  <the-footer></the-footer>
 </template>
 
 <script>
 export default {
-	inject: ['joiningStudyRooms'],
+  inject: ['joiningStudyRooms'],
 };
 </script>
 
 <style scoped>
 .tabs-container {
-	margin: 9.2rem 0 2.4rem 0;
+  margin: 9.2rem 0 2.4rem 0;
 }
 </style>

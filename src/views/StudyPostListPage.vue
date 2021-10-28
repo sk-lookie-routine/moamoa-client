@@ -36,6 +36,7 @@
 <script>
 import SearchBar from '@/components/views/studypostlist/SearchBar.vue';
 import CreateStudyJumbotron from '@/components/views/studypostlist/CreateStudyJumbotron.vue';
+import { fetchPosts } from '@/api/index.js';
 
 export default {
   components: { SearchBar, CreateStudyJumbotron },
@@ -46,6 +47,10 @@ export default {
     };
   },
   methods: {
+    async fetchData() {
+      const data = await fetchPosts();
+      console.log(data);
+    },
     showPostPage(postId) {
       this.$router.push({
         name: 'post',
@@ -60,6 +65,10 @@ export default {
     showRecruitedPostList() {
       this.postList = this.recruitedPosts;
     },
+  },
+  created() {
+    console.log('create');
+    this.fetchData();
   },
 };
 </script>

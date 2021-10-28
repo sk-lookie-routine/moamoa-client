@@ -69,6 +69,10 @@
           <p>스터디 개설, 참여 방법과 스터디 일지 샘플을 확인해보세요!</p>
         </div>
       </div>
+      <div class="more-info">
+        더 자세한 내용은 Notion 에서 확인할 수 있습니다.
+      </div>
+      <base-button>모두 확인했고, 동의합니다!</base-button>
     </div>
   </div>
 </template>

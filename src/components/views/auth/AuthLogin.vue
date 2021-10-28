@@ -4,7 +4,7 @@
     <div class="box--underline"></div>
     <div class="auth-buttons">
       <button class="kakao-login-btn">
-        <img src="@/assets/img/icon.svg" />
+        <img src="@/assets/img/icon_kakao.svg" />
         <div class="kakao-login-btn-text">카카오 로그인</div>
       </button>
       <button class="google-login-btn" @click="googleLoginBtn">

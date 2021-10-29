@@ -4,7 +4,7 @@
     <div class="modal-box">
       <div class="modal-box-title">🤙🏻MOAMOA는 이런 규칙을 지향합니다!</div>
       <div class="modal-box-1">
-        <div class="modal-box-1-title">책임감 있는 활동을 해주세요!</div>
+        <div class="modal-box-1-title">1. 책임감 있는 활동을 해주세요!</div>
         <div class="modal-box-1-desc">
           <p>
             모아모아는 함께하는 성장을 지향합니다. 스터디 메이트에게 폐가 되지
@@ -72,18 +72,29 @@
       <div class="more-info">
         더 자세한 내용은 Notion 에서 확인할 수 있습니다.
       </div>
-      <base-button>모두 확인했고, 동의합니다!</base-button>
+      <base-button class="base-btn" @click="onClick"
+        >모두 확인했고, 동의합니다!</base-button
+      >
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    onClick() {
+      this.$router.push('/home');
+    },
+  },
+};
 </script>
 
 <style scoped>
 .modal {
-  display: initial;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
 }
 .modal-bg {
   position: fixed;
@@ -97,6 +108,7 @@ export default {};
   z-index: 100;
 }
 .modal-box {
+  border-radius: 2rem;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -104,5 +116,73 @@ export default {};
   background: white;
   z-index: 101;
   height: 50rem;
+  display: inline-block;
+  text-align: center;
+  width: 85.7em;
+  overflow: scroll;
+}
+.modal-box::-webkit-scrollbar {
+  display: none;
+  /* 스크롤바 hide */
+}
+.modal-box-title {
+  width: 81.5rem;
+  height: 2.6rem;
+  left: 31.2rem;
+  top: 23.8rem;
+  margin: 6rem 2.1rem 4.1rem 2.1rem;
+  font-family: Spoqa Han Sans Neo;
+  font-weight: bold;
+  font-size: 2.2rem;
+  line-height: 2.6rem;
+}
+.modal-box-1,
+.modal-box-2,
+.modal-box-3,
+.modal-box-4,
+.modal-box-5 {
+  width: 81.5rem;
+  height: 9.3rem;
+  border-radius: 2rem;
+  background: var(--gray05);
+  margin: 0 auto;
+  margin-bottom: 2.1rem;
+}
+.modal-box-1-title,
+.modal-box-2-title,
+.modal-box-3-title,
+.modal-box-4-title,
+.modal-box-5-title {
+  left: 62.4rem;
+  top: 31.9rem;
+  font-family: Spoqa Han Sans Neo;
+  font-weight: bold;
+  font-size: 1.4rem;
+  line-height: 1.7rem;
+  color: var(--black);
+  padding: 1.4rem 0 1.2rem 0;
+}
+.modal-box-1-desc p,
+.modal-box-2-desc p,
+.modal-box-3-desc p,
+.modal-box-4-desc p,
+.modal-box-5-desc p {
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  color: var(--gray01);
+}
+.more-info {
+  font-family: Roboto;
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  text-align: center;
+  color: var(--gray00);
+  margin: 4.8rem 0 3.3rem 0;
+}
+.base-btn {
+  margin-bottom: 5rem;
+}
+.base-btn:hover {
+  cursor: pointer;
 }
 </style>

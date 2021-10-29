@@ -7,7 +7,9 @@ const instance = axios.create({
 function createPost(postData) {
   return instance.post('/api/study', postData);
 }
-
+function createAuth(auth) {
+  return instance.post('/api/auth', auth);
+}
 /*
 function fetchPost() {
 	return instance.post('/api/study');
@@ -18,4 +20,4 @@ function fetchPostById(id) {
 }
 */
 
-export { createPost };
+export { createPost, createAuth };

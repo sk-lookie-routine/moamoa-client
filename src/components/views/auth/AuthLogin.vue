@@ -3,10 +3,7 @@
     <div class="auth-text">소셜 계정으로 간편 로그인</div>
     <div class="box--underline"></div>
     <div class="auth-buttons">
-      <button class="kakao-login-btn">
-        <img src="@/assets/img/icon_kakao.svg" />
-        <div class="kakao-login-btn-text">카카오 로그인</div>
-      </button>
+      <login-kakao></login-kakao>
       <button class="google-login-btn" @click="googleLoginBtn">
         <img src="@/assets/img/icon_google.svg" />
         <div class="google-login-btn-text">구글 아이디로 로그인</div>
@@ -24,19 +21,34 @@
 </template>
 
 <script>
-/* eslint-disable */
-import axios from "axios";
+import axios from 'axios';
+import LoginKakao from './LoginKakao.vue';
+// import { createAuth } from '@/api/index.js';
+
 export default {
+  components: { LoginKakao },
   data() {
     return {
-      lists: [],
+      loginData: {
+        user_seq: '',
+        created_at: '',
+        email: '',
+        email_verified_yn: '',
+        modified_at: '',
+        password: '',
+        profile_image_url: '',
+        provider_type: '',
+        role_type: '',
+        user_id: '',
+        username: '',
+      },
     };
   },
   methods: {
     async googleLoginBtn() {
-      let url = "http://localhost:8080/oauth2/authorization/naver";
+      let url = 'http://localhost:8080/oauth2/authorization/naver';
       let options = {
-        method: "POST",
+        method: 'POST',
         url: url,
       };
       let res = await axios(options);
@@ -44,7 +56,7 @@ export default {
       console.log(data);
     },
     async onSuccess(googleUser) {
-      const user_join_type = "g";
+      const user_join_type = 'g';
       const googleEmail = googleUser.getBasicProfile().pu;
       // console.log(googleEmail);
       // const res = await fetch(
@@ -53,9 +65,9 @@ export default {
       //     method: "POST",
       //   }
       // );
-      let url = "http://localhost:8080/oauth2/authorization/naver";
+      let url = 'http://localhost:8080/oauth2/authorization/naver';
       let options = {
-        method: "POST",
+        method: 'POST',
         url: url,
       };
       let res = await axios(options);
@@ -90,38 +102,18 @@ export default {
   height: 2.7rem;
   color: var(--black);
 }
-.box--underline{
-  margin:0 47rem;
-  margin-top:3.3rem;
+.box--underline {
+  margin: 0 47rem;
+  margin-top: 3.3rem;
 }
 .auth-buttons {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
 }
-.kakao-login-btn {
-  margin-top: 6rem;
-  margin-bottom: 1.2rem;
-  width: 29.2rem;
-  height: 4.4rem;
-  background: #fee500;
-  color: #3c1e1e;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.kakao-login-btn-text {
+.google-login-btn-text {
   font-size: 1.2rem;
-  margin-right: 10.2rem;
-}
-.google-login-btn-text{
-  font-size:1.2rem;
-  margin-right:8.3rem;
-}
-.kakao-login-btn img,
-.google-login-btn img {
-  border: 1px solid red;
-  margin-left: 1.2rem;
+  margin-right: 8.3rem;
 }
 .google-login-btn {
   display: flex;

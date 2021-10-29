@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
+import { createStore } from 'vuex';
 import router from '@/routes/index.js';
-//import store from '@/store/index.js';
 import App from './App.vue';
 
 import '@/assets/css/color.css';
@@ -30,7 +30,22 @@ app.component('base-tag', BaseTag);
 app.component('base-button', BaseButton);
 app.component('base-dialog', BaseDialog);
 
-app.use(router);
-//app.use(store);
+const store = createStore({
+  state: {
+    userName: '',
+    platform: '',
+  },
+  mutations: {
+    setUser(state, payload) {
+      state.userName = payload.name;
+      state.platform = payload.platform;
+    },
+  },
+  actions: {},
+  modules: {},
+});
 
+app.use(router);
+app.use(store);
+window.Kakao.init('b78ee42055befbebc6aa77b522f2ede4');
 app.mount('#app');

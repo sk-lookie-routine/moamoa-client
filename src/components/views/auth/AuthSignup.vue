@@ -1,5 +1,5 @@
 <template>
-  <div class="auth_form">
+  <div class="auth-form">
     <div class="auth-text">소셜 계정으로 간편 회원가입</div>
     <div class="box--underline"></div>
     <div class="auth-buttons">
@@ -75,8 +75,7 @@
 }
 .kakao-signup-btn img,
 .google-signup-btn img {
-  border: 1px solid red;
-  margin-left: 1.2rem;
+  padding-left: 1.2rem;
 }
 .google-signup-btn {
   display: flex;

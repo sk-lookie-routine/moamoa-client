@@ -1,6 +1,6 @@
 <template>
   <auth-header></auth-header>
-  <auth-modal v-if="!isAllFilled"></auth-modal>
+  <auth-modal v-if="isAllFilled"></auth-modal>
   <div class="signup-form">
     <div class="title">회원가입</div>
     <div class="decoration"></div>

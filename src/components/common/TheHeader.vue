@@ -15,10 +15,9 @@
     </div>
     <nav>
       <ul>
-        <li><router-link to="/home">홈</router-link></li>
-        <li><router-link to="/posts">스터디목록</router-link></li>
-        <li><router-link to="/rooms">스터디룸</router-link></li>
-        <li><router-link to="/notice">공지사항</router-link></li>
+        <li v-for="(link, index) in links" @click="menuToggled" :key="index">
+          <router-link :to="link.linkTo">{{ link.name }}</router-link>
+        </li>
       </ul>
     </nav>
     <div class="header-btns-container">
@@ -32,6 +31,12 @@
 export default {
   data() {
     return {
+      links: [
+        { name: '홈', linkTo: '/home' },
+        { name: '스터디목록', linkTo: '/posts' },
+        { name: '스터디룸', linkTo: '/rooms' },
+        { name: '공지사항', linkTo: '/notice' },
+      ],
       isMenuClicked: false,
     };
   },
@@ -94,6 +99,10 @@ li a {
   color: var(--gray03);
 }
 
+li a:hover {
+  color: var(--gray02);
+}
+
 .router-link-active {
   color: var(--orange-dark);
 }
@@ -107,6 +116,7 @@ button {
   font-size: 1.8rem;
   font-weight: bold;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .auth-btn {
@@ -121,6 +131,7 @@ button {
 
 .icon-menu {
   display: none;
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {

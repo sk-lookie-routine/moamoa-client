@@ -10,6 +10,7 @@ export default {
     unrecruitedPosts: [
       {
         id: '1',
+        imgSrc: 'profile_sc_b',
         title: '무슨무슨 스터디무슨무',
         period: '2021.12.03~2021.12.31',
         peopleRegisterCount: 4,
@@ -18,6 +19,7 @@ export default {
       },
       {
         id: '2',
+        imgSrc: 'profile_sc_o',
         title: 'eeee 스터디무슨무',
         period: '2021.12.03~2021.12.31',
         peopleRegisterCount: 4,
@@ -26,6 +28,7 @@ export default {
       },
       {
         id: '3',
+        imgSrc: 'profile_sc_p',
         title: 'eeee 스터디ewgrfgrf무슨무',
         period: '2021.12.03~2021.12.31',
         peopleRegisterCount: 4,
@@ -36,6 +39,7 @@ export default {
     recruitedPosts: [
       {
         id: '4',
+        imgSrc: 'profile_sc_o',
         title: 'a모집 완료됨~',
         period: '2021.12.03~2021.12.31',
         peopleRegisterCount: 4,
@@ -44,6 +48,7 @@ export default {
       },
       {
         id: '5',
+        imgSrc: 'profile_sc_p',
         title: 'eeee 스터디무슨무',
         period: '2021.12.03~2021.12.31',
         peopleRegisterCount: 4,
@@ -52,6 +57,7 @@ export default {
       },
       {
         id: '6',
+        imgSrc: 'profile_sq_p',
         title: 'eeee 스터디ewgrfgrf무슨무',
         period: '2021.12.03~2021.12.31',
         peopleRegisterCount: 4,
@@ -60,6 +66,7 @@ export default {
       },
       {
         id: '7',
+        imgSrc: 'profile_sc_p',
         title: 'eeee 스터디무슨무',
         period: '2021.12.03~2021.12.31',
         peopleRegisterCount: 4,
@@ -68,6 +75,7 @@ export default {
       },
       {
         id: '8',
+        imgSrc: 'profile_sc_p',
         title: 'eeee 스터디ewgrfgrf무슨무',
         period: '2021.12.03~2021.12.31',
         peopleRegisterCount: 4,
@@ -78,6 +86,7 @@ export default {
     joiningStudyRooms: [
       {
         id: '9',
+        imgSrc: 'profile_sc_p',
         title: '무슨무슨 스터디무슨무',
         period: '2021.12.03~2021.12.31',
         peopleRegisterCount: 4,
@@ -86,6 +95,7 @@ export default {
       },
       {
         id: '10',
+        imgSrc: 'profile_sc_p',
         title: 'eeee 스터디무슨무',
         period: '2021.12.03~2021.12.31',
         peopleRegisterCount: 4,

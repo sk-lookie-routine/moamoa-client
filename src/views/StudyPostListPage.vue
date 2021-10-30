@@ -20,6 +20,7 @@
         <base-card
           @click="showPostPage(post.id)"
           :id="post.id"
+          :imgSrc="post.imgSrc"
           :title="post.title"
           :period="post.period"
           :peopleRegisterCount="post.peopleRegisterCount"
@@ -67,8 +68,8 @@ export default {
     },
   },
   created() {
-    console.log('create');
-    this.fetchData();
+    //console.log('create');
+    //this.fetchData();
   },
 };
 </script>

@@ -1,7 +1,8 @@
 <template>
   <div class="card" @mouseover="onMouseOver" @mouseleave="onMouseleave">
     <div class="card__thumbnail">
-      <img src="@/assets/img/profile/profile_sc_p.svg" />
+      <!-- "@/assets/img/profile/profile_sc_p.svg" -->
+      <img :src="imgUrl" />
     </div>
     <div class="card__contents">
       <div class="title-and-btn-container">
@@ -34,6 +35,10 @@ export default {
       type: String,
       required: true,
     },
+    imgSrc: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -62,6 +67,7 @@ export default {
   data() {
     return {
       isHover: true,
+      imgUrl: require('@/assets/img/profile/' + this.imgSrc + '.svg'),
     };
   },
 };

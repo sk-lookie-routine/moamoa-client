@@ -57,6 +57,7 @@
   >
   <base-card
     :id="id"
+    imgSrc="profile_sc_p"
     title="얘는 컴포넌트 분리는 했는데 수정이 더 필요해서 조금만 설명드림"
     :period="'에베베'"
     :peopleRegisterCount="1"

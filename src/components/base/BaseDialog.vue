@@ -1,6 +1,6 @@
 <template>
-  <div class="background-container"></div>
-  <div class="dialog-container">
+  <div v-if="!isDialogClosed" class="background-container"></div>
+  <div v-if="!isDialogClosed" class="dialog-container">
     <dialog ref="dialog" open>
       <header>
         <div>
@@ -24,9 +24,15 @@ export default {
       required: false,
     },
   },
+  data() {
+    return {
+      isDialogClosed: false,
+    };
+  },
   methods: {
     closeBtnClick: function () {
-      this.$refs.dialog.hide();
+      this.isDialogClosed = true;
+      this.$refs.dialog.close();
     },
   },
 };
@@ -71,6 +77,10 @@ header {
 header div {
   display: flex;
   justify-content: flex-end;
+}
+
+header div img:hover {
+  cursor: pointer;
 }
 
 header h3 {

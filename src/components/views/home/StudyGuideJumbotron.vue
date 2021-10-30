@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <img
-      class="moa-characters-icon"
-      src="@/assets/img/icon_moa_characters.svg"
+      class="moa-character-img"
+      src="@/assets/img/img_moa_highlight_character.svg"
     />
-    <div class="jumbotron-text">목표를 함께할 팀원을 모아보세요!</div>
-    <base-button>스터디 개설 가이드</base-button>
+    <div class="jumbotron-text">스터디메이트를 모아보세요!</div>
+    <base-button>스터디 개설하기</base-button>
   </div>
 </template>
 
@@ -22,10 +22,10 @@ export default {};
   padding-top: 12rem;
 }
 
-.moa-characters-icon {
-  width: 14rem;
-  height: 4.4rem;
-  margin-bottom: 3rem;
+.moa-character-img {
+  width: 6.2rem;
+  height: 2.1rem;
+  margin-bottom: 4.2rem;
 }
 
 .jumbotron-text {

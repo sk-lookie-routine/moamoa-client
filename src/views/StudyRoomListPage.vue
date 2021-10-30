@@ -7,6 +7,7 @@
     <ul class="card-column-list card-list-gap">
       <li v-for="post in joiningStudyRooms" :key="post.id">
         <base-card
+          :imgSrc="post.imgSrc"
           :title="post.title"
           :period="post.period"
           :peopleRegisterCount="post.peopleRegisterCount"

@@ -12,6 +12,7 @@
         <li v-for="post in unrecruitedPosts" :key="post.id">
           <base-card
             :id="post.id"
+            :imgSrc="post.imgSrc"
             :title="post.title"
             :period="post.period"
             :peopleRegisterCount="post.peopleRegisterCount"

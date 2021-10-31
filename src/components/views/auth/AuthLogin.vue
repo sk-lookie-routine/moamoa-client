@@ -2,12 +2,9 @@
   <div class="auth-form">
     <div class="auth-text">소셜 계정으로 간편 로그인</div>
     <div class="box--underline"></div>
-    <div class="auth-buttons">
-      <login-kakao></login-kakao>
-      <button class="google-login-btn" @click="googleLoginBtn">
-        <img src="@/assets/img/icon_google.svg" />
-        <div class="google-login-btn-text">구글 아이디로 로그인</div>
-      </button>
+    <div class="login-buttons">
+      <kakao-login-button class="kakao-login"></kakao-login-button>
+      <google-login-button class="google-login"></google-login-button>
     </div>
     <div class="auth-isMember">
       아직 MOAMOA의 회원이 아니신가요?
@@ -21,64 +18,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-import LoginKakao from './LoginKakao.vue';
-// import { createAuth } from '@/api/index.js';
-
+import GoogleLoginButton from './GoogleLoginBtn.vue';
+import KakaoLoginButton from './KakaoLoginBtn.vue';
 export default {
-  components: { LoginKakao },
-  data() {
-    return {
-      loginData: {
-        user_seq: '',
-        created_at: '',
-        email: '',
-        email_verified_yn: '',
-        modified_at: '',
-        password: '',
-        profile_image_url: '',
-        provider_type: '',
-        role_type: '',
-        user_id: '',
-        username: '',
-      },
-    };
-  },
-  methods: {
-    async googleLoginBtn() {
-      let url = 'http://localhost:8080/oauth2/authorization/naver';
-      let options = {
-        method: 'POST',
-        url: url,
-      };
-      let res = await axios(options);
-      let data = await res.data;
-      console.log(data);
-    },
-    async onSuccess(googleUser) {
-      const user_join_type = 'g';
-      const googleEmail = googleUser.getBasicProfile().pu;
-      // console.log(googleEmail);
-      // const res = await fetch(
-      //   "http://localhost:8080/oauth2/authorization/naver",
-      //   {
-      //     method: "POST",
-      //   }
-      // );
-      let url = 'http://localhost:8080/oauth2/authorization/naver';
-      let options = {
-        method: 'POST',
-        url: url,
-      };
-      let res = await axios(options);
-      let data = await res.data;
-      // axios
-      //   .post("http://localhost:8080/oauth2/authorization/naver")
-      //   .then((result) => console.log(result));
-      // const data = await res.json();
-      this.checkSnSLogin(data, googleEmail, user_join_type);
-    }, //구글 로그인 콜백함수 (실패) onFailure(error) { // eslint-disable-next-line console.log(error); },
-  },
+  components: { GoogleLoginButton, KakaoLoginButton },
 };
 </script>
 
@@ -106,34 +49,12 @@ export default {
   margin: 0 47rem;
   margin-top: 3.3rem;
 }
-.auth-buttons {
-  margin: 0 auto;
+.login-buttons {
   display: flex;
   flex-direction: column;
-}
-.google-login-btn-text {
-  font-size: 1.2rem;
-  margin-right: 8.3rem;
-}
-.google-login-btn {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 9rem;
-  width: 29.2rem;
-  height: 4.4rem;
-  border: 1px solid black;
 }
-button {
-  background: none;
-  border: none;
-  width: 29.2rem;
-  height: 4.4rem;
-  margin: 0 auto;
-}
-button:hover {
-  cursor: pointer;
-}
+
 .auth-isMember {
   font-family: noto-sans-cjk-kr, sans-serif;
   font-weight: 300;

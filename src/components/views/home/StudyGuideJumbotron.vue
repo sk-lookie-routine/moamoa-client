@@ -31,4 +31,14 @@ export default {};
 .jumbotron-text {
   margin-bottom: 3rem;
 }
+
+@media (max-width: 1024px) {
+  .container {
+    padding-top: 7rem;
+  }
+
+  .jumbotron-text {
+    font-size: 1.6rem;
+  }
+}
 </style>

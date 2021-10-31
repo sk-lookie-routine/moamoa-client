@@ -20,12 +20,13 @@
         <base-card
           @click="showPostPage(post.id)"
           :id="post.id"
-          :imgSrc="post.imgSrc"
+          :imgSrc="'profile_sc_p'"
           :title="post.title"
-          :period="post.period"
-          :peopleRegisterCount="post.peopleRegisterCount"
-          :peopleTotalCount="post.peopleTotalCount"
-          :tags="post.tags"
+          :startDate="post.startDate"
+          :endDate="post.endDate"
+          :peopleRegisterCount="1"
+          :peopleTotalCount="2"
+          :hashTags="post.hashTags"
         ></base-card>
       </li>
     </ul>
@@ -50,7 +51,7 @@ export default {
   methods: {
     async fetchData() {
       const data = await fetchPosts();
-      console.log(data);
+      this.postList = data.data.content;
     },
     showPostPage(postId) {
       this.$router.push({
@@ -68,8 +69,8 @@ export default {
     },
   },
   created() {
-    //console.log('create');
-    //this.fetchData();
+    console.log('create');
+    this.fetchData();
   },
 };
 </script>

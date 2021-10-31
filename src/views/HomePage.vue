@@ -14,10 +14,11 @@
             :id="post.id"
             :imgSrc="post.imgSrc"
             :title="post.title"
-            :period="post.period"
+            :startDate="post.startDate"
+            :endDate="post.endDate"
             :peopleRegisterCount="post.peopleRegisterCount"
             :peopleTotalCount="post.peopleTotalCount"
-            :tags="post.tags"
+            :hashTags="post.tags"
           ></base-card>
         </li>
       </ul>
@@ -66,8 +67,24 @@ export default {
 }
 
 @media (max-width: 1024px) {
+  .tabs-and-btn-container {
+    margin: 3.6rem 0 3.6rem 0;
+  }
+
+  .mid-title {
+    font-size: 1.6rem;
+  }
+
+  .all-btn {
+    font-size: 1.2rem;
+  }
+
   .card-grid-list {
     grid-template-columns: 1fr;
+  }
+
+  .card-list-gap {
+    gap: 2rem;
   }
 }
 </style>

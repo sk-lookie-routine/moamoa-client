@@ -9,10 +9,11 @@
         <base-card
           :imgSrc="post.imgSrc"
           :title="post.title"
-          :period="post.period"
+          :startDate="post.startDate"
+          :endDate="post.endDate"
           :peopleRegisterCount="post.peopleRegisterCount"
           :peopleTotalCount="post.peopleTotalCount"
-          :tags="post.tags"
+          :hashTags="post.tags"
         ></base-card>
       </li>
     </ul>

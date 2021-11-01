@@ -6,6 +6,7 @@
         type="text"
         name="title"
         placeholder="스터디 제목"
+        @keypress.enter.prevent
       />
     </div>
     <div class="error-text">필수 입력 항목입니다.</div>
@@ -54,6 +55,7 @@
         type="text"
         name="goal"
         placeholder="한 줄로 소개하세요."
+        @keypress.enter.prevent
       />
     </div>
     <div class="error-text">필수 입력 항목입니다.</div>
@@ -103,7 +105,7 @@
           name="tag"
           placeholder="태그를 입력하세요."
           v-model="tagInput"
-          @keyup.enter="addTag"
+          @keyup.enter.prevent="addTag"
         />
       </div>
     </div>
@@ -157,8 +159,8 @@ export default {
       this.post.deadLine = this.formatDate(this.post.deadLine);
     },
     formatRangeDate() {
-      this.startDate = this.formatDate(this.rangeDate[0]);
-      this.endDate = this.formatDate(this.rangeDate[1]);
+      this.post.startDate = this.formatDate(this.rangeDate[0]);
+      this.post.endDate = this.formatDate(this.rangeDate[1]);
     },
     addTag() {
       if (this.tagInput === '') return;

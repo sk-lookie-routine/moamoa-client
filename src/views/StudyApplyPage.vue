@@ -1,5 +1,6 @@
 <template>
   <study-apply-form></study-apply-form>
+  <the-footer></the-footer>
 </template>
 
 <script>

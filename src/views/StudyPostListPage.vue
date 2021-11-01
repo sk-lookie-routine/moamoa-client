@@ -20,11 +20,13 @@
         <base-card
           @click="showPostPage(post.id)"
           :id="post.id"
+          :imgSrc="'profile_sc_p'"
           :title="post.title"
-          :period="post.period"
-          :peopleRegisterCount="post.peopleRegisterCount"
-          :peopleTotalCount="post.peopleTotalCount"
-          :tags="post.tags"
+          :startDate="post.startDate"
+          :endDate="post.endDate"
+          :peopleRegisterCount="1"
+          :peopleTotalCount="2"
+          :hashTags="post.hashTags"
         ></base-card>
       </li>
     </ul>
@@ -36,6 +38,7 @@
 <script>
 import SearchBar from '@/components/views/studypostlist/SearchBar.vue';
 import CreateStudyJumbotron from '@/components/views/studypostlist/CreateStudyJumbotron.vue';
+import { fetchPosts } from '@/api/index.js';
 
 export default {
   components: { SearchBar, CreateStudyJumbotron },
@@ -46,6 +49,10 @@ export default {
     };
   },
   methods: {
+    async fetchData() {
+      const data = await fetchPosts();
+      this.postList = data.data.content;
+    },
     showPostPage(postId) {
       this.$router.push({
         name: 'post',
@@ -60,6 +67,10 @@ export default {
     showRecruitedPostList() {
       this.postList = this.recruitedPosts;
     },
+  },
+  created() {
+    console.log('create');
+    this.fetchData();
   },
 };
 </script>

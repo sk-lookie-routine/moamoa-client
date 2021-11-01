@@ -7,13 +7,29 @@
     <li>기타 자세한 사항은 <a>스터디 신청 가이드라인</a>을 참고해 주세요.</li>
   </ul>
   <div class="checkbox-container">
-    <input type="checkbox" id="checkbox" />
+    <input
+      type="checkbox"
+      id="checkbox"
+      v-model="isChecked"
+      @change="emitCheckboxEvent"
+    />
     <label for="checkbox">주의사항을 모두 확인하였으며, 이에 동의합니다.</label>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      isChecked: false,
+    };
+  },
+  methods: {
+    emitCheckboxEvent() {
+      this.isChecked ? this.$emit('checked') : this.$emit('notChecked');
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -32,8 +48,25 @@ li a {
   text-decoration: underline;
 }
 
-input {
-  width: auto;
+.checkbox-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+input[type='checkbox'] + label {
+  cursor: pointer;
+}
+
+input[type='checkbox'] {
+  width: 1.8rem;
+  height: 1.8rem;
+  margin: 0 1.4rem 0 1.5rem;
+  border: 1 px solid #cbcbcb;
+}
+
+input[type='checkbox']:checked {
+  background-color: var(--orange-dark);
 }
 
 label {

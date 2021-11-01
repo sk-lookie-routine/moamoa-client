@@ -72,7 +72,7 @@ footer {
 .footer__context {
   display: flex;
   flex-direction: column;
-  width: 27.5rem;
+  width: 30rem;
 }
 
 .footer__logo {
@@ -141,9 +141,22 @@ footer {
 }
 
 @media (max-width: 1024px) {
+  footer {
+    margin-top: 17rem;
+  }
+
   .footer-container,
   .footer__nav {
     flex-direction: column;
+  }
+
+  .footer__context {
+    width: 40rem;
+    margin-bottom: 5.2rem;
+  }
+
+  .nav__title {
+    margin-bottom: 2.6rem;
   }
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
   <div class="card" @mouseover="onMouseOver" @mouseleave="onMouseleave">
     <div class="card__thumbnail">
-      <img src="@/assets/img/profile/profile_sc_p.svg" />
+      <!-- "@/assets/img/profile/profile_sc_p.svg" -->
+      <img :src="imgUrl" />
     </div>
     <div class="card__contents">
       <div class="title-and-btn-container">
@@ -11,7 +12,7 @@
           <div class="card__delete-btn">삭제</div>
         </div>
       </div>
-      <div class="card__period">{{ period }}</div>
+      <div class="card__period">{{ startDate }} ~ {{ endDate }}</div>
       <div class="card__people">
         <img class="person-icon" src="@/assets/img//icon_person.svg" />
         <div class="card__people-count">
@@ -19,7 +20,7 @@
         </div>
       </div>
       <ul class="card__tags">
-        <li v-for="(tag, index) in tags" :key="index">
+        <li v-for="(tag, index) in hashTags" :key="index">
           <base-tag>{{ tag }}</base-tag>
         </li>
       </ul>
@@ -34,11 +35,19 @@ export default {
       type: String,
       required: true,
     },
+    imgSrc: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
     },
-    period: {
+    startDate: {
+      type: String,
+      required: true,
+    },
+    endDate: {
       type: String,
       required: true,
     },
@@ -50,7 +59,7 @@ export default {
       type: Number,
       required: true,
     },
-    tags: {
+    hashTags: {
       type: Array,
       required: true,
     },
@@ -62,6 +71,8 @@ export default {
   data() {
     return {
       isHover: true,
+      imgUrl: require('@/assets/img/profile/' + this.imgSrc + '.svg'),
+      hasHashTags: false,
     };
   },
 };
@@ -100,7 +111,8 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 1.4rem;
 }
 
 .title-and-btn-container {
@@ -168,6 +180,17 @@ export default {
   height: 100%;
   white-space: nowrap;
   background: linear-gradient(to right, transparent, rgb(255, 255, 255));
+}
+
+@media (max-width: 1024px) {
+  .card__title {
+    font-size: 1.6rem;
+  }
+
+  .card__period,
+  .card__people-count {
+    font-size: 1.2rem;
+  }
 }
 
 @media (max-width: 768px) {

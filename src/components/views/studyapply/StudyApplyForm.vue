@@ -19,10 +19,10 @@
       ></textarea>
       <div class="error-text">필수 입력 항목입니다.</div>
     </section>
-    <section>
+    <section class="cautions-container">
       <study-apply-cautions></study-apply-cautions>
     </section>
-    <section>
+    <section class="button-container">
       <base-button>스터디 신청하기</base-button>
     </section>
   </div>
@@ -41,10 +41,33 @@ export default {
   },
   data() {
     return {
-      hasApplied: true,
+      hasApplied: false,
     };
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+header {
+  margin-bottom: 10rem;
+}
+
+textarea {
+  margin-top: 1rem;
+}
+
+.error-text {
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+.cautions-container {
+  margin-bottom: 7.2rem;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+</style>

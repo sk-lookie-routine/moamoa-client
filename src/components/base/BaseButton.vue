@@ -11,7 +11,6 @@ export default {
       type: String,
       default: 'big',
       validator: function (value) {
-        console.log(value);
         return ['big', 'small'].indexOf(value) !== -1;
       },
     },
@@ -52,5 +51,16 @@ button:disable {
 .btn--small {
   width: 25rem;
   padding: 1.4rem 0;
+}
+
+@media (max-width: 768px) {
+  button {
+    font-size: 1.6rem;
+  }
+
+  .btn--big {
+    width: 28.8rem;
+    padding: 1.6rem 0;
+  }
 }
 </style>

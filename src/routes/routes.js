@@ -24,11 +24,6 @@ export default [
     component: () => import('@/views/AuthLoginPage.vue'),
   },
   {
-    path: '/auth',
-    name: 'auth',
-    component: () => import('@/components/views/auth/AuthRedirected.vue'),
-  },
-  {
     path: '/posts',
     name: 'posts',
     component: () => import('@/views/StudyPostListPage.vue'),

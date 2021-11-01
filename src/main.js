@@ -47,5 +47,4 @@ const store = createStore({
 
 app.use(router);
 app.use(store);
-window.Kakao.init('b78ee42055befbebc6aa77b522f2ede4');
 app.mount('#app');

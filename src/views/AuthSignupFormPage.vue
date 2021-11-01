@@ -1,9 +1,8 @@
 <template>
-  <auth-header></auth-header>
   <auth-modal v-if="isAllFilled"></auth-modal>
   <div class="signup-form">
     <div class="title">회원가입</div>
-    <div class="decoration"></div>
+    <div class="box--underline"></div>
     <div class="profile-img">
       <img :src="randomProfile.name" />
       <div class="text">랜덤 변경</div>
@@ -22,7 +21,7 @@
           maxlength="8"
           minlength="2"
         />
-        <div class="decoration"></div>
+        <div class="box--underline"></div>
       </div>
       <div class="description">
         한줄 소개 :
@@ -33,7 +32,7 @@
           class="desc_ph"
           maxlength="30"
         />
-        <div class="decoration"></div>
+        <div class="box--underline"></div>
       </div>
     </div>
     <div class="start-btn">
@@ -51,11 +50,11 @@
 </template>
 
 <script>
-import AuthHeader from '@/components/common/AuthHeader.vue';
+// import AuthHeader from '@/components/common/AuthHeader.vue';
 import TheFooter from '@/components/common/TheFooter.vue';
 import AuthModal from '@/components/views/auth/AuthModal.vue';
 export default {
-  components: { AuthHeader, TheFooter, AuthModal },
+  components: { TheFooter, AuthModal },
   data() {
     return {
       nickname: '',
@@ -97,6 +96,12 @@ export default {
 </script>
 
 <style scoped>
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
 .signup-form {
   padding: 10.8rem 12rem 0 12rem;
   display: float;
@@ -108,12 +113,6 @@ export default {
   font-size: 2.2rem;
   line-height: 3.4rem;
   color: var(--black);
-}
-.decoration {
-  margin: 1.6rem 0 0 0;
-  padding: 0;
-  border: 0.7px solid var(--gray04);
-  background: var(--gray04);
 }
 .profile-img {
   margin-top: 4.9rem;
@@ -183,13 +182,34 @@ button {
 .base-button:hover {
   cursor: pointer;
 }
-@media (max-width: 500px) {
-  .signup_form {
-    margin: 0 auto;
-    padding: 0 2.4rem;
+@media (max-width: 320px) {
+  .signup-form {
+    display: float;
+    padding: 0;
+    margin: 9.5rem 1.6rem 0 1.6rem;
+    height: 100%;
+    max-width: 100%;
   }
   .title {
-    margin-top: 4.3rem;
+    font-size: 2rem;
+  }
+  .profile-img {
+    margin: 0 auto;
+    margin-top: 4.1rem;
+  }
+  .profile-info {
+    margin-top: 1.6rem;
+    font-size: 1.4rem;
+  }
+  .nickname,
+  .nickname input,
+  .description,
+  .description input {
+    font-size: 1.4rem;
+  }
+  .base-button {
+    margin: 5rem 4.4rem 0 4.4rem;
+    font-size: 1.6rem;
   }
 }
 </style>

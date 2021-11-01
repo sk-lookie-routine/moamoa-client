@@ -5,11 +5,11 @@
     <div class="auth-buttons">
       <button class="kakao-signup-btn">
         <img src="@/assets/img/icon_kakao.svg" />
-        <div class="kakao-signup-btn-text">카카오 아이디로 가입하기</div>
+        <div class="kakao-signup-btn-text">카카오 아이디로 가입</div>
       </button>
       <button class="google-signup-btn" @click="googleLoginBtn">
         <img src="@/assets/img/icon_google.svg" />
-        <div class="google-signup-btn-text">구글 아이디로 가입하기</div>
+        <div class="google-signup-btn-text">구글 아이디로 가입</div>
       </button>
     </div>
     <div class="auth-isMember">

@@ -5,7 +5,7 @@
     @click="login"
   >
     <img src="@/assets/img/icon_google.svg" />
-    <div class="google-login-btn-text">구글 아이디로 로그인</div>
+    <div class="google-login-btn-text">구글 아이디로 가입</div>
   </a>
 </template>
 
@@ -55,6 +55,7 @@ a {
   }
   .google-login-btn-text {
     margin: 0 auto;
+    margin-right: 7.8rem;
   }
   .google-login-btn img {
     padding-left: 1.2rem;

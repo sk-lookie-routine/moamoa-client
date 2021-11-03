@@ -43,7 +43,9 @@
       >
         MOAMOA 시작하기
       </base-button>
-      <button v-else disabled>MOAMOA 시작하기</button>
+      <base-button v-else class="base-button-disable"
+        >MOAMOA 시작하기</base-button
+      >
     </div>
   </div>
   <the-footer></the-footer>
@@ -136,7 +138,7 @@ body {
   position: absolute;
   right: 0;
   bottom: 0;
-  transition: all ease 0.5s;
+  transition: all ease 0.4s;
   background: none;
 }
 input:focus {
@@ -145,7 +147,7 @@ input:focus {
 }
 .randomBtn:hover {
   cursor: pointer;
-  transform: rotate(45deg);
+  transform: rotate(50deg);
 }
 .nickname {
   font-family: Spoqa Han Sans Neo;
@@ -182,6 +184,10 @@ button {
 .base-button:hover {
   cursor: pointer;
 }
+.base-button-disable {
+  background-color: var(--gray03);
+}
+
 @media (max-width: 320px) {
   .signup-form {
     display: float;
@@ -207,7 +213,8 @@ button {
   .description input {
     font-size: 1.4rem;
   }
-  .base-button {
+  .base-button,
+  .base-button-disable {
     margin: 5rem 4.4rem 0 4.4rem;
     font-size: 1.6rem;
   }

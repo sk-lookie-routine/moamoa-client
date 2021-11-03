@@ -57,4 +57,9 @@ export default [
     path: '/:notFound(.*)',
     component: () => import('@/views/NotFoundPage.vue'),
   },
+  {
+    path: '/mypage',
+    name: 'mypage',
+    component: () => import('@/components/views/mypage/MyPage.vue'),
+  },
 ];

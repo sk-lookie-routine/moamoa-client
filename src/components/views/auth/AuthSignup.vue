@@ -3,14 +3,8 @@
     <div class="auth-text">소셜 계정으로 간편 회원가입</div>
     <div class="box--underline"></div>
     <div class="auth-buttons">
-      <button class="kakao-signup-btn">
-        <img src="@/assets/img/icon_kakao.svg" />
-        <div class="kakao-signup-btn-text">카카오 아이디로 가입</div>
-      </button>
-      <button class="google-signup-btn" @click="googleLoginBtn">
-        <img src="@/assets/img/icon_google.svg" />
-        <div class="google-signup-btn-text">구글 아이디로 가입</div>
-      </button>
+      <kakao-signup-btn></kakao-signup-btn>
+      <google-signup-btn></google-signup-btn>
     </div>
     <div class="auth-isMember">
       이미 MOAMOA의 회원이신가요?
@@ -20,10 +14,25 @@
       귀하는 MOAMOA의 이용약관과 개인정보처리방침을 읽고 이해했으며 그에
       동의함을 확인합니다.
     </div>
+    <div class="auth-etc-mobile">
+      <p>귀하는 MOAMOA의 이용약관과 개인정보처리방침을</p>
+      <p>읽고 이해했으며 그에 동의함을 확인합니다.</p>
+    </div>
   </div>
 </template>
 
-<script></script>
+<script>
+import KakaoSignupBtn from './KakaoSignupBtn.vue';
+import GoogleSignupBtn from './GoogleSignupBtn.vue';
+export default {
+  components: { KakaoSignupBtn, GoogleSignupBtn },
+  computed: {
+    isAuth() {
+      return this.$store.getters.userIsAuthenticated;
+    },
+  },
+};
+</script>
 
 <style scoped>
 * {
@@ -50,9 +59,9 @@
   margin-top: 3.3rem;
 }
 .auth-buttons {
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 .kakao-signup-btn {
   margin-top: 6rem;
@@ -64,27 +73,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-.kakao-signup-btn-text {
-  font-size: 1.2rem;
-  margin-right: 7.3rem;
-}
-.google-signup-btn-text {
-  font-size: 1.2rem;
-  margin-right: 7.8rem;
-}
-.kakao-signup-btn img,
-.google-signup-btn img {
-  padding-left: 1.2rem;
-}
-.google-signup-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 9rem;
-  width: 29.2rem;
-  height: 4.4rem;
-  border: 1px solid black;
 }
 button {
   background: none;
@@ -136,13 +124,29 @@ button:hover {
   width: 48rem;
   height: 1.8rem;
 }
-@media (max-width: 500px) {
-  .auth-text-decoration {
-    width: 34.3rem;
+@media (max-width: 320px) {
+  .auth-form {
+    max-width: 32rem;
+    height: 70.5rem;
+  }
+  .box--underline {
+    margin: 0 1.6rem;
+    margin-top: 3.3rem;
   }
   .auth-etc {
-    width: 26rem;
+    display: none;
+  }
+  .auth-etc-mobile {
+    display: block;
+    margin-top: 6.9rem;
+    margin-bottom: 19.4rem;
+  }
+  .auth-etc-mobile p {
+    font-size: 1.2rem;
+    font-family: noto-sans-cjk-kr;
+    margin: 0 auto;
     text-align: center;
+    color: var(--gray02);
   }
 }
 </style>

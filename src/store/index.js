@@ -1,33 +1,41 @@
-import { createApp } from 'vue';
 import { createStore } from 'vuex';
-
-import App from '@/App.vue';
 
 const store = createStore({
   state: {
-    token: '',
-    user_id: '',
-    username: '',
-    profile_image_url: '',
-    email: '',
-    role_type: '',
+    userInfo: {
+      token: '',
+      user_id: '',
+      username: '',
+      profile_image_url: '',
+      email: '',
+      role_type: '',
+    },
+    isLoggedIn: false,
   },
   mutations: {
+    setAuth(state, payload) {
+      state.isLoggedIn = payload.isAuth;
+    },
     setUser(state, payload) {
-      state.userName = payload.userName;
-      state.token = payload.token;
-      state.user_id = payload.user_id;
-      state.profile_image_url = payload.profile_image_url;
-      state.email = payload.email;
-      state.role_type = payload.role_type;
+      state.userInfo = payload;
     },
   },
-  actions: {},
+  actions: {
+    login(context) {
+      context.commit('setAuth', { isAuth: true });
+    },
+    logout(context) {
+      context.commit('setAuth', { isAuth: false });
+    },
+    getUserInfo(context, payload) {
+      context.commit('serUser', payload);
+    },
+  },
+  getters: {
+    userIsAuthenticated(state) {
+      return state.isLoggedIn;
+    },
+  },
 });
 
-const app = createApp(App);
-app.use(store);
-
-app.mount('#app');
-
-export default { store };
+export default store;

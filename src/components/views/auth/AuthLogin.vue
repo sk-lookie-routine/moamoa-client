@@ -14,6 +14,10 @@
       귀하는 MOAMOA의 이용약관과 개인정보처리방침을 읽고 이해했으며 그에
       동의함을 확인합니다.
     </div>
+    <div class="auth-etc-mobile">
+      <p>귀하는 MOAMOA의 이용약관과 개인정보처리방침을</p>
+      <p>읽고 이해했으며 그에 동의함을 확인합니다.</p>
+    </div>
   </div>
 </template>
 
@@ -56,7 +60,7 @@ export default {
 }
 
 .auth-isMember {
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: noto-sans-cjk-kr;
   font-weight: 300;
   font-style: normal;
   display: flex;
@@ -95,13 +99,32 @@ export default {
   width: 48rem;
   height: 1.8rem;
 }
-@media (max-width: 500px) {
-  .auth-text-decoration {
-    width: 34.3rem;
+.auth-etc-mobile {
+  display: none;
+}
+@media (max-width: 320px) {
+  .auth-form {
+    max-width: 32rem;
+    height: 70.5rem;
+  }
+  .box--underline {
+    margin: 0 1.6rem;
+    margin-top: 3.3rem;
   }
   .auth-etc {
-    width: 26rem;
+    display: none;
+  }
+  .auth-etc-mobile {
+    display: block;
+    margin-top: 6.9rem;
+    margin-bottom: 19.4rem;
+  }
+  .auth-etc-mobile p {
+    font-size: 1.2rem;
+    font-family: noto-sans-cjk-kr;
+    margin: 0 auto;
     text-align: center;
+    color: var(--gray02);
   }
 }
 </style>

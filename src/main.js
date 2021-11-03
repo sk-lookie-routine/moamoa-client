@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { createStore } from 'vuex';
+import store from '@/store/index.js';
 import router from '@/routes/index.js';
 import App from './App.vue';
 
@@ -29,21 +29,6 @@ app.component('base-tab', BaseTab);
 app.component('base-tag', BaseTag);
 app.component('base-button', BaseButton);
 app.component('base-dialog', BaseDialog);
-
-const store = createStore({
-  state: {
-    userName: '',
-    platform: '',
-  },
-  mutations: {
-    setUser(state, payload) {
-      state.userName = payload.name;
-      state.platform = payload.platform;
-    },
-  },
-  actions: {},
-  modules: {},
-});
 
 app.use(router);
 app.use(store);

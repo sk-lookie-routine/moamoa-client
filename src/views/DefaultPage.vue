@@ -21,10 +21,20 @@
   <li>
     <router-link to="/notice">공지사항 이동</router-link>
   </li>
+  <li>
+    <router-link to="/mypage">마이페이지 이동</router-link>
+  </li>
+  <div>{{ this.$store.state.isLoggedIn }}</div>
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    isLogin() {
+      return this.$store.getters.userIsAuthenticated;
+    },
+  },
+};
 </script>
 
 <style scoped>

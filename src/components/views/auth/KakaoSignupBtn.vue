@@ -4,7 +4,7 @@
     class="kakao-login-btn"
   >
     <img src="@/assets/img/icon_kakao.svg" />
-    <div class="kakao-login-btn-text">카카오 로그인</div>
+    <div class="kakao-login-btn-text">카카오 아이디로 가입</div>
   </a>
 </template>
 
@@ -35,7 +35,7 @@ a {
   background: #fee500;
 }
 .kakao-login-btn img {
-  padding-left: 2rem;
+  padding-left: 1.5rem;
 }
 @media (max-width: 320px) {
   a {
@@ -46,7 +46,7 @@ a {
     height: 4rem;
   }
   .kakao-login-btn-text {
-    margin: 0 auto;
+    margin-right: 7rem;
   }
   .kakao-login-btn img {
     padding-left: 1.2rem;

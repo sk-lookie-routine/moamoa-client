@@ -1,15 +1,15 @@
 <template>
-  <div class="auth_form">
+  <div class="auth-form">
     <div class="auth-text">소셜 계정으로 간편 회원가입</div>
     <div class="box--underline"></div>
     <div class="auth-buttons">
       <button class="kakao-signup-btn">
         <img src="@/assets/img/icon_kakao.svg" />
-        <div class="kakao-signup-btn-text">카카오 아이디로 가입하기</div>
+        <div class="kakao-signup-btn-text">카카오 아이디로 가입</div>
       </button>
       <button class="google-signup-btn" @click="googleLoginBtn">
         <img src="@/assets/img/icon_google.svg" />
-        <div class="google-signup-btn-text">구글 아이디로 가입하기</div>
+        <div class="google-signup-btn-text">구글 아이디로 가입</div>
       </button>
     </div>
     <div class="auth-isMember">
@@ -75,8 +75,7 @@
 }
 .kakao-signup-btn img,
 .google-signup-btn img {
-  border: 1px solid red;
-  margin-left: 1.2rem;
+  padding-left: 1.2rem;
 }
 .google-signup-btn {
   display: flex;

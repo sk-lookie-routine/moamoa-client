@@ -44,14 +44,19 @@ export default [
     component: () => import('@/views/NoticePage.vue'),
   },
   {
-    path: '/post/:postId',
+    path: '/apply',
+    name: 'apply',
+    component: () => import('@/views/StudyApplyPage.vue'),
+  },
+  {
+    path: '/posts/:postId',
     name: 'post',
     component: () => import('@/views/StudyPostPage.vue'),
   },
   {
-    path: '/apply',
-    name: 'apply',
-    component: () => import('@/views/StudyApplyPage.vue'),
+    path: '/rooms/:roomId',
+    name: 'room',
+    component: () => import('@/views/StudyRoomPage.vue'),
   },
   {
     path: '/:notFound(.*)',

@@ -19,7 +19,7 @@
           {{ peopleRegisterCount }}/{{ peopleTotalCount }}
         </div>
       </div>
-      <ul class="card__tags">
+      <ul v-if="hashTags.length > 0" class="card__tags">
         <li v-for="(tag, index) in hashTags" :key="index">
           <base-tag>{{ tag }}</base-tag>
         </li>
@@ -194,8 +194,18 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .card__thumbnail {
+  .card {
+    height: 15.6rem;
+    padding: 3.4rem 3.6rem;
+  }
+
+  .card__thumbnail,
+  .card__people {
     display: none;
+  }
+
+  .card__contents {
+    gap: 1.3rem;
   }
 }
 </style>

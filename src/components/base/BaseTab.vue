@@ -67,4 +67,16 @@ export default {
   margin: 0 1.2rem;
   background-color: var(--gray04);
 }
+
+@media (max-width: 768px) {
+  .tab-text {
+    font-size: 1.6rem;
+  }
+
+  .divide-line {
+    width: 0.2rem;
+    height: 1.8rem;
+    margin: 0 1rem;
+  }
+}
 </style>

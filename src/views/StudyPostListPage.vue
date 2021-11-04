@@ -50,8 +50,9 @@ export default {
   },
   methods: {
     async fetchData() {
-      const data = await fetchPosts();
-      this.postList = data.data.content;
+      const response = await fetchPosts();
+      console.log(response.data.content);
+      this.postList = response.data.content;
     },
     showPostPage(postId) {
       this.$router.push({
@@ -97,6 +98,14 @@ export default {
 }
 
 @media (max-width: 768px) {
+  .search-bar-container {
+    margin: 4rem 0 5.7rem 0;
+  }
+
+  .tabs-and-btn-container {
+    margin-bottom: 3rem;
+  }
+
   .create-study-btn {
     display: none;
   }

@@ -8,8 +8,8 @@ import '@/assets/css/reset.css';
 import '@/assets/css/common.css';
 import '@/assets/css/base.css';
 
-import Datepicker from 'vue3-date-time-picker';
-import 'vue3-date-time-picker/dist/main.css';
+//import Datepicker from 'vue3-date-time-picker';
+//import 'vue3-date-time-picker/dist/main.css';
 
 import TheHeader from '@/components/common/TheHeader.vue';
 import TheFooter from '@/components/common/TheFooter.vue';
@@ -21,7 +21,7 @@ import BaseDialog from '@/components/base/BaseDialog.vue';
 
 const app = createApp(App);
 
-app.component('date-picker', Datepicker);
+//app.component('date-picker', Datepicker);
 app.component('the-header', TheHeader);
 app.component('the-footer', TheFooter);
 app.component('base-card', BaseCard);

@@ -12,19 +12,19 @@
     <div class="error-text">필수 입력 항목입니다.</div>
     <div class="input-container box--underline bottom-padding">
       <label for="deadline">모집 마감 일자 :</label>
-      <date-picker
+      <!--<date-picker
         name="deadline"
         v-model="post.deadLine"
         :enableTimePicker="false"
         :autoApply="true"
         placeholder="날짜를 선택하세요."
         @update:modelValue="formatDeadlineDate"
-      ></date-picker>
+      ></date-picker>-->
     </div>
     <div class="error-text">필수 입력 항목입니다.</div>
     <div class="input-container box--underline bottom-padding">
       <label for="period">스터디 기간 :</label>
-      <date-picker
+      <!--<date-picker
         name="period"
         v-model="rangeDate"
         :enableTimePicker="false"
@@ -32,7 +32,7 @@
         :autoApply="true"
         placeholder="날짜를 선택하세요."
         @update:modelValue="formatRangeDate"
-      ></date-picker>
+      ></date-picker>-->
     </div>
     <div class="error-text">필수 입력 항목입니다.</div>
     <div class="input-container box--underline bottom-padding">

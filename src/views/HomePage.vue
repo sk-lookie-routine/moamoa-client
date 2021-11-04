@@ -37,6 +37,30 @@ export default {
     StudyGuideJumbotron,
   },
   inject: ['unrecruitedPosts'],
+  /*
+    data() {
+    return {
+      unrecruitedPosts: [],
+    };
+  },
+  methods: {
+    async fetchData() {
+      const response = await fetchPosts();
+      this.unrecruitedPosts = response.data.content;
+    },
+    showPostPage(postId) {
+      this.$router.push({
+        name: 'post',
+        params: {
+          postId,
+        },
+      });
+    },
+  },
+  created() {
+    this.fetchData();
+  },
+  */
 };
 </script>
 
@@ -81,10 +105,6 @@ export default {
 
   .card-grid-list {
     grid-template-columns: 1fr;
-  }
-
-  .card-list-gap {
-    gap: 2rem;
   }
 }
 </style>

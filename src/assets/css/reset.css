@@ -51,4 +51,5 @@ table {
 }
 a{
 	text-decoration-line: none;
+	word-break: break-all;
 }

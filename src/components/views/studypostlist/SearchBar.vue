@@ -28,4 +28,20 @@ form {
 .search-icon {
   margin-right: 0.5rem;
 }
+
+@media (max-width: 768px) {
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  form {
+    padding: 1.4rem 1.1rem;
+  }
+
+  .search-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-right: 0.5rem;
+  }
+}
 </style>

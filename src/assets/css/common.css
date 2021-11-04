@@ -63,6 +63,39 @@ textarea::placeholder {
   color: var(--gray00);
 }
 
+@media (max-width: 768px) {
+  h1{
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+  
+  h3 {
+    font-size: 1.4rem;
+  }
+  
+  p {
+    font-size: 1.4rem;
+    line-height: 142.8%;
+  }
+  
+  label {
+    font-size: 1.4rem;
+  }
+  
+  input[type="text"],
+  input[type="url"] {
+    font-size: 1.4rem;
+  }
+  
+  textarea {
+    font-size: 1.4rem;
+    line-height: 142.8%;
+  }
+}
+
 /*
 style
 */
@@ -100,4 +133,14 @@ textarea {
   border-radius: 1rem;
   resize: none;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    margin-top: 9.3rem;
+  }
+  
+  textarea {
+    padding: 2rem 1.6rem;
+  }
 }

@@ -108,6 +108,9 @@ button {
   border: none;
   border-radius: 1rem;
 }
+button:hover{
+  cursor: pointer;
+}
 
 input{
   width: 100%;

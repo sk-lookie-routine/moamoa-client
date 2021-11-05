@@ -85,7 +85,7 @@ header {
 
 nav,
 .header-btns-container {
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR';
 }
 
 ul {

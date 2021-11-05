@@ -95,6 +95,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+  width: 100vw;
 }
 .modal-bg {
   position: fixed;
@@ -182,7 +183,6 @@ export default {
 .base-btn {
   margin-bottom: 5rem;
 }
-.base-btn:hover {
-  cursor: pointer;
+@media (max-width: 320px) {
 }
 </style>

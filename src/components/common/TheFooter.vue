@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="footer__line"></div>
+      <div class="box--underline"></div>
       <div class="footer__rights">© 2021 MOAMOA. All rights reserved.</div>
     </div>
   </footer>
@@ -51,22 +51,30 @@
 <style scoped>
 footer {
   background-color: var(--gray06);
-  width: 100%;
   padding: 5.2rem 0 4.5rem 0;
-  margin-top: 26rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
 }
-
+.main-container {
+  padding: 1rem;
+}
 .footer-container {
   display: flex;
   justify-content: space-between;
 }
 
 .footer__logo,
-.footer__explain,
 .footer__email,
 .footer__nav {
   font-size: 1.6rem;
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.footer__explain {
+  font-size: 1.6rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  width: 27.5rem;
 }
 
 .footer__context {
@@ -127,22 +135,34 @@ footer {
   line-height: 143%;
 }
 
-.footer__line {
-  width: 100%;
-  border: 0.1rem solid var(--gray03);
-  margin: 7rem 0 1.5rem 0;
+.box--underline {
+  /* width: 100%; */
+  display: flex;
+  color: var(--gray03);
+  margin-top: 7rem;
+  margin-bottom: 1.5rem;
 }
 
 .footer__rights {
   color: var(--gray04);
   font-size: 1.4rem;
-  width: 100%;
   text-align: right;
+  /* width: 100%; */
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 320px) {
   footer {
     margin-top: 17rem;
+  }
+  .main-container {
+    padding: 0;
+    width: 32rem;
+    height: 82.6rem;
+    margin: 0 auto;
+  }
+  .footer-container {
+    width: 100%;
+    padding: 0 2.7rem 0 2.4rem;
   }
 
   .footer-container,
@@ -151,12 +171,25 @@ footer {
   }
 
   .footer__context {
-    width: 40rem;
     margin-bottom: 5.2rem;
+    width: 100%;
   }
 
   .nav__title {
     margin-bottom: 2.6rem;
+  }
+
+  .footer__explain {
+    font-size: 1.4rem;
+    width: fit-content;
+    height: 5.1rem;
+    line-height: 2.4rem;
+  }
+  .box--underline {
+    margin: 7rem 2.4rem 1.5rem 2.4rem;
+  }
+  .footer__rights {
+    margin: 0 2.4rem;
   }
 }
 </style>

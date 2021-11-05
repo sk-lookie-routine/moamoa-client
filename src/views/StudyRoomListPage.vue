@@ -31,4 +31,10 @@ export default {
 .tabs-container {
   margin: 9.2rem 0 2.4rem 0;
 }
+
+@media (max-width: 768px) {
+  .tabs-container {
+    margin-top: 4rem;
+  }
+}
 </style>

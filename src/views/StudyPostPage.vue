@@ -248,7 +248,7 @@ export default {
 }
 
 .p-text--red {
-  line-height: 0rem;
+  line-height: auto;
   margin-bottom: 3.4rem;
 }
 
@@ -263,6 +263,7 @@ export default {
   font-family: Noto Sans KR;
   font-weight: bold;
   font-size: 2.4rem;
+  margin-left: 1.6rem;
   margin-right: 0.3rem;
 }
 
@@ -354,5 +355,70 @@ textarea {
 .comment__content {
   font-size: 1.4rem;
   line-height: 170%;
+}
+
+@media (max-width: 768px) {
+  .post-header {
+    margin-bottom: 5.4rem;
+  }
+
+  .post__writer {
+    margin-right: 1.4rem;
+  }
+
+  .writer__nickname {
+    font-size: 1.2rem;
+  }
+
+  .post__posted-date {
+    font-size: 1.2rem;
+  }
+
+  .post-contents {
+    padding-bottom: 4.6rem;
+  }
+
+  .post-contents h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .box--gray-background {
+    margin-bottom: 4.6rem;
+  }
+
+  .post-content-lines li:not(:last-child) {
+    margin-bottom: 1.2rem;
+  }
+
+  .p-text--red {
+    margin-bottom: 2rem;
+  }
+
+  .tags {
+    gap: 0.6rem;
+  }
+
+  .tag-icon {
+    font-size: 2.2rem;
+    margin: 0 1rem 0 1.7rem;
+  }
+
+  .post-comments h2 {
+    margin: 4.8rem 0 3.6rem 0;
+  }
+
+  .comment-register-container {
+    padding-bottom: 5.2rem;
+    margin-bottom: 1.6rem;
+  }
+
+  textarea {
+    padding: 2.4rem 1.6rem;
+  }
+
+  .comment-register__register-btn {
+    padding: 1rem 2.8rem;
+    font-size: 1.6rem;
+  }
 }
 </style>

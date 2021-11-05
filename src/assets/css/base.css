@@ -26,6 +26,21 @@ typo
   color: var(--orange-dark);
 }
 
+
+@media (max-width: 768px) {
+  .p-text--red {
+    font-size: 1.4rem;
+  }
+  
+  .error-text {
+    font-size: 1.2rem;
+  }
+  
+  .jumbotron-text {
+    font-size: 1.6rem;
+  }
+}
+
 /*
 style
 */
@@ -56,4 +71,15 @@ style
 .error-text {
   width: 100%;
   text-align: right;
+}
+
+
+@media (max-width: 768px) {
+  .box--gray-background {
+    padding: 2rem 1.6rem;
+  }
+
+  .card-list-gap {
+    gap: 2rem;
+  }
 }

@@ -34,4 +34,18 @@ export default {
 .jumbotron-text:nth-child(2) {
   margin-bottom: 4rem;
 }
+
+@media (max-width: 768px) {
+  .container {
+    padding-top: 10rem;
+  }
+
+  .jumbotron-text:first-child {
+    margin-bottom: 1rem;
+  }
+
+  .jumbotron-text:nth-child(2) {
+    margin-bottom: 2.9rem;
+  }
+}
 </style>

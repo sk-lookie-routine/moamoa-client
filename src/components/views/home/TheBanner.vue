@@ -14,11 +14,10 @@
         </h1>
         <button class="banner__btn">
           모집/참여 방법
-          <img
-            class="btn_icon"
-            src="@/assets/img/icon_arrow.svg"
-            alt="화살표 아이콘"
-          />
+          <div class="btn-icon">
+            <div class="btn-icon__bottom-line"></div>
+            <div class="btn-icon__arrow"></div>
+          </div>
         </button>
       </div>
       <div class="banner-img-container">
@@ -126,8 +125,29 @@ h1 {
   align-items: center;
 }
 
-.btn_icon {
+.btn-icon {
   margin-left: 0.6rem;
+  margin-top: 0.1em;
+  position: relative;
+  width: 3.45rem;
+  height: 1.05rem;
+}
+
+.btn-icon__bottom-line {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  border-bottom: 1px solid var(--orange-dark);
+}
+
+.btn-icon__arrow {
+  position: absolute;
+  height: 145%;
+  bottom: -10%;
+  right: 15%;
+  border-right: 1px solid var(--orange-dark);
+  transform: rotate(-45deg);
 }
 
 @media (max-width: 1200px) {
@@ -177,7 +197,7 @@ h1 {
     font-size: 1.4rem;
   }
 
-  .btn_icon {
+  .btn-icon {
     margin-left: 0.3rem;
     width: 2.4rem;
     height: 0.7rem;

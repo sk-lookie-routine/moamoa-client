@@ -15,11 +15,6 @@ export default {
     login() {
       this.$store.dispatch('login');
     },
-    setUserInfo() {
-      this.$store.dispatch({
-        type: 'getUserInfo',
-      });
-    },
   },
 };
 </script>

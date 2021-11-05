@@ -29,6 +29,13 @@
 
 <script>
 export default {
+  methods: {
+    setUserInfo() {
+      this.$store.dispatch({
+        type: 'getUserInfo',
+      });
+    },
+  },
   computed: {
     isLogin() {
       return this.$store.getters.userIsAuthenticated;

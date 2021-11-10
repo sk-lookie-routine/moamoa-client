@@ -1,0 +1,85 @@
+/*
+typo
+*/
+
+.p-text--em {
+  font-weight: bold;
+}
+
+.p-text--red {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--orange-dark);
+}
+
+.error-text {
+  font-size: 1.4rem;
+  color: var(--orange-dark);
+}
+
+.jumbotron-text {
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+
+.jumbotron-text--em {
+  color: var(--orange-dark);
+}
+
+
+@media (max-width: 768px) {
+  .p-text--red {
+    font-size: 1.4rem;
+  }
+  
+  .error-text {
+    font-size: 1.2rem;
+  }
+  
+  .jumbotron-text {
+    font-size: 1.6rem;
+  }
+}
+
+/*
+style
+*/
+
+.bottom-padding {
+  padding-bottom: 1rem;
+}
+
+.box--underline {
+  border-bottom: .1rem solid var(--gray04);
+}
+
+.box--gray-background {
+  background-color: var(--gray06);
+  padding: 2.8rem 3rem;
+  border-radius: 1rem;
+}
+
+.card-column-list {
+	display: flex;
+	flex-direction: column;
+}
+
+.card-list-gap {
+  gap: 3rem;
+}
+
+.error-text {
+  width: 100%;
+  text-align: right;
+}
+
+
+@media (max-width: 768px) {
+  .box--gray-background {
+    padding: 2rem 1.6rem;
+  }
+
+  .card-list-gap {
+    gap: 2rem;
+  }
+}

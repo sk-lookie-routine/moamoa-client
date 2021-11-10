@@ -1,0 +1,97 @@
+<template>
+  <div v-if="!isDialogClosed" class="background-container"></div>
+  <div v-if="!isDialogClosed" class="dialog-container">
+    <dialog ref="dialog" open>
+      <header>
+        <div>
+          <img @click="closeBtnClick" src="@/assets/img/icon_close.svg" />
+        </div>
+        <slot name="header">
+          <h3>잠깐!</h3>
+        </slot>
+      </header>
+      <section class="dialog__content"><slot></slot></section>
+      <section><slot name="actions"></slot></section>
+    </dialog>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    title: {
+      type: String,
+      required: false,
+    },
+  },
+  data() {
+    return {
+      isDialogClosed: false,
+    };
+  },
+  methods: {
+    closeBtnClick: function () {
+      this.isDialogClosed = true;
+      this.$refs.dialog.close();
+    },
+  },
+};
+</script>
+
+<style scoped>
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.158);
+}
+
+.dialog-container {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+dialog {
+  width: 50rem;
+  height: 27.5rem;
+  border-radius: 1rem;
+  border: none;
+  box-shadow: 0px 4px 10px rgba(162, 162, 162, 0.25);
+  padding: 2.4rem;
+}
+
+header {
+}
+
+header div {
+  display: flex;
+  justify-content: flex-end;
+}
+
+header div img:hover {
+  cursor: pointer;
+}
+
+header h3 {
+  color: var(--orange-dark);
+  text-align: center;
+  margin: 1rem 0 2.6rem 0;
+}
+
+.dialog__content {
+  font-size: 1.6rem;
+  text-align: center;
+  line-height: 175%;
+}
+</style>

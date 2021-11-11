@@ -43,7 +43,7 @@ export default {
   font-size: 1.8rem;
   line-height: 2.7rem;
   margin: 0 auto;
-  padding-top: 16.6rem;
+  padding-top: 23.6rem;
   padding-bottom: 0.7rem;
   width: 21.7rem;
   height: 2.7rem;

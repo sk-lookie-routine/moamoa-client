@@ -24,22 +24,15 @@
   <li>
     <router-link to="/mypage">마이페이지 이동</router-link>
   </li>
-  <div>{{ this.$store.state.isLoggedIn }}</div>
+  {{ this.$store.tokenData }}
 </template>
 
 <script>
 export default {
-  methods: {
-    setUserInfo() {
-      this.$store.dispatch({
-        type: 'getUserInfo',
-      });
-    },
-  },
-  computed: {
-    isLogin() {
-      return this.$store.getters.userIsAuthenticated;
-    },
+  mounted() {
+    var tokenData = this.$router.currentRoute.value.href;
+    this.$store.commit('login', tokenData);
+    console.log(this.$store.state.auth.token);
   },
 };
 </script>

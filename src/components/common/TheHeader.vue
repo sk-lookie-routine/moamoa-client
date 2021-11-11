@@ -21,6 +21,12 @@
       </ul>
     </nav>
     <div class="header-btns-container">
+      <button class="auth-btn" @click="menuToggled">
+        <router-link to="/login">로그인</router-link>
+      </button>
+      <button class="mypage-btn" @click="menuToggled">
+        <router-link to="/mypage">마이페이지</router-link>
+      </button>
       <button class="auth-btn">로그인</button>
       <button class="mypage-btn">마이페이지</button>
     </div>
@@ -119,14 +125,21 @@ button {
   cursor: pointer;
 }
 
-.auth-btn {
-  color: #888888;
+.auth-btn a {
+  color: var(--black);
 }
-
+.auth-btn a:hover {
+  color: var(--gray02);
+}
 .mypage-btn {
-  color: white;
-  background-color: var(--orange);
   padding: 0.8rem 1.9rem;
+  background-color: var(--orange);
+}
+.mypage-btn a {
+  color: white;
+}
+.mypage-btn a:hover {
+  color: rgba(255, 255, 255, 0.808);
 }
 
 .icon-menu {
@@ -188,10 +201,12 @@ button {
     align-items: flex-start;
   }
 
+  /* .mypage-btn {
+    background-color: transparent;
+  } */
   .mypage-btn {
     background-color: transparent;
   }
-
   .menu--clicked {
     height: 100%;
   }

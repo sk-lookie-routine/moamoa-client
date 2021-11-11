@@ -1,47 +1,51 @@
 <template>
-  <div class="main-container">
-    <div class="box--underline bottom-padding"><h1>스터디 목록</h1></div>
-    <div class="search-bar-container">
-      <search-bar></search-bar>
+  <div v-if="this.$store.state.auth.token">
+    <div class="main-container">
+      <div class="box--underline bottom-padding"><h1>스터디 목록</h1></div>
+      <div class="search-bar-container">
+        <search-bar></search-bar>
+      </div>
+      <div class="tabs-and-btn-container">
+        <base-tab
+          firstTab="모집중인 스터디"
+          secondTab="모집 완료된 스터디"
+          @firstTabClicked="showUnRecruitedPostList"
+          @SecondTabClicked="showRecruitedPostList"
+        ></base-tab>
+        <router-link to="/post-write">
+          <button class="create-study-btn">개설하기</button>
+        </router-link>
+      </div>
+      <ul class="card-column-list card-list-gap">
+        <li v-for="post in postList" :key="post.id">
+          <base-card
+            @click="showPostPage(post.id)"
+            :id="post.id"
+            :imgSrc="'profile_sc_p'"
+            :title="post.title"
+            :startDate="post.startDate"
+            :endDate="post.endDate"
+            :peopleRegisterCount="1"
+            :peopleTotalCount="2"
+            :hashTags="post.hashTags"
+          ></base-card>
+        </li>
+      </ul>
+      <create-study-jumbotron></create-study-jumbotron>
     </div>
-    <div class="tabs-and-btn-container">
-      <base-tab
-        firstTab="모집중인 스터디"
-        secondTab="모집 완료된 스터디"
-        @firstTabClicked="showUnRecruitedPostList"
-        @SecondTabClicked="showRecruitedPostList"
-      ></base-tab>
-      <router-link to="/post-write">
-        <button class="create-study-btn">개설하기</button>
-      </router-link>
-    </div>
-    <ul class="card-column-list card-list-gap">
-      <li v-for="post in postList" :key="post.id">
-        <base-card
-          @click="showPostPage(post.id)"
-          :id="post.id"
-          :imgSrc="'profile_sc_p'"
-          :title="post.title"
-          :startDate="post.startDate"
-          :endDate="post.endDate"
-          :peopleRegisterCount="1"
-          :peopleTotalCount="2"
-          :hashTags="post.hashTags"
-        ></base-card>
-      </li>
-    </ul>
-    <create-study-jumbotron></create-study-jumbotron>
+    <the-footer></the-footer>
   </div>
-  <the-footer></the-footer>
+  <auth-login-page v-else></auth-login-page>
 </template>
 
 <script>
 import SearchBar from '@/components/views/studypostlist/SearchBar.vue';
 import CreateStudyJumbotron from '@/components/views/studypostlist/CreateStudyJumbotron.vue';
 import { fetchPosts } from '@/api/index.js';
+import AuthLoginPage from './AuthLoginPage.vue';
 
 export default {
-  components: { SearchBar, CreateStudyJumbotron },
+  components: { SearchBar, CreateStudyJumbotron, AuthLoginPage },
   inject: ['unrecruitedPosts', 'recruitedPosts'],
   data() {
     return {

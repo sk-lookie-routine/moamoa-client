@@ -1,41 +1,16 @@
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
+import auth from './modules/auth.js';
 
 const store = createStore({
-  state: {
-    userInfo: {
-      token: '',
-      user_id: '',
-      username: '',
-      profile_image_url: '',
-      email: '',
-      role_type: '',
-    },
-    isLoggedIn: false,
+  modules: {
+    auth: auth,
   },
-  mutations: {
-    setAuth(state, payload) {
-      state.isLoggedIn = payload.isAuth;
-    },
-    setUser(state, payload) {
-      state.userInfo = payload;
-    },
-  },
-  actions: {
-    login(context) {
-      context.commit('setAuth', { isAuth: true });
-    },
-    logout(context) {
-      context.commit('setAuth', { isAuth: false });
-    },
-    getUserInfo(context, payload) {
-      context.commit('serUser', payload);
-    },
-  },
-  getters: {
-    userIsAuthenticated(state) {
-      return state.isLoggedIn;
-    },
-  },
+  plugins: [
+    createPersistedState({
+      paths: ['auth'],
+    }),
+  ],
 });
 
 export default store;

@@ -20,7 +20,7 @@ a {
 }
 .kakao-login-btn-text {
   font-size: 1.2rem;
-  margin-right: 10.2rem;
+  margin-right: 8.4rem;
 }
 .kakao-login-btn {
   margin-top: 6rem;

@@ -2,7 +2,6 @@
   <a
     href="http://ec2-13-209-32-104.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000"
     class="google-login-btn"
-    @click="login"
   >
     <img src="@/assets/img/icon_google.svg" />
     <div class="google-login-btn-text">구글 아이디로 가입</div>
@@ -10,18 +9,7 @@
 </template>
 
 <script>
-export default {
-  methods: {
-    login() {
-      this.$store.dispatch('login');
-    },
-    setUserInfo() {
-      this.$store.dispatch({
-        type: 'getUserInfo',
-      });
-    },
-  },
-};
+export default {};
 </script>
 
 <style scoped>
@@ -32,7 +20,7 @@ a {
 }
 .google-login-btn-text {
   font-size: 1.2rem;
-  margin-right: 8.3rem;
+  margin-right: 8.9rem;
 }
 .google-login-btn {
   display: flex;

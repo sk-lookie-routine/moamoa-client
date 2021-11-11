@@ -67,4 +67,9 @@ export default [
     name: 'mypage',
     component: () => import('@/components/views/mypage/MyPage.vue'),
   },
+  {
+    path: '/edit',
+    name: 'editComponent',
+    component: () => import('@/components/views/mypage/MyPage_edit.vue'),
+  },
 ];

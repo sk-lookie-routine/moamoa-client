@@ -27,8 +27,8 @@
       <button class="mypage-btn" @click="menuToggled">
         <router-link to="/mypage">마이페이지</router-link>
       </button>
-      <button class="auth-btn">로그인</button>
-      <button class="mypage-btn">마이페이지</button>
+      <!-- <button class="auth-btn">로그인</button>
+      <button class="mypage-btn">마이페이지</button> -->
     </div>
   </header>
 </template>

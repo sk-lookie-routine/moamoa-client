@@ -1,123 +1,125 @@
 <template>
-  <div class="main-container">
-    <div class="room-header">
-      <div class="box--underline bottom-padding">
-        <h1>스터디 룸 제목</h1>
+  <div>
+    <div class="main-container">
+      <div class="room-header">
+        <div class="box--underline bottom-padding">
+          <h1>스터디 룸 제목</h1>
+        </div>
+      </div>
+      <div class="room-contents">
+        <div class="room-content">
+          <h2>스터디 기간</h2>
+          <div class="box--gray-background">
+            <p>2021. 01. 09~2021.02.09</p>
+          </div>
+        </div>
+        <div class="room-content">
+          <h2>스터디 목표 & 소개</h2>
+          <div class="box--gray-background">
+            <p class="p-text--red">2월 10일 HSK 5급 합격!</p>
+            <p>
+              안녕하세요! 저는 중어중문학부에 재학중인 땡땡땡이라고 합니다.저희
+              스터디에서는 어쩌고저쩌고... 대략적인 커리큘럼은 말이죠,, 1주차 :
+              ~~~~~~~~ 2주차 : 21@#!@#! 이런 식으로 서로 멘토링 형식으로 진행이
+              될 예정입니다~ 많관부! [규칙] 캠은 꼭 켜고 진행할 예정 스터디 일지
+              작성 안하면 강퇴
+            </p>
+          </div>
+        </div>
+        <div class="room-content">
+          <h2>스터디 진행 방식</h2>
+          <div class="box--gray-background">
+            <p>
+              매주 금요일 13시~20시 진행 예정입니다. <br />줌으로 진행될 것
+              같고, 캠은 켜주시면 좋겠습니다.
+            </p>
+          </div>
+        </div>
+        <div class="room-content">
+          <h2>링크</h2>
+          <ul>
+            <li class="link-container">
+              <h3>🔗 스터디</h3>
+              <div class="box--gray-background">
+                <p>
+                  <a
+                    href="https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786"
+                  >
+                    https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786
+                  </a>
+                </p>
+              </div>
+            </li>
+            <li class="link-container">
+              <h3>🔗 스터디 일지</h3>
+              <div class="box--gray-background">
+                <p>
+                  <a
+                    href="https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786"
+                  >
+                    https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786
+                  </a>
+                </p>
+              </div>
+            </li>
+            <li class="link-container">
+              <h3>🔗 오픈 채팅</h3>
+              <div class="box--gray-background">
+                <p>
+                  <a
+                    href="https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786"
+                  >
+                    https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786
+                  </a>
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="room-content">
+          <h2>태그</h2>
+          <div class="tags">
+            <span class="tag-icon">#</span>
+            <base-tag>또 다른 길 태그</base-tag>
+            <base-tag>어쩌라고</base-tag>
+            <base-tag>또 다른 길 태그</base-tag>
+            <base-tag>어쩌라고</base-tag>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="room-contents">
-      <div class="room-content">
-        <h2>스터디 기간</h2>
-        <div class="box--gray-background">
-          <p>2021. 01. 09~2021.02.09</p>
-        </div>
-      </div>
-      <div class="room-content">
-        <h2>스터디 목표 & 소개</h2>
-        <div class="box--gray-background">
-          <p class="p-text--red">2월 10일 HSK 5급 합격!</p>
-          <p>
-            안녕하세요! 저는 중어중문학부에 재학중인 땡땡땡이라고 합니다.저희
-            스터디에서는 어쩌고저쩌고... 대략적인 커리큘럼은 말이죠,, 1주차 :
-            ~~~~~~~~ 2주차 : 21@#!@#! 이런 식으로 서로 멘토링 형식으로 진행이 될
-            예정입니다~ 많관부! [규칙] 캠은 꼭 켜고 진행할 예정 스터디 일지 작성
-            안하면 강퇴
-          </p>
-        </div>
-      </div>
-      <div class="room-content">
-        <h2>스터디 진행 방식</h2>
-        <div class="box--gray-background">
-          <p>
-            매주 금요일 13시~20시 진행 예정입니다. <br />줌으로 진행될 것 같고,
-            캠은 켜주시면 좋겠습니다.
-          </p>
-        </div>
-      </div>
-      <div class="room-content">
-        <h2>링크</h2>
-        <ul>
-          <li class="link-container">
-            <h3>🔗 스터디</h3>
-            <div class="box--gray-background">
-              <p>
-                <a
-                  href="https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786"
-                >
-                  https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786
-                </a>
-              </p>
-            </div>
-          </li>
-          <li class="link-container">
-            <h3>🔗 스터디 일지</h3>
-            <div class="box--gray-background">
-              <p>
-                <a
-                  href="https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786"
-                >
-                  https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786
-                </a>
-              </p>
-            </div>
-          </li>
-          <li class="link-container">
-            <h3>🔗 오픈 채팅</h3>
-            <div class="box--gray-background">
-              <p>
-                <a
-                  href="https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786"
-                >
-                  https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786
-                </a>
-              </p>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="room-content">
-        <h2>태그</h2>
-        <div class="tags">
-          <span class="tag-icon">#</span>
-          <base-tag>또 다른 길 태그</base-tag>
-          <base-tag>어쩌라고</base-tag>
-          <base-tag>또 다른 길 태그</base-tag>
-          <base-tag>어쩌라고</base-tag>
-        </div>
-      </div>
+    <hr />
+    <div class="main-container">
+      <h2 class="study-mate-title">스터디 메이트</h2>
+      <ul class="study-mate-list">
+        <li class="study-mate">
+          <img
+            src="@/assets/img/profile/profile_tr_p.svg"
+            alt=""
+            class="study-mate__profile-img"
+          />
+          <div class="study-mate__nickname study-leader">스터디장</div>
+        </li>
+        <li class="study-mate">
+          <img
+            src="@/assets/img/profile/profile_tr_p.svg"
+            alt=""
+            class="study-mate__profile-img"
+          />
+          <div class="study-mate__nickname">스터디원 1</div>
+        </li>
+        <li class="study-mate">
+          <img
+            src="@/assets/img/profile/profile_tr_p.svg"
+            alt=""
+            class="study-mate__profile-img"
+          />
+          <div class="study-mate__nickname">스터디원 2</div>
+        </li>
+      </ul>
     </div>
+    <the-footer></the-footer>
   </div>
-  <hr />
-  <div class="main-container">
-    <h2 class="study-mate-title">스터디 메이트</h2>
-    <ul class="study-mate-list">
-      <li class="study-mate">
-        <img
-          src="@/assets/img/profile/profile_tr_p.svg"
-          alt=""
-          class="study-mate__profile-img"
-        />
-        <div class="study-mate__nickname study-leader">스터디장</div>
-      </li>
-      <li class="study-mate">
-        <img
-          src="@/assets/img/profile/profile_tr_p.svg"
-          alt=""
-          class="study-mate__profile-img"
-        />
-        <div class="study-mate__nickname">스터디원 1</div>
-      </li>
-      <li class="study-mate">
-        <img
-          src="@/assets/img/profile/profile_tr_p.svg"
-          alt=""
-          class="study-mate__profile-img"
-        />
-        <div class="study-mate__nickname">스터디원 2</div>
-      </li>
-    </ul>
-  </div>
-  <the-footer></the-footer>
 </template>
 
 <script>

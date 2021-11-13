@@ -29,10 +29,17 @@
 
 <script>
 export default {
-  mounted() {
+  created() {
     var tokenData = this.$router.currentRoute.value.href;
     this.$store.commit('login', tokenData);
     console.log(this.$store.state.auth.token);
+    this.loginCheck();
+  },
+  methods: {
+    loginCheck() {
+      this.$store.commit('loginCheck');
+      console.log(this.$store.state.auth.isLogin);
+    },
   },
 };
 </script>

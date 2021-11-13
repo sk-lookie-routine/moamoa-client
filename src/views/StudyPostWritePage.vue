@@ -1,8 +1,9 @@
 <template>
-  <div class="form-container main-container">
+  <div class="form-container main-container" v-if="this.$store.state.token">
     <study-post-form></study-post-form>
-  </div>
-  <the-footer></the-footer>
+  
+  <the-footer></the-footer></div>
+  <router-link to="/login" v-else></router-link>
 </template>
 
 <script>

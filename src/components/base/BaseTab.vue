@@ -5,7 +5,7 @@
       :class="{ 'tab--active': isFirstTabClicked }"
       @click="firstTabClicked"
     >
-      {{ firstTab }}
+      <a> {{ firstTab }}</a>
     </li>
     <div class="divide-line"></div>
     <li
@@ -13,7 +13,7 @@
       :class="{ 'tab--active': isSecondTabClicked }"
       @click="SecondTabClicked"
     >
-      {{ secondTab }}
+      <a>{{ secondTab }}</a>
     </li>
   </ul>
 </template>
@@ -43,6 +43,9 @@ export default {
 </script>
 
 <style scoped>
+a:hover {
+  text-decoration: underline;
+}
 .tab-text {
   font-size: 2rem;
   font-weight: bold;

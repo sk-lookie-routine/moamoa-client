@@ -15,5 +15,7 @@ function fetchPosts() {
 function fetchPostById() {
   return instance.get('/api/study');
 }
-
-export { createPost, fetchPosts, fetchPostById };
+function getUser() {
+  return instance.get('/api/user');
+}
+export { createPost, fetchPosts, fetchPostById, getUser };

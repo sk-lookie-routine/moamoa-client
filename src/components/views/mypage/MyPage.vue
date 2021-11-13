@@ -1,50 +1,73 @@
 <template>
-  <div class="default-container">
-    <my-page-upper-profile-box></my-page-upper-profile-box>
-    <base-tab
-      class="base--tab"
-      firstTab="신청한 스터디"
-      secondTab="개설한 스터디"
-      @firstTabClicked="applicatedStudyList"
-      @SecondTabClicked="openStudyList"
-    ></base-tab>
-    <div v-if="studyList.length">
-      <ul class="my-studyList">
-        <base-card
-          @click="applicatedStudyList"
-          :id="1"
-          :imgSrc="'profile_sc_p'"
-          title="test"
-          startDate="2021.11.05"
-          endDate="2021.11.08"
-          :peopleRegisterCount="1"
-          :peopleTotalCount="2"
-          hashTags="test"
-        ></base-card>
-      </ul>
+  <div v-if="this.$store.state.auth.isLogin">
+    <div class="default-container">
+      <my-page-upper-profile-box></my-page-upper-profile-box>
+      <base-tab
+        class="base--tab"
+        firstTab="신청한 스터디"
+        secondTab="개설한 스터디"
+        @firstTabClicked="applicatedStudyList"
+        @SecondTabClicked="openStudyList"
+      ></base-tab>
+      <div v-if="studyList.length">
+        <ul class="my-studyList">
+          <base-card
+            @click="applicatedStudyList"
+            :id="1"
+            :imgSrc="'profile_sc_p'"
+            title="test"
+            startDate="2021.11.05"
+            endDate="2021.11.08"
+            :peopleRegisterCount="1"
+            :peopleTotalCount="2"
+            hashTags="test"
+          ></base-card>
+        </ul>
+      </div>
+      <div class="nothing-apply" v-else>
+        <div class="nothing-apply-text">
+          {{ textOfEachTab }} 스터디가 없어요.
+        </div>
+        <a href="https://www.naver.com"
+          >스터디 {{ textOfGuideLineOfEachTab }} 가이드라인</a
+        >
+      </div>
     </div>
-    <div class="nothing-apply" v-else>
-      <div class="nothing-apply-text">신청한 스터디가 없어요.</div>
-      <a href="https://www.naver.com">스터디 가이드라인</a>
-    </div>
+    <the-footer></the-footer>
   </div>
-  <the-footer></the-footer>
+  <auth-login-page v-else></auth-login-page>
 </template>
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
 import MyPageUpperProfileBox from './MyPage_upperProfileBox.vue';
+import AuthLoginPage from '@/views/AuthLoginPage.vue';
 export default {
-  components: { TheFooter, MyPageUpperProfileBox },
+  components: { TheFooter, MyPageUpperProfileBox, AuthLoginPage },
+  mounted() {
+    this.loginCheck();
+    // console.log(this.$store.state.auth.isLogin);
+  },
   data() {
     return {
-      studyList: ['ㅁ'],
+      studyList: [],
       index: 0,
+      textOfEachTab: '신청한',
+      textOfGuideLineOfEachTab: '신청',
     };
   },
   methods: {
-    applicatedStudyList() {},
-    openStudyList() {},
+    applicatedStudyList() {
+      this.textOfEachTab = '신청한';
+      this.textOfGuideLineOfEachTab = '신청';
+    },
+    openStudyList() {
+      this.textOfEachTab = '개설한';
+      this.textOfGuideLineOfEachTab = '개설';
+    },
+    loginCheck() {
+      this.$store.commit('loginCheck');
+    },
   },
 };
 </script>
@@ -82,6 +105,12 @@ export default {
 }
 @media (max-width: 320px) {
   .default-container {
+    padding-top: 9.5rem;
+  }
+
+  .base--tab {
+    margin-top: 5.8rem;
+    margin-left: 1.6rem;
     width: max-content;
   }
 }

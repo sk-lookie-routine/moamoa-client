@@ -51,10 +51,13 @@
       <base-button class="edit-done" @click="handleEdit">변경완료</base-button>
     </div>
   </div>
+  <the-footer class="footer"></the-footer>
 </template>
 
 <script>
+import TheFooter from '@/components/common/TheFooter.vue';
 export default {
+  components: { TheFooter },
   data() {
     return {
       nickname: '',
@@ -96,6 +99,8 @@ export default {
     handleEdit() {
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {
         this.$router.replace('mypage');
+      } else {
+        alert('모든 빈칸을 채워주세요.');
       }
     },
     handleCancel() {
@@ -106,7 +111,11 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  margin-bottom: 18.3rem;
+}
 .mypage-title {
+  margin-top: 19.2rem;
   display: flex;
   justify-content: space-between;
 }
@@ -154,6 +163,7 @@ export default {
   position: absolute;
   right: 0;
   bottom: 0;
+  top: 0;
   transition: all ease 0.4s;
   background: none;
 }
@@ -197,6 +207,7 @@ input:focus {
   justify-content: flex-end;
   display: flex;
   align-items: center;
+  margin-bottom: 18.3rem;
 }
 button {
   margin-top: 10rem;
@@ -215,6 +226,9 @@ button {
   height: 4.1rem;
   font-size: 1.6rem;
   padding: 0;
+}
+.footer {
+  margin-top: 18.3rem;
 }
 
 @media (max-width: 320px) {

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import MyPageDefault from './MyPage_default.vue';
+import MyPageDefault from './MyPage_middle.vue';
 export default {
   components: { MyPageDefault },
   data() {
@@ -18,5 +18,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

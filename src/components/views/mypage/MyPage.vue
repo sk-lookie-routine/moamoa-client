@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.$store.state.auth.isLogin">
+  <div v-if="isLogin">
     <div class="default-container">
       <my-page-upper-profile-box></my-page-upper-profile-box>
       <base-tab
@@ -44,16 +44,17 @@ import MyPageUpperProfileBox from './MyPage_upperProfileBox.vue';
 import AuthLoginPage from '@/views/AuthLoginPage.vue';
 export default {
   components: { TheFooter, MyPageUpperProfileBox, AuthLoginPage },
-  mounted() {
-    this.loginCheck();
-    // console.log(this.$store.state.auth.isLogin);
-  },
+  // mounted() {
+  //   this.loginCheck();
+  //   // console.log(this.$store.state.auth.isLogin);
+  // },
   data() {
     return {
       studyList: [],
       index: 0,
       textOfEachTab: '신청한',
       textOfGuideLineOfEachTab: '신청',
+      isLogin: false,
     };
   },
   methods: {
@@ -67,6 +68,11 @@ export default {
     },
     loginCheck() {
       this.$store.commit('loginCheck');
+      if (this.$store.state.auth.isLogin == '/') {
+        this.isLogin = false;
+      } else {
+        this.isLogin = true;
+      }
     },
   },
 };

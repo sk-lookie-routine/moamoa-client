@@ -16,7 +16,7 @@ const auth = {
     },
     loginCheck(state) {
       if (state.token == '/') {
-        alert('로그인해주세요.');
+        // alert(state.token);
       } else {
         console.log('로그인토큰');
         state.isLogin = true;

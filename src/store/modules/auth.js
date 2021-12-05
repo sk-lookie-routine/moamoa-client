@@ -16,7 +16,7 @@ const auth = {
     },
     loginCheck(state) {
       if (state.token == '/') {
-        // alert(state.token);
+        console.log('not login');
       } else {
         console.log('로그인토큰');
         state.isLogin = true;

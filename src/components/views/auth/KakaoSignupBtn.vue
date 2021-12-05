@@ -1,8 +1,5 @@
 <template>
-  <a
-    href="http://ec2-13-209-32-104.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000"
-    class="kakao-login-btn"
-  >
+  <a class="kakao-login-btn">
     <img src="@/assets/img/icon_kakao.svg" />
     <div class="kakao-login-btn-text">카카오 아이디로 가입</div>
   </a>

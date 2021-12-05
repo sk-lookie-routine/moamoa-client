@@ -1,6 +1,6 @@
 <template>
   <a
-    href="http://ec2-13-209-32-104.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000"
+    href="http://moa-moa.kr:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000"
     class="google-login-btn"
   >
     <img src="@/assets/img/icon_google.svg" />

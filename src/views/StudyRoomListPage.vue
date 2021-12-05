@@ -17,13 +17,15 @@
         ></base-card>
       </li>
     </ul>
-  
-  <the-footer></the-footer></div>
+
+    <the-footer></the-footer>
+  </div>
 </template>
 
 <script>
 export default {
-  inject: ['joiningStudyRooms'],
+  // eslint-disable-next-line prettier/prettier
+  inject: ["joiningStudyRooms"],
 };
 </script>
 

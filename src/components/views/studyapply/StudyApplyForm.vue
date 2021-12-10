@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import StudyApplyCautions from "@/components/views/studyapply/StudyApplyCautions.vue";
+import StudyApplyCautions from '@/components/views/studyapply/StudyApplyCautions.vue';
 
 export default {
   components: { StudyApplyCautions },

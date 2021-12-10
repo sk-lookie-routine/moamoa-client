@@ -39,9 +39,9 @@
 </template>
 
 <script>
-import TheFooter from "@/components/common/TheFooter.vue";
-import MyPageUpperProfileBox from "./MyPage_upperProfileBox.vue";
-import AuthLoginPage from "@/views/AuthLoginPage.vue";
+import TheFooter from '@/components/common/TheFooter.vue';
+import MyPageUpperProfileBox from './MyPage_upperProfileBox.vue';
+import AuthLoginPage from '@/views/AuthLoginPage.vue';
 export default {
   components: { TheFooter, MyPageUpperProfileBox, AuthLoginPage },
   mounted() {
@@ -52,23 +52,23 @@ export default {
     return {
       studyList: [],
       index: 0,
-      textOfEachTab: "신청한",
-      textOfGuideLineOfEachTab: "신청",
+      textOfEachTab: '신청한',
+      textOfGuideLineOfEachTab: '신청',
       isLogin: false,
     };
   },
   methods: {
     applicatedStudyList() {
-      this.textOfEachTab = "신청한";
-      this.textOfGuideLineOfEachTab = "신청";
+      this.textOfEachTab = '신청한';
+      this.textOfGuideLineOfEachTab = '신청';
     },
     openStudyList() {
-      this.textOfEachTab = "개설한";
-      this.textOfGuideLineOfEachTab = "개설";
+      this.textOfEachTab = '개설한';
+      this.textOfGuideLineOfEachTab = '개설';
     },
     loginCheck() {
-      this.$store.commit("loginCheck");
-      if (this.$store.state.auth.isLogin == "/") {
+      this.$store.commit('loginCheck');
+      if (this.$store.state.auth.isLogin == '/') {
         this.isLogin = false;
       } else {
         this.isLogin = true;

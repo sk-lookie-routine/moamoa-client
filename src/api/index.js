@@ -8,6 +8,10 @@ function createPost(postData) {
   return instance.post('/api/study', postData);
 }
 
+function updatePost(postData) {
+  return instance.get('/api/study', postData);
+}
+
 function fetchPosts() {
   return instance.get('/api/study');
 }
@@ -15,7 +19,9 @@ function fetchPosts() {
 function fetchPostById() {
   return instance.get('/api/study');
 }
+
 function getUser() {
   return instance.get('/api/user');
 }
-export { createPost, fetchPosts, fetchPostById, getUser };
+
+export { createPost, updatePost, fetchPosts, fetchPostById, getUser };

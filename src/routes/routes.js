@@ -39,14 +39,19 @@ export default [
     component: () => import('@/views/StudyRoomListPage.vue'),
   },
   {
-    path: '/notice',
-    name: 'notice',
-    component: () => import('@/views/NoticePage.vue'),
-  },
-  {
     path: '/apply',
     name: 'apply',
     component: () => import('@/views/StudyApplyPage.vue'),
+  },
+  {
+    path: '/mypage',
+    name: 'mypage',
+    component: () => import('@/components/views/mypage/MyPage.vue'),
+  },
+  {
+    path: '/edit',
+    name: 'editComponent',
+    component: () => import('@/components/views/mypage/MyPage_edit.vue'),
   },
   {
     path: '/posts/:postId',
@@ -61,15 +66,5 @@ export default [
   {
     path: '/:notFound(.*)',
     component: () => import('@/views/NotFoundPage.vue'),
-  },
-  {
-    path: '/mypage',
-    name: 'mypage',
-    component: () => import('@/components/views/mypage/MyPage.vue'),
-  },
-  {
-    path: '/edit',
-    name: 'editComponent',
-    component: () => import('@/components/views/mypage/MyPage_edit.vue'),
   },
 ];

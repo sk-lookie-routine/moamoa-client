@@ -17,9 +17,8 @@
         ></base-card>
       </li>
     </ul>
-
-    <the-footer></the-footer>
   </div>
+  <the-footer></the-footer>
 </template>
 
 <script>

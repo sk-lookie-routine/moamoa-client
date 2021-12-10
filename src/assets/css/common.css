@@ -11,9 +11,9 @@ body {
 }
 
 .main-container {
-  max-width: 1216px;
+  max-width: 1200px;
+  width:96%;
   margin: 0 auto;
-  padding: 0 16px;
 }
 
 /*

@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <div class="main-container">
+    <div class="footer-main-container">
       <div class="footer-container">
         <div class="footer__context">
           <div class="footer__logo">
@@ -56,10 +56,15 @@ footer {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   word-wrap: break-word;
+  margin-top: 26rem;
 }
-.main-container {
-  padding: 1rem;
+
+.footer-main-container {
+  max-width: 1216px;
+  width: 96%;
+  margin: 0 auto;
 }
+
 .footer-container {
   display: flex;
   justify-content: space-between;
@@ -150,19 +155,14 @@ footer {
   /* width: 100%; */
 }
 
-@media (max-width: 320px) {
+@media (max-width: 900px) {
   footer {
     margin-top: 17rem;
   }
-  .main-container {
-    padding: 0;
-    width: 32rem;
-    height: 82.6rem;
-    margin: 0 auto;
-  }
+
   .footer-container {
     width: 100%;
-    padding: 0 2.7rem 0 2.4rem;
+    padding: 0;
   }
 
   .footer-container,
@@ -186,7 +186,7 @@ footer {
     line-height: 2.4rem;
   }
   .box--underline {
-    margin: 7rem 2.4rem 1.5rem 2.4rem;
+    margin: 7rem 0rem 1.5rem 0rem;
   }
   .footer__rights {
     margin: 0 2.4rem;

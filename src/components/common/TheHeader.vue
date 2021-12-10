@@ -41,7 +41,7 @@ export default {
         { name: '홈', linkTo: '/home' },
         { name: '스터디목록', linkTo: '/posts' },
         { name: '스터디룸', linkTo: '/rooms' },
-        { name: '공지사항', linkTo: '/notice' },
+        //{ name: '공지사항', linkTo: '/notice' },
       ],
       isMenuClicked: false,
     };

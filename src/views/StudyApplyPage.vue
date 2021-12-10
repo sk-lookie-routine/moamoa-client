@@ -1,8 +1,6 @@
 <template>
-  <div v-if="this.$store.state.token">
-    <study-apply-form></study-apply-form> <the-footer></the-footer>
-  </div>
-  <router-link to="/login" v-else></router-link>
+  <study-apply-form></study-apply-form>
+  <the-footer></the-footer>
 </template>
 
 <script>

@@ -39,7 +39,7 @@
       <label for="count">모집 인원:</label>
       <select v-model="post.userSeq" name="count">
         <option
-          v-for="optionValue in userSeqOptions"
+          v-for="optionValue in memberCountOptions"
           v-bind:value="optionValue"
           :key="optionValue"
         >
@@ -105,7 +105,7 @@
           name="tag"
           placeholder="태그를 입력하세요."
           v-model="tagInput"
-          @keyup.enter.prevent="addTag"
+          @keydown.enter.prevent="addTag"
         />
       </div>
     </div>
@@ -127,14 +127,17 @@ export default {
         goal: '',
         how: '',
         comment: '',
+        image: '',
         deadLine: null,
         startDate: null,
         endDate: null,
+        studyType: 'READY',
         userSeq: 1,
         hashTags: [],
+        memberCount: 5,
       },
       rangeDate: null,
-      userSeqOptions: [1, 2, 3, 4, 5],
+      memberCountOptions: [1, 2, 3, 4, 5],
       tagInput: '',
       isTagLengthLongEnough: false,
     };

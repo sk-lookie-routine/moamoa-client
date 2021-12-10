@@ -55,40 +55,40 @@
 </template>
 
 <script>
-import TheFooter from "@/components/common/TheFooter.vue";
+import TheFooter from '@/components/common/TheFooter.vue';
 export default {
   components: { TheFooter },
   data() {
     return {
-      nickname: "",
-      desc: "",
+      nickname: '',
+      desc: '',
       isAllFilled: false,
       randomProfile: {
-        name: require("@/assets/img/profile/profile_sc_o.svg"),
+        name: require('@/assets/img/profile/profile_sc_o.svg'),
       },
       imgList: [
-        { name: require("@/assets/img/profile/profile_sc_o.svg") },
-        { name: require("@/assets/img/profile/profile_sc_p.svg") },
-        { name: require("@/assets/img/profile/profile_sc_r.svg") },
-        { name: require("@/assets/img/profile/profile_sc_b.svg") },
-        { name: require("@/assets/img/profile/profile_sc_y.svg") },
-        { name: require("@/assets/img/profile/profile_sq_b.svg") },
-        { name: require("@/assets/img/profile/profile_sq_o.svg") },
-        { name: require("@/assets/img/profile/profile_sq_p.svg") },
-        { name: require("@/assets/img/profile/profile_sq_r.svg") },
-        { name: require("@/assets/img/profile/profile_sq_y.svg") },
-        { name: require("@/assets/img/profile/profile_tr_b.svg") },
-        { name: require("@/assets/img/profile/profile_tr_o.svg") },
-        { name: require("@/assets/img/profile/profile_tr_p.svg") },
-        { name: require("@/assets/img/profile/profile_tr_r.svg") },
-        { name: require("@/assets/img/profile/profile_tr_y.svg") },
+        { name: require('@/assets/img/profile/profile_sc_o.svg') },
+        { name: require('@/assets/img/profile/profile_sc_p.svg') },
+        { name: require('@/assets/img/profile/profile_sc_r.svg') },
+        { name: require('@/assets/img/profile/profile_sc_b.svg') },
+        { name: require('@/assets/img/profile/profile_sc_y.svg') },
+        { name: require('@/assets/img/profile/profile_sq_b.svg') },
+        { name: require('@/assets/img/profile/profile_sq_o.svg') },
+        { name: require('@/assets/img/profile/profile_sq_p.svg') },
+        { name: require('@/assets/img/profile/profile_sq_r.svg') },
+        { name: require('@/assets/img/profile/profile_sq_y.svg') },
+        { name: require('@/assets/img/profile/profile_tr_b.svg') },
+        { name: require('@/assets/img/profile/profile_tr_o.svg') },
+        { name: require('@/assets/img/profile/profile_tr_p.svg') },
+        { name: require('@/assets/img/profile/profile_tr_r.svg') },
+        { name: require('@/assets/img/profile/profile_tr_y.svg') },
       ],
     };
   },
   methods: {
     moveToHome() {
       this.isAllFilled = true;
-      this.$router.push("/home");
+      this.$router.push('/home');
     },
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
@@ -162,7 +162,7 @@ input:focus {
 }
 .text_ph,
 .desc_ph {
-  font-family: "Spoqa Han Sans Neo";
+  font-family: 'Spoqa Han Sans Neo';
   font-size: 1.8rem;
   line-height: 2.6rem;
   color: var(--black);

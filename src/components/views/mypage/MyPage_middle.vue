@@ -12,7 +12,7 @@
       <div class="profile-image">
         <img src="@/assets/img/profile/profile_sc_b.svg" />
       </div>
-      <div class="profile-nickname">cococo</div>
+      <div class="profile-nickname">{{ currentUser }}</div>
       <div class="profile-email">routine@gmail.com</div>
       <div class="profile-desc">스터디 100개 뿌시는게 목표</div>
       <div class="box--underline-under-email"></div>
@@ -30,16 +30,33 @@
 </template>
 
 <script>
+import { getUser } from '@/api/index.js';
 export default {
   props: {
     editProfile: Function,
+  },
+  data() {
+    return {
+      currentUser: {},
+    };
+  },
+  methods: {
+    async getMyUser() {
+      this.loginCheck();
+      console.log(this.$store.state.auth.isLogin);
+      this.currentUser = await getUser(this.$store.state.auth.token);
+      console.log(this.currentUser);
+    },
+  },
+  mounted() {
+    this.getMyUser();
   },
 };
 </script>
 
 <style scoped>
 .container {
-  margin: 0 12rem;
+  margin: 0 1.6rem;
 }
 .mypage-title {
   display: flex;
@@ -82,7 +99,6 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: max-content;
   text-align: center;
 }
 .profile-image {
@@ -109,7 +125,7 @@ export default {
   color: var(--gray01);
 }
 .profile-study-info {
-  display: flex;
+  /* display: flex; */
   font-family: Spoqa Han Sans Neo;
   font-size: 1.4rem;
   line-height: 1.7rem;

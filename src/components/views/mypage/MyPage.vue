@@ -39,36 +39,40 @@
 </template>
 
 <script>
-import TheFooter from "@/components/common/TheFooter.vue";
-import MyPageUpperProfileBox from "./MyPage_upperProfileBox.vue";
-import AuthLoginPage from "@/views/AuthLoginPage.vue";
+import TheFooter from '@/components/common/TheFooter.vue';
+import MyPageUpperProfileBox from './MyPage_upperProfileBox.vue';
+import AuthLoginPage from '@/views/AuthLoginPage.vue';
+import { getUser } from '@/api/index.js';
 export default {
   components: { TheFooter, MyPageUpperProfileBox, AuthLoginPage },
   mounted() {
     this.loginCheck();
     console.log(this.$store.state.auth.isLogin);
+    this.currentUser = getUser(this.$store.state.auth.token);
+    console.log(this.currentUser);
   },
   data() {
     return {
       studyList: [],
       index: 0,
-      textOfEachTab: "신청한",
-      textOfGuideLineOfEachTab: "신청",
+      textOfEachTab: '신청한',
+      textOfGuideLineOfEachTab: '신청',
       isLogin: false,
+      currentUser: {},
     };
   },
   methods: {
     applicatedStudyList() {
-      this.textOfEachTab = "신청한";
-      this.textOfGuideLineOfEachTab = "신청";
+      this.textOfEachTab = '신청한';
+      this.textOfGuideLineOfEachTab = '신청';
     },
     openStudyList() {
-      this.textOfEachTab = "개설한";
-      this.textOfGuideLineOfEachTab = "개설";
+      this.textOfEachTab = '개설한';
+      this.textOfGuideLineOfEachTab = '개설';
     },
     loginCheck() {
-      this.$store.commit("loginCheck");
-      if (this.$store.state.auth.isLogin == "/") {
+      this.$store.commit('loginCheck');
+      if (this.$store.state.auth.isLogin == '/') {
         this.isLogin = false;
       } else {
         this.isLogin = true;
@@ -81,6 +85,7 @@ export default {
 <style scoped>
 .default-container {
   padding-top: 19.2rem;
+  width: 100%;
 }
 .base--tab {
   margin: 7rem 12rem 1rem 12rem;
@@ -109,7 +114,7 @@ export default {
 .my-studyList {
   margin: 3rem 12rem;
 }
-@media (max-width: 320px) {
+@media (max-width: 351px) {
   .default-container {
     padding-top: 9.5rem;
   }

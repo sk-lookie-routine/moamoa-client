@@ -9,7 +9,7 @@ function createPost(postData) {
 }
 
 function updatePost(postData) {
-  return instance.get('/api/study', postData);
+  return instance.put('/api/study', postData);
 }
 
 function fetchPosts() {

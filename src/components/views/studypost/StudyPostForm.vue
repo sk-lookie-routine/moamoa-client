@@ -9,7 +9,9 @@
         @keypress.enter.prevent
       />
     </div>
-    <div class="error-text">필수 입력 항목입니다.</div>
+    <div class="error-text" :class="{ invisible: post.title }">
+      {{ this.errorMessages.noValue }}
+    </div>
     <div class="input-container box--underline bottom-padding">
       <label for="deadline">모집 마감 일자 :</label>
       <date-picker
@@ -21,7 +23,9 @@
         @update:modelValue="formatDeadlineDate"
       ></date-picker>
     </div>
-    <div class="error-text">필수 입력 항목입니다.</div>
+    <div class="error-text" :class="{ invisible: post.deadLine }">
+      필수 입력 항목입니다.
+    </div>
     <div class="input-container box--underline bottom-padding">
       <label for="period">스터디 기간 :</label>
       <date-picker
@@ -37,7 +41,7 @@
     <div class="error-text">필수 입력 항목입니다.</div>
     <div class="input-container box--underline bottom-padding">
       <label for="count">모집 인원:</label>
-      <select v-model="post.userSeq" name="count">
+      <select v-model="post.memberCount" name="count">
         <option
           v-for="optionValue in memberCountOptions"
           v-bind:value="optionValue"
@@ -127,17 +131,20 @@ export default {
         goal: '',
         how: '',
         comment: '',
-        image: '',
+        image: 'profile_sc_b.svg',
         deadLine: null,
         startDate: null,
         endDate: null,
         studyType: 'READY',
         userSeq: 1,
         hashTags: [],
-        memberCount: 5,
+        memberCount: 1,
+      },
+      errorMessages: {
+        noValue: '필수 입력 항목입니다.',
       },
       rangeDate: null,
-      memberCountOptions: [1, 2, 3, 4, 5],
+      memberCountOptions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       tagInput: '',
       isTagLengthLongEnough: false,
     };
@@ -246,5 +253,9 @@ export default {
 .tags input {
   font-size: 1.6rem;
   width: auto;
+}
+
+.invisible {
+  visibility: hidden;
 }
 </style>

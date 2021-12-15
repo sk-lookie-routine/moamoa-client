@@ -20,12 +20,12 @@
         <base-card
           @click="showPostPage(post.id)"
           :id="post.id"
-          :imgSrc="'profile_sc_p'"
+          :imgSrc="post.image"
           :title="post.title"
           :startDate="post.startDate"
           :endDate="post.endDate"
           :peopleRegisterCount="1"
-          :peopleTotalCount="2"
+          :peopleTotalCount="post.memberCount"
           :hashTags="post.hashTags"
         ></base-card>
       </li>

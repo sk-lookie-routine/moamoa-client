@@ -24,22 +24,22 @@
   <li>
     <router-link to="/mypage">마이페이지 이동</router-link>
   </li>
-  {{ this.$store.tokenData }}
 </template>
 
 <script>
 export default {
   created() {
-    var tokenData = this.$router.currentRoute.value.href;
-    this.$store.commit('login', tokenData);
+    const tokenData = this.$router.currentRoute.value.href;
+    var spliceToken = tokenData.substr(8, tokenData.length);
+    this.$store.commit('login', { token: spliceToken });
+    console.log('--');
     console.log(this.$store.state.auth.token);
-    console.log(tokenData);
+    console.log('--');
     this.loginCheck();
   },
   methods: {
     loginCheck() {
       this.$store.commit('loginCheck');
-      console.log(this.$store.state.auth.isLogin);
     },
   },
 };

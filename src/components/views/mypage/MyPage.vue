@@ -46,10 +46,7 @@ import { getUser } from '@/api/index.js';
 export default {
   components: { TheFooter, MyPageUpperProfileBox, AuthLoginPage },
   mounted() {
-    this.loginCheck();
-    console.log(this.$store.state.auth.isLogin);
-    this.currentUser = getUser(this.$store.state.auth.token);
-    console.log(this.currentUser);
+    this.getMyUser();
   },
   data() {
     return {
@@ -70,13 +67,20 @@ export default {
       this.textOfEachTab = '개설한';
       this.textOfGuideLineOfEachTab = '개설';
     },
-    loginCheck() {
+    loginChecking() {
       this.$store.commit('loginCheck');
-      if (this.$store.state.auth.isLogin == '/') {
+      if (this.$store.state.auth.token == '/') {
         this.isLogin = false;
       } else {
         this.isLogin = true;
       }
+    },
+    async getMyUser() {
+      this.loginChecking();
+      console.log(this.$store.state.auth.isLogin);
+      const response = await getUser(this.$store.state.auth.token);
+      this.currentUser = response;
+      console.log(this.currentUser.data.username);
     },
   },
 };

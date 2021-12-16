@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import KakaoSignupBtn from "./KakaoSignupBtn.vue";
-import GoogleSignupBtn from "./GoogleSignupBtn.vue";
+import KakaoSignupBtn from './KakaoSignupBtn.vue';
+import GoogleSignupBtn from './GoogleSignupBtn.vue';
 export default {
   components: { KakaoSignupBtn, GoogleSignupBtn },
 };

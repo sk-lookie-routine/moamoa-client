@@ -183,7 +183,7 @@ button {
   cursor: no-drop;
 }
 
-@media (max-width: 350px) {
+@media (max-width: 380px) {
   .container {
     display: flex;
     flex-direction: column;

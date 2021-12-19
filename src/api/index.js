@@ -26,5 +26,22 @@ function getUser() {
     params: { token: store.state.token },
   });
 }
+function callKakaoLoginHandler() {
+  return axios.get({
+    pathname: 'https://kauth.kakao.com/oauth/authorize',
+    query: {
+      response_type: 'code',
+      client_id: 'c63c08657e63a89661f53f6bbf43a349',
+      redirect_uri: 'http://localhost:3000/',
+    },
+  });
+}
 
-export { createPost, updatePost, fetchPosts, fetchPostById, getUser };
+export {
+  createPost,
+  updatePost,
+  fetchPosts,
+  fetchPostById,
+  getUser,
+  callKakaoLoginHandler,
+};

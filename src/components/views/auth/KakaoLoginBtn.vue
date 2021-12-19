@@ -1,12 +1,22 @@
 <template>
-  <a class="kakao-login-btn">
+  <a class="kakao-login-btn" @click="kakaoLogin">
     <img src="@/assets/img/icon_kakao.svg" />
     <div class="kakao-login-btn-text">카카오 로그인</div>
   </a>
 </template>
 
 <script>
-export default {};
+// import { callKakaoLoginHandler } from '@/api/index.js';
+export default {
+  methods: {
+    kakaoLogin() {
+      const params = {
+        redirectUri: 'http://localhost:3000',
+      };
+      window.Kakao.Auth.authorize(params);
+    },
+  },
+};
 </script>
 
 <style scoped>

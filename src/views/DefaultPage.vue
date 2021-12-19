@@ -27,20 +27,40 @@
 </template>
 
 <script>
+import {
+  getKakaoToken,
+  getKakaoUserInfo,
+} from '@/components/views/auth/login.js';
 export default {
-  created() {
-    const tokenData = this.$router.currentRoute.value.href;
-    var spliceToken = tokenData.substr(8, tokenData.length);
-    this.$store.commit('login', { token: spliceToken });
-    console.log('--');
-    console.log(this.$store.state.auth.token);
-    console.log('--');
-    this.loginCheck();
-  },
   methods: {
     loginCheck() {
       this.$store.commit('loginCheck');
     },
+    async setKakaoToken() {
+      console.log('카카오 인증 코드', this.$route.query.code);
+      const { data } = await getKakaoToken(this.$route.query.code);
+      if (data.error) {
+        alert('카카오톡 로그인 오류입니다.');
+        this.$router.replace('/login');
+        return;
+      }
+      window.Kakao.Auth.setAccessToken(data.access_token);
+      await this.setUserInfo();
+      // this.$router.replace('/');
+    },
+    async setUserInfo() {
+      const res = await getKakaoUserInfo();
+      const userInfo = {
+        name: res.kakao_account.profile.nickname,
+        platform: 'kakao',
+      };
+      this.$store.commit('setUser', userInfo);
+    },
+  },
+  created() {
+    if (this.$route.query.code) {
+      this.setKakaoToken();
+    }
   },
 };
 </script>

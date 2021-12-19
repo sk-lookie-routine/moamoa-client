@@ -33,3 +33,5 @@ app.component('base-dialog', BaseDialog);
 app.use(router);
 app.use(store);
 app.mount('#app');
+
+window.Kakao.init('c63c08657e63a89661f53f6bbf43a349');

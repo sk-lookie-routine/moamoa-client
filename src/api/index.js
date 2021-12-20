@@ -1,79 +1,19 @@
 import axios from 'axios';
+import { setInterceptors } from './config.js';
 
-const instance = axios.create({
-  baseURL: process.env.VUE_APP_API_URL,
-});
-
-function createPost(postData) {
-  return instance.post('/api/study', postData);
+// instance & interceptor
+function create(url, options) {
+  const instance = axios.create(Object.assign({ baseURL: url }, options));
+  return instance;
 }
 
-function updatePost(postData) {
-  return instance.put('/api/study', postData);
+function createWithAuth(url, options) {
+  const instance = axios.create(Object.assign({ baseURL: url }, options));
+  setInterceptors(instance);
+  return instance;
 }
 
-function fetchPosts() {
-  return instance.get('/api/study');
-}
-
-function fetchPostsByStudyType(studyType) {
-  return instance.get('/api/study', {
-    params: {
-      studyType,
-    },
-  });
-}
-
-function fetchPostsByStudyTypeList(studyTypeList) {
-  return instance.get('/api/study', {
-    params: {
-      studyTypeList,
-    },
-  });
-}
-
-function fetchPostById(studySeq) {
-  return instance.get('/api/study', {
-    params: {
-      studySeq,
-    },
-  });
-}
-
-function fetchPostsByTitle(title) {
-  return instance.get('/api/study', {
-    params: {
-      title,
-    },
-  });
-}
-
-function fetchReply(userSeq, studySeq) {
-  return instance.get('/api/reply', {
-    params: {
-      userSeq,
-      studySeq,
-    },
-  });
-}
-
-function createReply(reply) {
-  return instance.post('/api/reply', reply);
-}
-
-function getUser() {
-  return instance.get('/api/user');
-}
-
-export {
-  createPost,
-  updatePost,
-  fetchPosts,
-  fetchPostsByStudyType,
-  fetchPostsByStudyTypeList,
-  fetchPostById,
-  fetchPostsByTitle,
-  fetchReply,
-  createReply,
-  getUser,
-};
+export const auth = create(`${process.env.VUE_APP_API_URL}api/auth/`);
+export const user = createWithAuth(`${process.env.VUE_APP_API_URL}api/user/`);
+export const posts = create(`${process.env.VUE_APP_API_URL}api/study/`);
+export const rooms = createWithAuth(`${process.env.VUE_APP_API_URL}api/join/`);

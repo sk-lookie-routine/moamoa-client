@@ -111,9 +111,6 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  margin-bottom: 18.3rem;
-}
 .mypage-title {
   margin-top: 19.2rem;
   display: flex;
@@ -127,9 +124,10 @@ export default {
   color: var(--black);
 }
 .container {
-  display: float;
+  /* display: float; */
   height: 70rem;
-  margin: 0 12rem;
+  margin: 0 1.2rem;
+  margin-bottom: 1.6rem;
 }
 .box--underline {
   margin-top: 1rem;
@@ -183,7 +181,6 @@ input:focus {
   font-size: 1.8rem;
   line-height: 2.6rem;
   color: var(--black);
-  /* display: float; */
 }
 .description,
 .account {
@@ -231,7 +228,7 @@ button {
   margin-top: 18.3rem;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 350px) {
   .container {
     display: flex;
     flex-direction: column;

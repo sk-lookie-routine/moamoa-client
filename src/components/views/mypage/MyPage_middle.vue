@@ -12,8 +12,8 @@
       <div class="profile-image">
         <img src="@/assets/img/profile/profile_sc_b.svg" />
       </div>
-      <div class="profile-nickname">cococo</div>
-      <div class="profile-email">routine@gmail.com</div>
+      <div class="profile-nickname">{{ currentUser.username }}</div>
+      <div class="profile-email">{{ currentUser.email }}</div>
       <div class="profile-desc">스터디 100개 뿌시는게 목표</div>
       <div class="box--underline-under-email"></div>
       <div class="profile-study-info">
@@ -30,16 +30,43 @@
 </template>
 
 <script>
+import { getUser } from '@/api/index.js';
 export default {
   props: {
     editProfile: Function,
+  },
+  data() {
+    return {
+      currentUser: { username: '', email: '' },
+    };
+  },
+  methods: {
+    loginChecking() {
+      this.$store.commit('loginCheck');
+      if (this.$store.state.auth.token == '/') {
+        this.isLogin = false;
+      } else {
+        this.isLogin = true;
+      }
+    },
+    async getMyUser() {
+      this.loginChecking();
+      console.log(this.$store.state.auth.isLogin);
+      const response = await getUser(this.$store.state.auth.token);
+      this.currentUser.username = response.data.username;
+      this.currentUser.email = response.data.email;
+      console.log(this.currentUser.username);
+    },
+  },
+  mounted() {
+    this.getMyUser();
   },
 };
 </script>
 
 <style scoped>
 .container {
-  margin: 0 12rem;
+  margin: 0 1.6rem;
 }
 .mypage-title {
   display: flex;
@@ -82,7 +109,6 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: max-content;
   text-align: center;
 }
 .profile-image {
@@ -109,7 +135,7 @@ export default {
   color: var(--gray01);
 }
 .profile-study-info {
-  display: flex;
+  /* display: flex; */
   font-family: Spoqa Han Sans Neo;
   font-size: 1.4rem;
   line-height: 1.7rem;

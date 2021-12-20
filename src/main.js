@@ -30,6 +30,7 @@ app.component('base-tag', BaseTag);
 app.component('base-button', BaseButton);
 app.component('base-dialog', BaseDialog);
 
+window.Kakao.init('c63c08657e63a89661f53f6bbf43a349');
 app.use(router);
 app.use(store);
 app.mount('#app');

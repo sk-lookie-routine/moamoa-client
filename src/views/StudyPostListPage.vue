@@ -1,8 +1,8 @@
 <template>
-  <div class="main-container">
+  <div class="main-container noselect">
     <div class="box--underline bottom-padding"><h1>스터디 목록</h1></div>
     <div class="search-bar-container">
-      <search-bar></search-bar>
+      <search-bar @searched="showSearchResult"></search-bar>
     </div>
     <div class="tabs-and-btn-container">
       <base-tab
@@ -16,16 +16,16 @@
       </router-link>
     </div>
     <ul class="card-column-list card-list-gap">
-      <li v-for="post in postList" :key="post.id">
+      <li v-for="post in postList" :key="post.studySeq">
         <base-card
-          @click="showPostPage(post.id)"
-          :id="post.id"
-          :imgSrc="'profile_sc_p'"
+          @click="showPostPage(post.studySeq)"
+          :id="post.studySeq"
+          :imgSrc="post.image"
           :title="post.title"
           :startDate="post.startDate"
           :endDate="post.endDate"
           :peopleRegisterCount="1"
-          :peopleTotalCount="2"
+          :peopleTotalCount="post.memberCount"
           :hashTags="post.hashTags"
         ></base-card>
       </li>
@@ -38,24 +38,21 @@
 <script>
 import SearchBar from '@/components/views/studypostlist/SearchBar.vue';
 import CreateStudyJumbotron from '@/components/views/studypostlist/CreateStudyJumbotron.vue';
-import { fetchPosts } from '@/api/index.js';
+import {
+  fetchPostsByStudyTypeList,
+  fetchPostsByStudyType,
+  fetchPostsByTitle,
+} from '@/api/posts.js';
+import { STUDY_TYPE } from '@/utils/constValue';
 
 export default {
   components: { SearchBar, CreateStudyJumbotron },
-  inject: ['unrecruitedPosts', 'recruitedPosts'],
   data() {
     return {
-      postList: this.unrecruitedPosts,
+      postList: null,
     };
   },
   methods: {
-    async fetchData() {
-      console.log('데이터 받아아옴');
-      const response = await fetchPosts();
-      console.log('데이터 받아아옴22');
-      console.log(response.data.content);
-      this.postList = response.data.content;
-    },
     showPostPage(postId) {
       this.$router.push({
         name: 'post',
@@ -64,16 +61,27 @@ export default {
         },
       });
     },
+    async fetchDataByType(studyType) {
+      const response = await fetchPostsByStudyType(studyType);
+      this.postList = response.data.content;
+    },
+    async fetchDataByTypeList(studyTypeList) {
+      const response = await fetchPostsByStudyTypeList(studyTypeList);
+      this.postList = response.data.content;
+    },
+    async showSearchResult(value) {
+      const response = await fetchPostsByTitle(value);
+      this.postList = response.data.content;
+    },
     showUnRecruitedPostList() {
-      this.postList = this.unrecruitedPosts;
+      this.fetchDataByType(STUDY_TYPE.READY);
     },
     showRecruitedPostList() {
-      this.postList = this.recruitedPosts;
+      this.fetchDataByTypeList(`${STUDY_TYPE.PROGRESS},${STUDY_TYPE.COMPLETE}`);
     },
   },
   created() {
-    console.log('create');
-    this.fetchData();
+    this.fetchDataByType(STUDY_TYPE.READY);
   },
 };
 </script>

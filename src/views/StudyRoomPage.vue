@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="noselect">
     <div class="main-container">
       <div class="room-header">
         <div class="box--underline bottom-padding">

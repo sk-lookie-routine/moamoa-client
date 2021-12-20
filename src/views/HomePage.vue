@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="noselect">
     <the-banner></the-banner>
     <div class="main-container">
       <div class="tabs-and-btn-container">
@@ -9,16 +9,17 @@
         >
       </div>
       <ul class="card-grid-list card-list-gap">
-        <li v-for="post in unrecruitedPosts" :key="post.id">
+        <li v-for="post in posts" :key="post.studySeq">
           <base-card
-            :id="post.id"
-            :imgSrc="post.imgSrc"
+            @click="showPostPage(post.studySeq)"
+            :id="post.studySeq"
+            :imgSrc="post.image"
             :title="post.title"
             :startDate="post.startDate"
             :endDate="post.endDate"
-            :peopleRegisterCount="post.peopleRegisterCount"
-            :peopleTotalCount="post.peopleTotalCount"
-            :hashTags="post.tags"
+            :peopleRegisterCount="1"
+            :peopleTotalCount="post.memberCount"
+            :hashTags="post.hashTags"
           ></base-card>
         </li>
       </ul>
@@ -31,22 +32,27 @@
 <script>
 import TheBanner from '@/components/views/home/TheBanner.vue';
 import StudyGuideJumbotron from '@/components/views/home/StudyGuideJumbotron.vue';
+import { fetchPostsByStudyType } from '@/api/posts.js';
+import { STUDY_TYPE } from '@/utils/constValue';
+
 export default {
   components: {
     TheBanner,
     StudyGuideJumbotron,
   },
-  inject: ['unrecruitedPosts'],
-  /*
-    data() {
+  data() {
     return {
-      unrecruitedPosts: [],
+      posts: [],
     };
   },
   methods: {
+    sliceArray(array) {
+      console.log(array.length);
+      return array.length > 6 ? array.slice(0, 6) : array;
+    },
     async fetchData() {
-      const response = await fetchPosts();
-      this.unrecruitedPosts = response.data.content;
+      const response = await fetchPostsByStudyType(STUDY_TYPE.READY);
+      this.posts = this.sliceArray(response.data.content);
     },
     showPostPage(postId) {
       this.$router.push({
@@ -60,7 +66,6 @@ export default {
   created() {
     this.fetchData();
   },
-  */
 };
 </script>
 

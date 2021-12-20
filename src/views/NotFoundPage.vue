@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container noselect">
     <img src="@/assets/img/img_error_not_found.svg" />
     <h3>페이지를 찾을 수 없습니다.</h3>
     <div class="link">이전 페이지로 돌아가기</div>

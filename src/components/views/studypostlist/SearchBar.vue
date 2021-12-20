@@ -4,12 +4,29 @@
     <label for="search"
       ><img class="search-icon" src="@/assets/img/icon_search.svg"
     /></label>
-    <input type="text" name="search" placeholder="제목, 태그로 검색하세요." />
+    <input
+      @keypress.enter.prevent="searched"
+      v-model="value"
+      type="text"
+      name="search"
+      placeholder="제목, 태그로 검색하세요."
+    />
   </form>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      value: '',
+    };
+  },
+  methods: {
+    searched() {
+      this.$emit('searched', this.value);
+    },
+  },
+};
 </script>
 
 <style scoped>

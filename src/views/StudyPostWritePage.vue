@@ -1,5 +1,5 @@
 <template>
-  <div class="form-container main-container">
+  <div class="form-container main-container noselect">
     <study-post-form></study-post-form>
   </div>
   <the-footer></the-footer>

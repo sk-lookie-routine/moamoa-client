@@ -1,0 +1,7 @@
+const STUDY_TYPE = {
+  READY: 'READY',
+  PROGRESS: 'PROGRESS',
+  COMPLETE: 'COMPLETE',
+};
+
+export { STUDY_TYPE };

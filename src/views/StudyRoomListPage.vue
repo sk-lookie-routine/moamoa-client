@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="main-container noselect">
     <div class="box--underline bottom-padding"><h1>스터디룸</h1></div>
     <div class="tabs-container">
       <base-tab firstTab="참여중인 스터디" secondTab="완료한 스터디"></base-tab>

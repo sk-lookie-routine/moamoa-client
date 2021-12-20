@@ -124,26 +124,25 @@ import BaseReply from '@/components/base/BaseReply.vue';
 export default {
   components: { BaseReply },
   methods: {
-    async fetchData() {
+    async fetchPostData() {
       const postId = this.$route.params.postId;
       const response = await fetchPostById(postId);
       this.post = response.data.content[0];
     },
 
-    async fetchData() {
-      const postId = this.$route.params.postId;
-      const response = await fetchPostById(postId);
-      this.post = response.data.content[0];
+    async fetchReplyData() {
+      const response = await fetchReply(1);
+      this.replies = response.data.content;
     },
   },
   data() {
     return {
       post: null,
-      replys: [],
+      replies: [],
     };
   },
   created() {
-    this.fetchData();
+    this.fetchPostData();
   },
 };
 </script>

@@ -12,8 +12,8 @@
       <div class="profile-image">
         <img src="@/assets/img/profile/profile_sc_b.svg" />
       </div>
-      <div class="profile-nickname">{{ currentUser.data.username }}</div>
-      <div class="profile-email">{{ currentUser.data.email }}</div>
+      <div class="profile-nickname">{{ currentUser.username }}</div>
+      <div class="profile-email">{{ currentUser.email }}</div>
       <div class="profile-desc">스터디 100개 뿌시는게 목표</div>
       <div class="box--underline-under-email"></div>
       <div class="profile-study-info">
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      currentUser: {},
+      currentUser: { username: '', email: '' },
     };
   },
   methods: {
@@ -53,8 +53,9 @@ export default {
       this.loginChecking();
       console.log(this.$store.state.auth.isLogin);
       const response = await getUser(this.$store.state.auth.token);
-      this.currentUser = response;
-      console.log(this.currentUser.data.username);
+      this.currentUser.username = response.data.username;
+      this.currentUser.email = response.data.email;
+      console.log(this.currentUser.username);
     },
   },
   mounted() {

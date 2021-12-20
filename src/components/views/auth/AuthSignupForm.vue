@@ -23,7 +23,27 @@
               minlength="2"
             />
             <div class="box--underline"></div>
+            <div class="check">
+              <!-- <div class="check-nickname" >
+                이미 사용중인 닉네임입니다.
+              </div> 이거 버튼클릭시 닉네임 중복여부 따져야할듯-->
+              <div
+                class="check-nickname"
+                v-if="nickname != '' && nickname.length < 2"
+              >
+                최소 2자 이상 입력하세요.
+              </div>
+              <div
+                class="check-nickname"
+                v-if="
+                  nickname.search(/\s/) != -1 || special_pattern.test(nickname)
+                "
+              >
+                공백이나 특수문자 입력은 불가능합니다.
+              </div>
+            </div>
           </div>
+
           <div class="description">
             한줄 소개 :
             <input
@@ -62,6 +82,7 @@ export default {
     return {
       nickname: '',
       desc: '',
+      special_pattern: /[`~!@#$%^&*|"';:/?]/gi,
       isAllFilled: false,
       randomProfile: {
         name: require('@/assets/img/profile/profile_sc_o.svg'),
@@ -152,6 +173,17 @@ input:focus {
   line-height: 2.6rem;
   color: var(--black);
 }
+.check {
+  display: flex;
+  justify-content: flex-end;
+}
+.check-nickname {
+  position: absolute;
+  text-align: end;
+  padding-top: 1rem;
+  font-size: 1.4rem;
+  color: var(--orange-dark);
+}
 .description {
   font-family: Spoqa Han Sans Neo;
   font-weight: bold;
@@ -220,6 +252,12 @@ button {
   }
   .start-btn {
     margin: 0;
+  }
+  .check-nickname {
+    position: absolute;
+    text-align: end;
+    padding-top: 0.6rem;
+    font-size: 1.2rem;
   }
 }
 </style>

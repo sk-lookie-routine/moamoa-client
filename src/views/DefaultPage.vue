@@ -27,23 +27,33 @@
 </template>
 
 <script>
+import { getToken } from '@/api/index.js';
 import {
-  getKakaoToken,
+  // getKakaoToken,
   getKakaoUserInfo,
 } from '@/components/views/auth/login.js';
 export default {
+  created() {
+    if (this.$route.query.code) {
+      this.setKakaoToken();
+    }
+  },
   methods: {
-    loginCheck() {
-      this.$store.commit('loginCheck');
-    },
+    // loginCheck() {
+    //   this.$store.commit('loginCheck');
+    // },
     async setKakaoToken() {
-      console.log('카카오 인증 코드', this.$route.query.code);
-      const { data } = await getKakaoToken(this.$route.query.code);
+      this.$store.state.auth.code = this.$route.query.code;
+      console.log('카카오 인증 코드', this.$store.state.auth.code);
+
+      // const { data } = await getKakaoToken(this.$route.query.code);
+      const { data } = await getToken(this.$route.query.code);
       if (data.error) {
         alert('카카오톡 로그인 오류입니다.');
         this.$router.replace('/login');
         return;
       }
+      console.log('카카오토큰', data.access_token);
       window.Kakao.Auth.setAccessToken(data.access_token);
       await this.setUserInfo();
       // this.$router.replace('/');
@@ -56,11 +66,6 @@ export default {
       };
       this.$store.commit('setUser', userInfo);
     },
-  },
-  created() {
-    if (this.$route.query.code) {
-      this.setKakaoToken();
-    }
   },
 };
 </script>

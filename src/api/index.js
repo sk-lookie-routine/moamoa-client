@@ -1,47 +1,19 @@
 import axios from 'axios';
-import store from '@/store/modules/auth';
+import { setInterceptors } from './config.js';
 
-const instance = axios.create({
-  baseURL: process.env.VUE_APP_API_URL,
-});
-
-function createPost(postData) {
-  return instance.post('/api/study', postData);
+// instance & interceptor
+function create(url, options) {
+  const instance = axios.create(Object.assign({ baseURL: url }, options));
+  return instance;
 }
 
-function updatePost(postData) {
-  return instance.get('/api/study', postData);
+function createWithAuth(url, options) {
+  const instance = axios.create(Object.assign({ baseURL: url }, options));
+  setInterceptors(instance);
+  return instance;
 }
 
-function fetchPosts() {
-  return instance.get('/api/study');
-}
-
-function fetchPostById() {
-  return instance.get('/api/study');
-}
-
-function getUser() {
-  return instance.get('/api/user', {
-    params: { token: store.state.token },
-  });
-}
-function callKakaoLoginHandler() {
-  return axios.get({
-    pathname: 'https://kauth.kakao.com/oauth/authorize',
-    query: {
-      response_type: 'code',
-      client_id: 'c63c08657e63a89661f53f6bbf43a349',
-      redirect_uri: 'http://localhost:3000/',
-    },
-  });
-}
-
-export {
-  createPost,
-  updatePost,
-  fetchPosts,
-  fetchPostById,
-  getUser,
-  callKakaoLoginHandler,
-};
+export const auth = create(`${process.env.VUE_APP_API_URL}api/auth/`);
+export const user = createWithAuth(`${process.env.VUE_APP_API_URL}api/user/`);
+export const posts = create(`${process.env.VUE_APP_API_URL}api/study/`);
+export const rooms = createWithAuth(`${process.env.VUE_APP_API_URL}api/join/`);

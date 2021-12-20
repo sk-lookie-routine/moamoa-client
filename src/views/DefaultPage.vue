@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { getToken } from '@/api/index.js';
+import { getToken } from '@/api/auth.js';
 import {
   // getKakaoToken,
   getKakaoUserInfo,

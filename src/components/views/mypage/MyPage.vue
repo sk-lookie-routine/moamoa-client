@@ -42,7 +42,7 @@
 import TheFooter from '@/components/common/TheFooter.vue';
 import MyPageUpperProfileBox from './MyPage_upperProfileBox.vue';
 import AuthLoginPage from '@/views/AuthLoginPage.vue';
-import { getUser } from '@/api/index.js';
+import { getUser } from '@/api/user.js';
 export default {
   components: { TheFooter, MyPageUpperProfileBox, AuthLoginPage },
   mounted() {

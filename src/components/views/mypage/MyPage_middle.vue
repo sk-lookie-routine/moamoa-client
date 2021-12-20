@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { getUser } from '@/api/index.js';
+import { getUser } from '@/api/user.js';
 export default {
   props: {
     editProfile: Function,

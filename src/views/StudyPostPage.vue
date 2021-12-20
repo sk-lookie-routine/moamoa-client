@@ -118,7 +118,8 @@
 </template>
 
 <script>
-import { fetchPostById, fetchReply } from '@/api/index.js';
+import { fetchPostById } from '@/api/posts.js';
+import { fetchReply } from '@/api/reply.js';
 import BaseReply from '@/components/base/BaseReply.vue';
 
 export default {

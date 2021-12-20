@@ -32,7 +32,7 @@
 <script>
 import TheBanner from '@/components/views/home/TheBanner.vue';
 import StudyGuideJumbotron from '@/components/views/home/StudyGuideJumbotron.vue';
-import { fetchPostsByStudyType } from '@/api/index.js';
+import { fetchPostsByStudyType } from '@/api/posts.js';
 import { STUDY_TYPE } from '@/utils/constValue';
 
 export default {

@@ -42,7 +42,7 @@ import {
   fetchPostsByStudyTypeList,
   fetchPostsByStudyType,
   fetchPostsByTitle,
-} from '@/api/index.js';
+} from '@/api/posts.js';
 import { STUDY_TYPE } from '@/utils/constValue';
 
 export default {

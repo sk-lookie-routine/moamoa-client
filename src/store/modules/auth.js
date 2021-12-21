@@ -5,10 +5,12 @@ const auth = {
       'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5MjZEOTZDOTAwMzBERDU4NDI5RDI3NTFBQzFCREJCQyIsImV4cCI6MTYzOTI5NDYwNH0.ebG6l26wlvhlfOqpyFV1OhvA-BpW3-4dQsLlpYIoJ1w',
     userId: '',
     username: '',
-    profileImageUrl: '',
+    profileImageUrl: '', //이걸로 최초 회원가입 여부 체크
     email: '',
     roleType: '',
     isLogin: false,
+    accessToken: '',
+    refreshToken: '',
   },
   mutations: {
     login(state, payload) {
@@ -23,6 +25,15 @@ const auth = {
         console.log('로그인됨');
         state.isLogin = true;
       }
+    },
+    setUser(state, payload) {
+      state.email = payload.email;
+      state.username = payload.username;
+      state.userId = payload.userId;
+    },
+    setToken(state, payload) {
+      state.accessToken = payload.access_token;
+      state.refreshToken = payload.refresh_token;
     },
   },
 };

@@ -7,4 +7,7 @@ function getUser(token) {
         params: { token },
     });
 }
-export { getUser };
+function UserDataPost(postData) {
+    return user.post('', postData);
+}
+export { getUser, UserDataPost };

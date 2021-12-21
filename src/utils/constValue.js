@@ -4,4 +4,9 @@ const STUDY_TYPE = {
   COMPLETE: 'COMPLETE',
 };
 
-export { STUDY_TYPE };
+const PROVIDER_TYPE = {
+  KAKAO: 'KAKAO',
+  GOOGLE: 'GOOGLE',
+};
+
+export { STUDY_TYPE, PROVIDER_TYPE };

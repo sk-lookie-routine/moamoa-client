@@ -5,7 +5,7 @@ function saveAccessTokenToCookie(value) {
 
 function getAccessTokenFromCookie() {
     return document.cookie.replace(
-        /(?:(?:^|.*;\s*)til_auth\s*=\s*([^;]*).*$)|^.*$/,
+        /(?:(?:^|.*;\s*)access_token\s*=\s*([^;]*).*$)|^.*$/,
         '$1',
     );
 }

@@ -27,9 +27,10 @@
 </template>
 
 <script>
-import { getToken } from '@/api/auth.js';
+import { PROVIDER_TYPE } from '@/utils/constValue.js';
+import { UserDataPost } from '@/api/user.js';
 import {
-  // getKakaoToken,
+  getKakaoToken,
   getKakaoUserInfo,
 } from '@/components/views/auth/login.js';
 export default {
@@ -37,6 +38,20 @@ export default {
     if (this.$route.query.code) {
       this.setKakaoToken();
     }
+    if (this.userData.email != null) {
+      console.log('userData:', this.userData);
+      UserDataPost(this.userData);
+    }
+  },
+  data() {
+    return {
+      userData: {
+        email: this.$store.state.auth.email,
+        username: this.$store.state.auth.username,
+        ProviderType: PROVIDER_TYPE.KAKAO,
+        userId: this.$store.state.auth.userId,
+      },
+    };
   },
   methods: {
     // loginCheck() {
@@ -46,23 +61,22 @@ export default {
       this.$store.state.auth.code = this.$route.query.code;
       console.log('카카오 인증 코드', this.$store.state.auth.code);
 
-      // const { data } = await getKakaoToken(this.$route.query.code);
-      const { data } = await getToken(this.$route.query.code);
+      const { data } = await getKakaoToken(this.$route.query.code);
       if (data.error) {
         alert('카카오톡 로그인 오류입니다.');
         this.$router.replace('/login');
         return;
       }
-      console.log('카카오토큰', data.access_token);
+      await this.$store.commit('setToken', data);
       window.Kakao.Auth.setAccessToken(data.access_token);
       await this.setUserInfo();
-      // this.$router.replace('/');
     },
     async setUserInfo() {
       const res = await getKakaoUserInfo();
       const userInfo = {
-        name: res.kakao_account.profile.nickname,
-        platform: 'kakao',
+        email: res.kakao_account.email,
+        username: res.kakao_account.profile.nickname,
+        userId: res.id,
       };
       this.$store.commit('setUser', userInfo);
     },

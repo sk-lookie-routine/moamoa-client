@@ -33,6 +33,18 @@ const auth = {
       state.image = payload.image;
       state.providerType = payload.providerType;
       state.userSeq = payload.userSeq;
+      state.userInfo = payload.userInfo;
+    },
+    initUser(state) {
+      state.email = '';
+      state.username = '';
+      state.userId = '';
+      state.image = '';
+      state.providerType = '';
+      state.userSeq = '';
+      state.userInfo = '';
+      state.accessToken = '';
+      state.refreshToken = '';
     },
     setToken(state, payload) {
       state.accessToken = payload.access_token;

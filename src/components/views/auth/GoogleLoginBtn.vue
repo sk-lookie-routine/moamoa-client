@@ -52,16 +52,16 @@ export default {
       //get받아온 user정보
       this.$store.state.auth.userSeq = myDBuser.data.content[0].userSeq;
       console.log('userSeq값:', this.$store.state.auth.userSeq);
-      if (myDBuser.data == null) {
+      if (myDBuser.data == null || myDBuser.data.content[0].image == null) {
         this.$router.push({
           name: 'signup-form',
         });
       } else {
         this.$store.commit('setUser', myDBuser.data.content[0]);
         console.log('구글로그인userData', myDBuser);
-        // this.$router.push({
-        //   name: 'home',
-        // });
+        this.$router.push({
+          name: 'mypage',
+        });
       }
       this.$store.commit('loginCheck');
     },

@@ -9,8 +9,11 @@
     </div>
     <div class="box--underline"></div>
     <div class="profile-box">
-      <div class="profile-image" v-for="image in imgList" :key="image.id">
-        <div v-if="image.name.search(this.$store.state.auth.image) != -1">
+      <div v-for="image in imgList" :key="image.id">
+        <div
+          class="profile-image"
+          v-if="image.name.search(this.$store.state.auth.image) != -1"
+        >
           <img :src="image.name" />
         </div>
       </div>
@@ -78,9 +81,6 @@ export default {
           };
         }
       }
-      // console.log('user정보:', this.currentUser);
-      // this.profile += this.currentUser.image + '.svg';
-      // this.$store.state.auth.image = this.profile;
       this.profile = this.$store.state.auth.image;
     },
   },

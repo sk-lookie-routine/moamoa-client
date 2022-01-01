@@ -66,8 +66,9 @@ export default {
       };
       const myDBuser = await getUser(DataForLocal.userId);
       console.log('myDBuser(회원가입여부):', myDBuser);
-      if (myDBuser.data == '') {
+      if (myDBuser.data == '' || myDBuser.data.content[0].image == '') {
         console.log('회원가입 기록이 없습니다.');
+        this.$store.commit('setUser', DataForLocal);
         this.$router.push({
           name: 'signup-form',
         });

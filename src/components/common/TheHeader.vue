@@ -32,8 +32,7 @@
       <button class="mypage-btn" @click="menuToggled">
         <router-link to="/mypage">마이페이지</router-link>
       </button>
-      <!-- <button class="auth-btn">로그인</button>
-      <button class="mypage-btn">마이페이지</button> -->
+      <!-- <button class="mypage-btn">마이페이지</button> -->
     </div>
   </header>
 </template>
@@ -59,13 +58,28 @@ export default {
       if (this.$store.state.auth.providerType == 'GOOGLE') {
         const authInst = window.gapi.auth2.getAuthInstance();
         authInst.signOut().then(() => {
-          console.log('User Signed Out!!!');
-        });
-      } else {
-        window.Kakao.Auth.logout(() => {
           alert('로그아웃 되었습니다.');
         });
+      } else {
+        window.Kakao.API.request({
+          url: '/v1/user/unlink',
+          success: function (response) {
+            console.log(response);
+          },
+          fail: function (error) {
+            console.log(error);
+          },
+        });
+        // if (!window.Kakao.Auth.getAccessToken()) {
+        //   console.log('Not logged in.');
+        //   return;
+        // }
+        // window.Kakao.Auth.logout(function () {
+        //   alert('로그아웃 되었습니다.', window.Kakao.Auth.getAccessToken());
+        // });
       }
+      this.$store.commit('initUser');
+      console.log('state 초기화', this.$store.state.auth);
       this.$store.state.auth.isLogin = false;
     },
   },

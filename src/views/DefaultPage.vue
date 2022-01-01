@@ -28,7 +28,8 @@
 
 <script>
 import { PROVIDER_TYPE } from '@/utils/constValue.js';
-import { UserDataPost } from '@/api/user.js';
+import { saveAccessTokenToCookie } from '@/utils/cookies.js';
+import { getUser } from '@/api/user.js';
 import {
   getKakaoToken,
   getKakaoUserInfo,
@@ -38,25 +39,8 @@ export default {
     if (this.$route.query.code) {
       this.setKakaoToken();
     }
-    if (this.userData.email != null) {
-      console.log('userData:', this.userData);
-      UserDataPost(this.userData);
-    }
-  },
-  data() {
-    return {
-      userData: {
-        email: this.$store.state.auth.email,
-        username: this.$store.state.auth.username,
-        ProviderType: PROVIDER_TYPE.KAKAO,
-        userId: this.$store.state.auth.userId,
-      },
-    };
   },
   methods: {
-    // loginCheck() {
-    //   this.$store.commit('loginCheck');
-    // },
     async setKakaoToken() {
       this.$store.state.auth.code = this.$route.query.code;
       console.log('카카오 인증 코드', this.$store.state.auth.code);
@@ -67,18 +51,38 @@ export default {
         this.$router.replace('/login');
         return;
       }
-      await this.$store.commit('setToken', data);
+      await this.$store.commit('setToken', data); //store에 토큰저장
+      saveAccessTokenToCookie(data.access_token); //cookie에 토큰저장
       window.Kakao.Auth.setAccessToken(data.access_token);
       await this.setUserInfo();
     },
     async setUserInfo() {
       const res = await getKakaoUserInfo();
-      const userInfo = {
+      const DataForLocal = {
         email: res.kakao_account.email,
         username: res.kakao_account.profile.nickname,
-        userId: res.id,
+        userId: res.id.toString(),
+        providerType: PROVIDER_TYPE.KAKAO,
       };
-      this.$store.commit('setUser', userInfo);
+      const myDBuser = await getUser(DataForLocal.userId);
+      console.log('myDBuser(회원가입여부):', myDBuser);
+      if (myDBuser.data == '') {
+        console.log('회원가입 기록이 없습니다.');
+        this.$router.push({
+          name: 'signup-form',
+        });
+      } else {
+        console.log(
+          '회원가입 기록이 있습니다. 로그인정보:',
+          myDBuser.data.content[0],
+        );
+        const storeData = myDBuser.data.content[0];
+        this.$store.commit('setUser', storeData);
+        console.log('kakao로그인 store정보', this.$store.state.auth);
+        this.$router.push({
+          name: 'home',
+        });
+      }
     },
   },
 };

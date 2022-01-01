@@ -14,10 +14,13 @@
       <div class="google-login-btn-text">구글 아이디로 로그인</div>
     </div>
   </div>
-  <button @click="signout" align="left">signout</button>
+  <!-- <button @click="signout" align="left">signout</button> -->
 </template>
 
 <script>
+// import { UserDataPost } from '@/api/auth.js';
+import { PROVIDER_TYPE } from '@/utils/constValue.js';
+import { getUser } from '@/api/user.js';
 export default {
   data() {
     return {
@@ -35,18 +38,35 @@ export default {
     });
   },
   methods: {
-    onSuccess(googleUser) {
-      console.log(googleUser);
+    async onSuccess(googleUser) {
       this.googleUser = googleUser.getBasicProfile();
+
+      const DataForLocal = {
+        email: googleUser.getBasicProfile().getEmail(),
+        username: googleUser.getBasicProfile().getName(),
+        userId: googleUser.getBasicProfile().getId(),
+        providerType: PROVIDER_TYPE.GOOGLE,
+      };
+      //store에 저장
+      const myDBuser = await getUser(DataForLocal.userId);
+      //get받아온 user정보
+      this.$store.state.auth.userSeq = myDBuser.data.content[0].userSeq;
+      console.log('userSeq값:', this.$store.state.auth.userSeq);
+      if (myDBuser.data == null) {
+        this.$router.push({
+          name: 'signup-form',
+        });
+      } else {
+        this.$store.commit('setUser', myDBuser.data.content[0]);
+        console.log('구글로그인userData', myDBuser);
+        // this.$router.push({
+        //   name: 'home',
+        // });
+      }
+      this.$store.commit('loginCheck');
     },
     onFailure(error) {
       console.log(error);
-    },
-    signout() {
-      const authInst = window.gapi.auth2.getAuthInstance();
-      authInst.signOut().then(() => {
-        console.log('User Signed Out!!!');
-      });
     },
   },
 };

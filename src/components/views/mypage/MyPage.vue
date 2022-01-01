@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLogin">
+  <div v-if="this.$store.state.auth.isLogin">
     <div class="default-container">
       <my-page-upper-profile-box></my-page-upper-profile-box>
       <base-tab
@@ -42,20 +42,14 @@
 import TheFooter from '@/components/common/TheFooter.vue';
 import MyPageUpperProfileBox from './MyPage_upperProfileBox.vue';
 import AuthLoginPage from '@/views/AuthLoginPage.vue';
-import { getUser } from '@/api/user.js';
 export default {
   components: { TheFooter, MyPageUpperProfileBox, AuthLoginPage },
-  mounted() {
-    this.getMyUser();
-  },
   data() {
     return {
       studyList: [],
       index: 0,
       textOfEachTab: '신청한',
       textOfGuideLineOfEachTab: '신청',
-      isLogin: false,
-      currentUser: {},
     };
   },
   methods: {
@@ -67,21 +61,6 @@ export default {
       this.textOfEachTab = '개설한';
       this.textOfGuideLineOfEachTab = '개설';
     },
-    loginChecking() {
-      this.$store.commit('loginCheck');
-      if (this.$store.state.auth.token == '/') {
-        this.isLogin = false;
-      } else {
-        this.isLogin = true;
-      }
-    },
-    async getMyUser() {
-      this.loginChecking();
-      console.log(this.$store.state.auth.isLogin);
-      const response = await getUser(this.$store.state.auth.token);
-      this.currentUser = response;
-      console.log(this.currentUser.data.username);
-    },
   },
 };
 </script>
@@ -92,7 +71,7 @@ export default {
   width: 100%;
 }
 .base--tab {
-  margin: 7rem 12rem 1rem 12rem;
+  margin: 7rem 12rem;
 }
 .nothing-apply {
   padding-top: 11rem;

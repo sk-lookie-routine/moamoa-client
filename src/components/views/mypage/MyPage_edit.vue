@@ -16,13 +16,38 @@
       <input
         type="text"
         v-model="nickname"
-        placeholder="cococo(user.nickname)"
+        placeholder="{{nickname}}"
         maxlength="8"
         class="text_ph"
         minlength="2"
       />
-
+      <button class="check-idOverlap" @click="checkIdDuplicate">
+        중복확인
+      </button>
       <div class="box--underline"></div>
+    </div>
+    <div class="check">
+      <div
+        class="check-nickname-duplicated"
+        v-if="isNicknameDuplicated && nickname.length > 0"
+      >
+        {{ text }}
+      </div>
+      <div
+        class="check-nickname"
+        v-if="!isNicknameDuplicated && nickname.length > 0"
+      >
+        {{ text }}
+      </div>
+      <div class="check-nickname-duplicated" v-if="nickname == ''">
+        최소 2자 이상 입력하세요.
+      </div>
+      <div
+        class="check-nickname"
+        v-if="nickname.search(/\s/) != -1 || special_pattern.test(nickname)"
+      >
+        공백이나 특수문자 입력은 불가능합니다.
+      </div>
     </div>
     <div class="account">
       로그인 계정 :
@@ -56,17 +81,23 @@
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
+import { getUserId, updateUserData } from '@/api/user.js';
 export default {
   components: { TheFooter },
   data() {
     return {
-      nickname: '',
-      desc: '',
-      account: '',
+      text: '',
+      special_pattern: /[`~!@#$%^&*|"';:/?]/gi,
+      nickname: this.$store.state.auth.username,
+      desc: this.$store.state.auth.userInfo,
+      account: this.$store.state.auth.email,
       isAllFilled: false,
+      isNicknameDuplicated: false,
+      isClickedDuplicatedButton: false,
       randomProfile: {
-        name: require('@/assets/img/profile/profile_sc_o.svg'),
+        name: require(`@/assets/img/profile/${this.$store.state.auth.image}.svg`),
       },
+      image: '',
       imgList: [
         { name: require('@/assets/img/profile/profile_sc_o.svg') },
         { name: require('@/assets/img/profile/profile_sc_p.svg') },
@@ -94,18 +125,44 @@ export default {
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
       this.randomProfile = this.imgList[randomNumber];
-      console.log(randomNumber);
+      this.image = this.imgList[randomNumber].name.substr(5, 12);
+      console.log(this.image);
     },
     handleEdit() {
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {
+        const updateData = {
+          username: this.nickname,
+          userInfo: this.desc,
+          email: this.$store.state.auth.email,
+          providerType: this.$store.state.auth.providerType,
+          userId: this.$store.state.auth.userId,
+          image: this.image,
+          userSeq: this.$store.state.auth.userSeq,
+        };
+        updateUserData(updateData);
+        this.$store.commit('setUser', updateData);
         this.$router.replace('mypage');
       } else {
         alert('모든 빈칸을 채워주세요.');
       }
     },
-    handleCancel() {
-      this.$router.replace('mypage');
-    },
+  },
+  handleCancel() {
+    this.$router.replace('mypage');
+  },
+  checkIdDuplicate() {
+    this.isClickedDuplicatedButton = true;
+    //중복 확인 버튼 눌렀다고 체크
+    getUserId(this.nickname).then(response => {
+      console.log(response);
+      if (typeof response.data.content === 'undefined') {
+        this.isNicknameDuplicated = false;
+        this.text = '사용 가능한 닉네임입니다.';
+      } else {
+        this.isNicknameDuplicated = true;
+        this.text = '이미 사용중인 닉네임입니다.';
+      }
+    });
   },
 };
 </script>
@@ -227,7 +284,42 @@ button {
 .footer {
   margin-top: 18.3rem;
 }
-
+.check-idOverlap {
+  padding: 0.6rem;
+  font-size: 1.2rem;
+  margin: 0;
+  position: absolute;
+  right: 10%;
+  width: 6.3rem;
+  height: 2.6rem;
+  background: #757575;
+  color: white;
+}
+.check-nickname {
+  position: absolute;
+  text-align: end;
+  padding-top: 1rem;
+  font-size: 1.4rem;
+  color: var(--green);
+}
+.check-nickname-duplicated {
+  position: absolute;
+  text-align: end;
+  padding-top: 1rem;
+  font-size: 1.4rem;
+  color: var(--orange-dark);
+}
+.check-idOverlap {
+  padding: 0.6rem;
+  font-size: 1.2rem;
+  margin: 0;
+  position: absolute;
+  right: 23%;
+  width: 6.3rem;
+  height: 2.6rem;
+  background: #757575;
+  color: white;
+}
 @media (max-width: 350px) {
   .container {
     display: flex;

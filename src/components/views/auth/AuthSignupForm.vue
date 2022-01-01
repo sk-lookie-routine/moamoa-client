@@ -22,15 +22,25 @@
               maxlength="8"
               minlength="2"
             />
+            <button class="check-idOverlap" @click="checkIdDuplicate">
+              중복확인
+            </button>
             <div class="box--underline"></div>
+            <!-- 유효성 검사 -->
             <div class="check">
-              <!-- <div class="check-nickname" >
-                이미 사용중인 닉네임입니다.
-              </div> 이거 버튼클릭시 닉네임 중복여부 따져야할듯-->
+              <div
+                class="check-nickname-duplicated"
+                v-if="isNicknameDuplicated && nickname.length > 0"
+              >
+                {{ text }}
+              </div>
               <div
                 class="check-nickname"
-                v-if="nickname != '' && nickname.length < 2"
+                v-if="!isNicknameDuplicated && nickname.length > 0"
               >
+                {{ text }}
+              </div>
+              <div class="check-nickname-duplicated" v-if="nickname == ''">
                 최소 2자 이상 입력하세요.
               </div>
               <div
@@ -59,7 +69,12 @@
         <div class="start-btn">
           <base-button
             class="base-button"
-            v-if="nickname !== '' && desc !== ''"
+            v-if="
+              nickname !== '' &&
+              desc !== '' &&
+              isClickedDuplicatedButton &&
+              !isNicknameDuplicated
+            "
             @click="moveToHome"
           >
             MOAMOA 시작하기
@@ -76,6 +91,8 @@
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
+import { getUserId, updateUserData } from '@/api/user.js';
+import { UserDataPost } from '@/api/user.js';
 export default {
   components: { TheFooter },
   data() {
@@ -84,6 +101,10 @@ export default {
       desc: '',
       special_pattern: /[`~!@#$%^&*|"';:/?]/gi,
       isAllFilled: false,
+      isNicknameDuplicated: false,
+      isClickedDuplicatedButton: false,
+      text: '',
+      imgName: '',
       randomProfile: {
         name: require('@/assets/img/profile/profile_sc_o.svg'),
       },
@@ -109,18 +130,86 @@ export default {
   methods: {
     moveToHome() {
       this.isAllFilled = true;
+      const myUser = {
+        email: this.$store.state.auth.email,
+        username: this.$store.state.auth.username,
+        providerType: this.$store.state.auth.providerType,
+        userId: this.$store.state.auth.userId,
+        image: this.$store.state.auth.image,
+        userInfo: this.$store.state.auth.userInfo,
+        userSeq: this.$store.state.auth.userSeq,
+      };
+      if (myUser.userSeq == '') {
+        UserDataPost(myUser);
+      } else {
+        updateUserData(myUser);
+      }
       this.$router.push('/home');
     },
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
       this.randomProfile = this.imgList[randomNumber];
-      console.log(randomNumber);
+    },
+    checkIdDuplicate() {
+      this.isClickedDuplicatedButton = true;
+      //중복 확인 버튼 눌렀다고 체크
+      getUserId(this.nickname).then(response => {
+        if (typeof response.data.content === 'undefined') {
+          this.isNicknameDuplicated = false;
+          this.text = '사용 가능한 닉네임입니다.';
+        } else {
+          this.isNicknameDuplicated = true;
+          this.text = '이미 사용중인 닉네임입니다.';
+        }
+      });
+      this.imgName = this.randomProfile.name.toString();
+      this.imgName = this.imgName.substr(5, 12);
+      //이미지 경로에서 소스만 추출
+      this.$store.state.auth.image = this.imgName;
+      this.$store.state.auth.userInfo = this.desc;
+      this.$store.state.auth.username = this.nickname;
+      //state에 한줄소개, 이미지경로 저장
+      const myUser = {
+        email: this.$store.state.auth.email,
+        username: this.$store.state.auth.username,
+        providerType: this.$store.state.auth.providerType,
+        userId: this.$store.state.auth.userId,
+        image: this.$store.state.auth.image,
+        userInfo: this.$store.state.auth.userInfo,
+        userSeq: this.$store.state.auth.userSeq,
+      };
+      console.log('put넣을 데이터', myUser);
     },
   },
 };
 </script>
 
 <style scoped>
+.check-nickname {
+  position: absolute;
+  text-align: end;
+  padding-top: 1rem;
+  font-size: 1.4rem;
+  color: var(--green);
+}
+.check-nickname-duplicated {
+  position: absolute;
+  text-align: end;
+  padding-top: 1rem;
+  font-size: 1.4rem;
+  color: var(--orange-dark);
+}
+.check-idOverlap {
+  padding: 0.6rem;
+  font-size: 1.2rem;
+  margin: 0;
+  position: absolute;
+  right: 23%;
+  width: 6.3rem;
+  height: 2.6rem;
+  background: #757575;
+  color: white;
+}
 .signup-form {
   display: float;
   height: 70rem;
@@ -177,13 +266,6 @@ input:focus {
   display: flex;
   justify-content: flex-end;
 }
-.check-nickname {
-  position: absolute;
-  text-align: end;
-  padding-top: 1rem;
-  font-size: 1.4rem;
-  color: var(--orange-dark);
-}
 .description {
   font-family: Spoqa Han Sans Neo;
   font-weight: bold;
@@ -215,7 +297,13 @@ button {
   cursor: no-drop;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
+  .check-nickname {
+    position: absolute;
+    text-align: end;
+    padding-top: 0.6rem;
+    font-size: 1.2rem;
+  }
   .container {
     display: flex;
     flex-direction: column;
@@ -252,12 +340,6 @@ button {
   }
   .start-btn {
     margin: 0;
-  }
-  .check-nickname {
-    position: absolute;
-    text-align: end;
-    padding-top: 0.6rem;
-    font-size: 1.2rem;
   }
 }
 </style>

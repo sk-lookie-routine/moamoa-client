@@ -5,9 +5,6 @@
     <div class="login-buttons">
       <kakao-login-button class="kakao-login"></kakao-login-button>
       <google-login-button class="google-login"></google-login-button>
-      <p>GOOGLE User INFO : {{ googleUser }}</p>
-      <div id="my-signin2"></div>
-      <button @click="signout" align="left">signout</button>
     </div>
     <div class="auth-isMember">
       아직 MOAMOA의 회원이 아니신가요?
@@ -29,37 +26,6 @@ import GoogleLoginButton from './GoogleLoginBtn.vue';
 import KakaoLoginButton from './KakaoLoginBtn.vue';
 export default {
   components: { GoogleLoginButton, KakaoLoginButton },
-  data() {
-    return {
-      googleUser: null,
-    };
-  },
-  mounted() {
-    window.gapi.signin2.render('my-signin2', {
-      scope: 'profile email',
-      width: 240,
-      height: 50,
-      longtitle: true,
-      theme: 'dark',
-      onsuccess: this.onSuccess,
-      onfailure: this.onFailure,
-    });
-  },
-  methods: {
-    onSuccess(googleUser) {
-      console.log(googleUser);
-      this.googleUser = googleUser.getBasicProfile();
-    },
-    onFailure(error) {
-      console.log(error);
-    },
-    signout() {
-      const authInst = window.gapi.auth2.getAuthInstance();
-      authInst.signOut().then(() => {
-        console.log('User Signed Out!!!');
-      });
-    },
-  },
 };
 </script>
 

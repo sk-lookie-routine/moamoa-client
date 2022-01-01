@@ -22,7 +22,12 @@
     </nav>
     <div class="header-btns-container">
       <button class="auth-btn" @click="menuToggled">
-        <router-link to="/login">로그인</router-link>
+        <div v-if="!this.$store.state.auth.isLogin">
+          <router-link to="/login">로그인</router-link>
+        </div>
+        <div v-if="this.$store.state.auth.isLogin" @click="signout">
+          <router-link to="/login"> 로그아웃 </router-link>
+        </div>
       </button>
       <button class="mypage-btn" @click="menuToggled">
         <router-link to="/mypage">마이페이지</router-link>
@@ -49,6 +54,19 @@ export default {
   methods: {
     menuToggled() {
       this.isMenuClicked = !this.isMenuClicked;
+    },
+    signout() {
+      if (this.$store.state.auth.providerType == 'GOOGLE') {
+        const authInst = window.gapi.auth2.getAuthInstance();
+        authInst.signOut().then(() => {
+          console.log('User Signed Out!!!');
+        });
+      } else {
+        window.Kakao.Auth.logout(() => {
+          alert('로그아웃 되었습니다.');
+        });
+      }
+      this.$store.state.auth.isLogin = false;
     },
   },
 };

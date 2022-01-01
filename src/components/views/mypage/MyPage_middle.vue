@@ -9,12 +9,14 @@
     </div>
     <div class="box--underline"></div>
     <div class="profile-box">
-      <div class="profile-image">
-        <img src="@/assets/img/profile/profile_sc_b.svg" />
+      <div class="profile-image" v-for="image in imgList" :key="image.id">
+        <div v-if="image.name.search(this.$store.state.auth.image) != -1">
+          <img :src="image.name" />
+        </div>
       </div>
       <div class="profile-nickname">{{ currentUser.username }}</div>
       <div class="profile-email">{{ currentUser.email }}</div>
-      <div class="profile-desc">스터디 100개 뿌시는게 목표</div>
+      <div class="profile-desc">{{ currentUser.userInfo }}</div>
       <div class="box--underline-under-email"></div>
       <div class="profile-study-info">
         <div class="profile-study-completed">
@@ -35,31 +37,52 @@ export default {
   props: {
     editProfile: Function,
   },
+  created() {
+    this.getMyUser();
+  },
   data() {
     return {
-      currentUser: { username: '', email: '' },
+      currentUser: { username: '', email: '', userInfo: '', image: '' },
+      profile: '',
+      imgList: [
+        { id: 0, name: require('@/assets/img/profile/profile_sc_o.svg') },
+        { id: 1, name: require('@/assets/img/profile/profile_sc_p.svg') },
+        { id: 2, name: require('@/assets/img/profile/profile_sc_r.svg') },
+        { id: 3, name: require('@/assets/img/profile/profile_sc_b.svg') },
+        { id: 4, name: require('@/assets/img/profile/profile_sc_y.svg') },
+        { id: 5, name: require('@/assets/img/profile/profile_sq_b.svg') },
+        { id: 6, name: require('@/assets/img/profile/profile_sq_o.svg') },
+        { id: 7, name: require('@/assets/img/profile/profile_sq_p.svg') },
+        { id: 8, name: require('@/assets/img/profile/profile_sq_r.svg') },
+        { id: 9, name: require('@/assets/img/profile/profile_sq_y.svg') },
+        { id: 10, name: require('@/assets/img/profile/profile_tr_b.svg') },
+        { id: 11, name: require('@/assets/img/profile/profile_tr_o.svg') },
+        { id: 12, name: require('@/assets/img/profile/profile_tr_p.svg') },
+        { id: 13, name: require('@/assets/img/profile/profile_tr_r.svg') },
+        { id: 14, name: require('@/assets/img/profile/profile_tr_y.svg') },
+      ],
     };
   },
   methods: {
-    loginChecking() {
-      this.$store.commit('loginCheck');
-      if (this.$store.state.auth.token == '/') {
-        this.isLogin = false;
-      } else {
-        this.isLogin = true;
-      }
-    },
     async getMyUser() {
-      this.loginChecking();
-      console.log(this.$store.state.auth.isLogin);
-      const response = await getUser(this.$store.state.auth.token);
-      this.currentUser.username = response.data.username;
-      this.currentUser.email = response.data.email;
-      console.log(this.currentUser.username);
+      this.$store.commit('loginCheck');
+      const response = await getUser(this.$store.state.auth.userId);
+      console.log('현재 store 정보', this.$store.state.auth);
+      for (let i = 0; i < response.data.content.length; i++) {
+        if (response.data.content[i].userId == this.$store.state.auth.userId) {
+          this.currentUser = {
+            username: response.data.content[i].username,
+            email: response.data.content[i].email,
+            userInfo: response.data.content[i].userInfo,
+            image: response.data.content[i].image,
+          };
+        }
+      }
+      // console.log('user정보:', this.currentUser);
+      // this.profile += this.currentUser.image + '.svg';
+      // this.$store.state.auth.image = this.profile;
+      this.profile = this.$store.state.auth.image;
     },
-  },
-  mounted() {
-    this.getMyUser();
   },
 };
 </script>

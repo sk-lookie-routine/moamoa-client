@@ -6,7 +6,6 @@
 </template>
 
 <script>
-// import { callKakaoLoginHandler } from '@/api/index.js';
 export default {
   methods: {
     kakaoLogin() {

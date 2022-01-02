@@ -70,17 +70,9 @@ export default {
             console.log(error);
           },
         });
-        // if (!window.Kakao.Auth.getAccessToken()) {
-        //   console.log('Not logged in.');
-        //   return;
-        // }
-        // window.Kakao.Auth.logout(function () {
-        //   alert('로그아웃 되었습니다.', window.Kakao.Auth.getAccessToken());
-        // });
       }
       this.$store.commit('initUser');
-      console.log('state 초기화', this.$store.state.auth);
-      this.$store.state.auth.isLogin = false;
+      this.$store.commit('logout');
     },
   },
 };

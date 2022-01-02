@@ -26,6 +26,9 @@ const auth = {
         state.isLogin = true;
       }
     },
+    logout(state) {
+      state.isLogin = false;
+    },
     setUser(state, payload) {
       state.email = payload.email;
       state.username = payload.username;

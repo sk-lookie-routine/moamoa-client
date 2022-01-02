@@ -7,14 +7,14 @@ function getUser(userId) {
         params: { userId },
     });
 }
-function getUserId(username) {
+function searchUserByName(username) {
     return user.get(`?username=${username}`, {
     });
 }
-function UserDataPost(postData) {
+function postUserData(postData) {
     return user.post('', postData);
 }
 function updateUserData(updateData) {
     return user.put('', updateData);
 }
-export { getUser, getUserId, UserDataPost, updateUserData };
+export { getUser, searchUserByName, postUserData, updateUserData };

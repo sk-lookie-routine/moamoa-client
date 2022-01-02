@@ -83,7 +83,7 @@
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
-import { getUserId, updateUserData } from '@/api/user.js';
+import { searchUserByName, updateUserData } from '@/api/user.js';
 export default {
   components: { TheFooter },
   data() {
@@ -99,7 +99,10 @@ export default {
       randomProfile: {
         name: require(`@/assets/img/profile/${this.$store.state.auth.image}.svg`),
       },
-      image: `@/assets/img/profile/${this.$store.state.auth.image}.svg`,
+      image: `@/assets/img/profile/${this.$store.state.auth.image}.svg`.substr(
+        21,
+        12,
+      ),
       imgList: [
         { name: require('@/assets/img/profile/profile_sc_o.svg') },
         { name: require('@/assets/img/profile/profile_sc_p.svg') },
@@ -123,7 +126,7 @@ export default {
     checkIdDuplicate() {
       this.isClickedDuplicatedButton = true;
       //중복 확인 버튼 눌렀다고 체크
-      getUserId(this.nickname).then(response => {
+      searchUserByName(this.nickname).then(response => {
         console.log(response);
         if (typeof response.data.content === 'undefined') {
           this.isNicknameDuplicated = false;

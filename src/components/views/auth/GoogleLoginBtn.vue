@@ -7,7 +7,7 @@
     <div class="google-login-btn-text">구글 아이디로 로그인</div>
   </a> -->
   <!-- <p>GOOGLE User INFO : {{ googleUser }}</p> -->
-  <div class="login-buttons">
+  <div class="login-buttons" @click="onClickGoogleLoginButton">
     <button id="my-signin2"></button>
     <div class="google-login-btn">
       <img src="@/assets/img/icon_google.svg" />
@@ -27,17 +27,17 @@ export default {
       googleUser: null,
     };
   },
-  mounted() {
-    window.gapi.signin2.render('my-signin2', {
-      scope: 'profile email',
-      width: 292,
-      height: 44,
-      longtitle: false,
-      onsuccess: this.onSuccess,
-      onfailure: this.onFailure,
-    });
-  },
   methods: {
+    onClickGoogleLoginButton() {
+      window.gapi.signin2.render('my-signin2', {
+        scope: 'profile email',
+        width: 292,
+        height: 44,
+        longtitle: false,
+        onsuccess: this.onSuccess,
+        onfailure: this.onFailure,
+      });
+    },
     async onSuccess(googleUser) {
       this.googleUser = googleUser.getBasicProfile();
 

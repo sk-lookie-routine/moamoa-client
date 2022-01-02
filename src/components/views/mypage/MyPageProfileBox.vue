@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import MyPageDefault from './MyPage_middle.vue';
+import MyPageDefault from './MyPageProfile.vue';
 export default {
   components: { MyPageDefault },
   data() {

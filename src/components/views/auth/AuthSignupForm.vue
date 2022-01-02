@@ -91,8 +91,12 @@
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
-import { getUserId, updateUserData } from '@/api/user.js';
-import { UserDataPost, getUser } from '@/api/user.js';
+import {
+  searchUserByName,
+  updateUserData,
+  postUserData,
+  getUser,
+} from '@/api/user.js';
 export default {
   components: { TheFooter },
   data() {
@@ -142,7 +146,7 @@ export default {
       this.$store.commit('setUser', myUser);
       console.log('data:', this.$store.state.auth);
       if (myUser.userSeq == null) {
-        UserDataPost(myUser);
+        postUserData(myUser);
       } else {
         updateUserData(myUser);
       }
@@ -155,7 +159,7 @@ export default {
     async checkIdDuplicate() {
       this.isClickedDuplicatedButton = true;
       //중복 확인 버튼 눌렀다고 체크
-      getUserId(this.nickname).then(response => {
+      searchUserByName(this.nickname).then(response => {
         if (typeof response.data.content === 'undefined') {
           this.isNicknameDuplicated = false;
           this.text = '사용 가능한 닉네임입니다.';

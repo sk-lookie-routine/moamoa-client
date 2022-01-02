@@ -140,8 +140,10 @@ export default {
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
       this.randomProfile = this.imgList[randomNumber];
+      //랜덤 프로필 받아와서
       this.image = this.imgList[randomNumber].name.substr(5, 12);
-      console.log(this.image);
+      //image에 넣어줌 -> image는 이미지 소스만 받는역할
+      //randomProfile -> template에서 출력하기 위한 변수
     },
     handleEdit() {
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {

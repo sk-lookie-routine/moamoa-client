@@ -7,6 +7,13 @@ function getUser(userId) {
         params: { userId },
     });
 }
+
+function getUserByStudySeq(userSeq) {
+    return user.get('/', {
+        params: { userSeq },
+    });
+}
+
 function getUserId(username) {
     return user.get(`?username=${username}`, {
     });
@@ -17,4 +24,4 @@ function UserDataPost(postData) {
 function updateUserData(updateData) {
     return user.put('', updateData);
 }
-export { getUser, getUserId, UserDataPost, updateUserData };
+export { getUser, getUserByStudySeq, getUserId, UserDataPost, updateUserData };

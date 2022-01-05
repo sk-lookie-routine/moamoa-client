@@ -1,16 +1,15 @@
-/*
-function fetchReply(userSeq, studySeq) {
-  return posts.get('/api/reply', {
+import { reply } from './index';
+
+function fetchReply(studySeq) {
+  return reply.get('/', {
     params: {
-      userSeq,
       studySeq,
     },
   });
-
-  function createReply(reply) {
-  return posts.post('/api/reply', reply);
-}
 }
 
-export { fetchReply};
-*/
+function createReply(reply) {
+  return reply.post('/', reply);
+}
+
+export { fetchReply, createReply };

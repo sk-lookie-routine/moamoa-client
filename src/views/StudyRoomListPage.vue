@@ -22,10 +22,7 @@
 </template>
 
 <script>
-export default {
-  // eslint-disable-next-line prettier/prettier
-  inject: ["joiningStudyRooms"],
-};
+export default {};
 </script>
 
 <style scoped>

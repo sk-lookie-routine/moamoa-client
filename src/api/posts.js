@@ -1,26 +1,26 @@
-import { posts } from './index';
+import { post } from './index';
 
 function createPost(postData) {
-  return posts.post('/', postData);
+  return post.post('/', postData);
 }
 
 function updatePost(postData) {
-  return posts.get('/', postData);
+  return post.get('/', postData);
 }
 
 function fetchPosts() {
-  return posts.get('/');
+  return post.get('/');
 }
 
 function fetchPostById(studySeq) {
-  return posts.get('/', {
+  return post.get('/', {
     params: {
       studySeq,
     },
   });
 }
 function fetchPostsByStudyType(studyType) {
-  return posts.get('/', {
+  return post.get('/', {
     params: {
       studyType,
     },
@@ -28,7 +28,7 @@ function fetchPostsByStudyType(studyType) {
 }
 
 function fetchPostsByStudyTypeList(studyTypeList) {
-  return posts.get('/', {
+  return post.get('/', {
     params: {
       studyTypeList,
     },
@@ -36,7 +36,7 @@ function fetchPostsByStudyTypeList(studyTypeList) {
 }
 
 function fetchPostsByTitle(title) {
-  return posts.get('/', {
+  return post.get('/', {
     params: {
       title,
     },

@@ -39,11 +39,6 @@ export default [
     component: () => import('@/views/StudyRoomListPage.vue'),
   },
   {
-    path: '/apply',
-    name: 'apply',
-    component: () => import('@/views/StudyApplyPage.vue'),
-  },
-  {
     path: '/mypage',
     name: 'mypage',
     component: () => import('@/components/views/mypage/MyPage.vue'),
@@ -62,6 +57,11 @@ export default [
     path: '/rooms/:roomId',
     name: 'room',
     component: () => import('@/views/StudyRoomPage.vue'),
+  },
+  {
+    path: '/apply/:postId',
+    name: 'apply',
+    component: () => import('@/views/StudyApplyPage.vue'),
   },
   {
     path: '/:notFound(.*)',

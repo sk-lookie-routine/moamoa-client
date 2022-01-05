@@ -8,7 +8,7 @@
     <div class="main-container">
       <header>
         <div class="box--underline bottom-padding">
-          <h1>타이틀</h1>
+          <h1>{{ title }}</h1>
         </div>
       </header>
       <section class="textarea-container">
@@ -17,6 +17,7 @@
           placeholder="모집글의 '신청자에게 한마디!'를 참고하여 자신에 대한 소개를 작성해보세요!"
           name="applyment"
           rows="7"
+          v-model="content"
         ></textarea>
         <div class="error-text">필수 입력 항목입니다.</div>
       </section>
@@ -24,7 +25,7 @@
         <study-apply-cautions></study-apply-cautions>
       </section>
       <section class="button-container">
-        <base-button>스터디 신청하기</base-button>
+        <base-button @click="submitForm">스터디 신청하기</base-button>
       </section>
     </div>
   </div>
@@ -32,6 +33,7 @@
 
 <script>
 import StudyApplyCautions from '@/components/views/studyapply/StudyApplyCautions.vue';
+import { createJoin } from '@/api/room.js';
 
 export default {
   components: { StudyApplyCautions },
@@ -43,8 +45,24 @@ export default {
   },
   data() {
     return {
+      title: '',
+      content: '',
       hasApplied: false,
     };
+  },
+  methods: {
+    submitForm() {
+      const join = {
+        studySeq: this.$route.params.postId,
+        userSeq: 4,
+        comment: this.content,
+        joinType: 'WAIT',
+      };
+      createJoin(join);
+    },
+  },
+  created() {
+    this.title = this.$route.query.title;
   },
 };
 </script>

@@ -1,91 +1,116 @@
 <template>
   <div class="main-container">
-    <div class="post-header">
-      <div class="box--underline bottom-padding">
-        <h1>{{ post.title }}</h1>
-      </div>
-      <div class="post-info-and-btn-container">
-        <div class="post-info">
-          <div class="post__writer">
-            <img
-              src="@/assets/img/profile/profile_tr_b.svg"
-              alt=""
-              class="writer__profile-img"
-            />
-            <div class="writer__nickname">이채윤</div>
+    <div v-if="post" class="post">
+      <div class="post-header">
+        <div class="box--underline bottom-padding">
+          <h1>{{ post.title }}</h1>
+        </div>
+        <div class="post-info-and-btn-container">
+          <div class="post-info">
+            <div class="post__writer">
+              <img
+                src="@/assets/img/profile/profile_tr_b.svg"
+                alt=""
+                class="writer__profile-img"
+              />
+              <div class="writer__nickname">이채윤</div>
+            </div>
+            <div class="post__posted-date">{{ post.createdAt }}</div>
           </div>
-          <div class="post__posted-date">{{ post.createdAt }}</div>
-        </div>
-        <base-button :size="'small'">신청하기</base-button>
-      </div>
-    </div>
-    <div class="post-contents box--underline">
-      <div class="post-content">
-        <h2>스터디 정보 요약</h2>
-        <div class="box--gray-background">
-          <ul class="post-content-lines">
-            <li>
-              <p>
-                <span class="p-text--em">모집 마감 :</span> {{ post.deadLine }}
-              </p>
-            </li>
-            <li>
-              <p>
-                <span class="p-text--em">기간 :</span> {{ post.startDate }}~{{
-                  post.endDate
-                }}
-              </p>
-            </li>
-            <li>
-              <p>
-                <span class="p-text--em">신청 인원 :</span> 2명/{{
-                  post.memberCount
-                }}명
-              </p>
-            </li>
-          </ul>
+          <base-button :size="'small'" @click="showApplyPage(studySeq)"
+            >신청하기</base-button
+          >
         </div>
       </div>
-      <div class="post-content">
-        <h2>스터디 목표 & 소개</h2>
-        <div class="box--gray-background">
-          <p class="p-text--red">{{ post.goal }}</p>
-          <p>
-            {{ post.info }}
-          </p>
+      <div>
+        <div>
+          <div>신청한 사람들</div>
+          <div>^</div>
+        </div>
+        <div>
+          <div>
+            <div>
+              <div>이미지</div>
+              <div>YOUR NAME</div>
+            </div>
+            <div>
+              <div>거절</div>
+              <div>|</div>
+              <div>승인</div>
+            </div>
+          </div>
+          <div>내용</div>
         </div>
       </div>
-      <div class="post-content">
-        <h2>스터디 진행 방식</h2>
-        <div class="box--gray-background">
-          <p>
-            {{ post.how }}
-          </p>
+      <div class="post-contents box--underline">
+        <div class="post-content">
+          <h2>스터디 정보 요약</h2>
+          <div class="box--gray-background">
+            <ul class="post-content-lines">
+              <li>
+                <p>
+                  <span class="p-text--em">모집 마감 :</span>
+                  {{ post.deadLine }}
+                </p>
+              </li>
+              <li>
+                <p>
+                  <span class="p-text--em">기간 :</span> {{ post.startDate }}~{{
+                    post.endDate
+                  }}
+                </p>
+              </li>
+              <li>
+                <p>
+                  <span class="p-text--em">신청 인원 :</span> 2명/{{
+                    post.memberCount
+                  }}명
+                </p>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="post-content">
-        <h2>신청자에게 한마디!</h2>
-        <div class="box--gray-background">
-          <p>
-            {{ post.comment }}
-          </p>
+        <div class="post-content">
+          <h2>스터디 목표 & 소개</h2>
+          <div class="box--gray-background">
+            <p class="p-text--red">{{ post.goal }}</p>
+            <p>
+              {{ post.info }}
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="post-content">
-        <h2>태그</h2>
-        <div class="tags-container">
-          <span class="tag-icon">#</span>
-          <ul v-if="post.hashTags.length > 0" class="tags">
-            <li v-for="(tag, index) in post.hashTags" :key="index">
-              <base-tag>{{ tag }}</base-tag>
-            </li>
-          </ul>
+        <div class="post-content">
+          <h2>스터디 진행 방식</h2>
+          <div class="box--gray-background">
+            <p>
+              {{ post.how }}
+            </p>
+          </div>
+        </div>
+        <div class="post-content">
+          <h2>신청자에게 한마디!</h2>
+          <div class="box--gray-background">
+            <p>
+              {{ post.comment }}
+            </p>
+          </div>
+        </div>
+        <div class="post-content">
+          <h2>태그</h2>
+          <div class="tags-container">
+            <span class="tag-icon">#</span>
+            <ul v-if="post.hashTags.length > 0" class="tags">
+              <li v-for="(tag, index) in post.hashTags" :key="index">
+                <base-tag>{{ tag }}</base-tag>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
     <div class="post-comments">
       <h2>댓글</h2>
-      <div class="box--underline comment-register-container">
+      <div class="comment-register-container">
         <div class="comment-register__user-profile">
           <img
             src="@/assets/img/profile/profile_tr_p.svg"
@@ -94,23 +119,28 @@
           />
           <div class="user__nickname">개발천재서영</div>
         </div>
-        <textarea
-          placeholder="스터디장에게 궁금한 점이 있다면 댓글을 남겨보세요."
-          name="comment"
-          rows="5"
-        ></textarea>
-        <div class="comment-register-btn-container">
-          <button class="comment-register__register-btn">등록</button>
-        </div>
+        <form @submit.prevent="submitReply">
+          <textarea
+            placeholder="스터디장에게 궁금한 점이 있다면 댓글을 남겨보세요."
+            name="comment"
+            rows="5"
+            v-model="replyContent"
+          ></textarea>
+          <div class="comment-register-btn-container">
+            <button class="comment-register__register-btn">등록</button>
+          </div>
+        </form>
       </div>
-      <ul class="comment-list">
-        <base-reply
-          :id="1"
-          :imgSrc="'profile_tr_b'"
-          :nickname="'사람'"
-          :date="'2020.12.12'"
-          :content="'댓글 내용'"
-        ></base-reply>
+      <ul v-if="replyList" class="comment-list">
+        <li v-for="reply in replyList" :key="reply.replySeq">
+          <base-reply
+            :id="reply.replySeq"
+            :imgSrc="'profile_tr_b'"
+            :nickname="reply.userInfo"
+            :date="formatDate(reply.createdAt)"
+            :content="reply.content"
+          ></base-reply>
+        </li>
       </ul>
     </div>
   </div>
@@ -119,31 +149,72 @@
 
 <script>
 import { fetchPostById } from '@/api/posts.js';
-import { fetchReply } from '@/api/reply.js';
+import { fetchReply, createReply } from '@/api/reply.js';
+import { getUserByStudySeq } from '@/api/user.js';
 import BaseReply from '@/components/base/BaseReply.vue';
 
 export default {
   components: { BaseReply },
-  methods: {
-    async fetchPostData() {
-      const postId = this.$route.params.postId;
-      const response = await fetchPostById(postId);
-      this.post = response.data.content[0];
-    },
-
-    async fetchReplyData() {
-      const response = await fetchReply(1);
-      this.replies = response.data.content;
-    },
-  },
   data() {
     return {
+      studySeq: null,
       post: null,
-      replies: [],
+      replyContent: '',
+      replyList: [],
     };
   },
+  methods: {
+    showApplyPage(postId) {
+      this.$router.push({
+        name: 'apply',
+        params: {
+          postId,
+        },
+        query: { title: this.post.title },
+      });
+    },
+    submitReply() {
+      const reply = {
+        userSeq: 2,
+        studySeq: this.studySeq,
+        content: this.replyContent,
+      };
+      console.log(reply);
+      createReply(reply);
+    },
+    async fetchReply(studySeq) {
+      const replyResponse = await fetchReply(studySeq);
+      this.replyList = replyResponse.data.content;
+      const list = await Promise.all(
+        replyResponse.data.content.map(async item => {
+          const res = await getUserByStudySeq(item.userSeq);
+          const reply = {
+            ...item,
+            image: res.data.content[0].image,
+            userInfo: res.data.content[0].userInfo,
+          };
+          return reply;
+        }),
+      );
+      this.replyList = await list;
+    },
+    async fetchData() {
+      const postResponse = await fetchPostById(this.studySeq);
+      this.post = postResponse.data.content[0];
+      this.post.createdAt = this.formatDate(this.post.createdAt);
+      this.fetchReply(this.post.studySeq);
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = ('0' + (date.getMonth() + 1)).slice(-2);
+      const day = ('0' + date.getDate()).slice(-2);
+      return year + '.' + month + '.' + day;
+    },
+  },
   created() {
-    this.fetchPostData();
+    this.studySeq = this.$route.params.postId;
+    this.fetchData();
   },
 };
 </script>
@@ -281,6 +352,10 @@ textarea {
 .comment-list {
   display: flex;
   flex-direction: column;
+}
+
+.comment-list > li:first-child {
+  border-top: 0.1rem solid var(--gray04);
 }
 
 @media (max-width: 768px) {

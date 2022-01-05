@@ -40,7 +40,7 @@
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
-import MyPageUpperProfileBox from './MyPage_upperProfileBox.vue';
+import MyPageUpperProfileBox from './MyPageProfileBox.vue';
 import AuthLoginPage from '@/views/AuthLoginPage.vue';
 export default {
   components: { TheFooter, MyPageUpperProfileBox, AuthLoginPage },

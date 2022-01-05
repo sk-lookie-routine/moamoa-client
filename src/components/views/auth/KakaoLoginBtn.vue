@@ -40,6 +40,9 @@ a {
   border-radius: 1rem;
   background: #fee500;
 }
+.kakao-login-btn:hover {
+  cursor: pointer;
+}
 .kakao-login-btn img {
   padding-left: 2rem;
 }

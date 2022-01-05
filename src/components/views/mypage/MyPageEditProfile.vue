@@ -65,14 +65,16 @@
       <input
         type="text"
         v-model="desc"
-        placeholder="한줄소개(user.desc)"
+        placeholder="{{desc}}"
         class="desc_ph"
         maxlength="30"
       />
       <div class="box--underline"></div>
     </div>
     <div class="edit-btn">
-      <base-button class="cancel" @click="handleCancel">취소</base-button>
+      <base-button class="cancel" @click="this.$router.replace('mypage')"
+        >취소</base-button
+      >
       <base-button class="edit-done" @click="handleEdit">변경완료</base-button>
     </div>
   </div>
@@ -81,7 +83,7 @@
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
-import { getUserId, updateUserData } from '@/api/user.js';
+import { searchUserByName, updateUserData } from '@/api/user.js';
 export default {
   components: { TheFooter },
   data() {
@@ -97,7 +99,10 @@ export default {
       randomProfile: {
         name: require(`@/assets/img/profile/${this.$store.state.auth.image}.svg`),
       },
-      image: '',
+      image: `@/assets/img/profile/${this.$store.state.auth.image}.svg`.substr(
+        21,
+        12,
+      ),
       imgList: [
         { name: require('@/assets/img/profile/profile_sc_o.svg') },
         { name: require('@/assets/img/profile/profile_sc_p.svg') },
@@ -118,15 +123,27 @@ export default {
     };
   },
   methods: {
-    moveToHome() {
-      this.isAllFilled = true;
-      this.$router.push('/home');
+    checkIdDuplicate() {
+      this.isClickedDuplicatedButton = true;
+      //중복 확인 버튼 눌렀다고 체크
+      searchUserByName(this.nickname).then(response => {
+        console.log(response);
+        if (typeof response.data.content === 'undefined') {
+          this.isNicknameDuplicated = false;
+          this.text = '사용 가능한 닉네임입니다.';
+        } else {
+          this.isNicknameDuplicated = true;
+          this.text = '이미 사용중인 닉네임입니다.';
+        }
+      });
     },
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
       this.randomProfile = this.imgList[randomNumber];
+      //랜덤 프로필 받아와서
       this.image = this.imgList[randomNumber].name.substr(5, 12);
-      console.log(this.image);
+      //image에 넣어줌 -> image는 이미지 소스만 받는역할
+      //randomProfile -> template에서 출력하기 위한 변수
     },
     handleEdit() {
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {
@@ -146,23 +163,6 @@ export default {
         alert('모든 빈칸을 채워주세요.');
       }
     },
-  },
-  handleCancel() {
-    this.$router.replace('mypage');
-  },
-  checkIdDuplicate() {
-    this.isClickedDuplicatedButton = true;
-    //중복 확인 버튼 눌렀다고 체크
-    getUserId(this.nickname).then(response => {
-      console.log(response);
-      if (typeof response.data.content === 'undefined') {
-        this.isNicknameDuplicated = false;
-        this.text = '사용 가능한 닉네임입니다.';
-      } else {
-        this.isNicknameDuplicated = true;
-        this.text = '이미 사용중인 닉네임입니다.';
-      }
-    });
   },
 };
 </script>

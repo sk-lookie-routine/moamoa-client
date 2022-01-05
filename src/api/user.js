@@ -14,14 +14,15 @@ function getUserByStudySeq(userSeq) {
     });
 }
 
-function getUserId(username) {
+function searchUserByName(username) {
     return user.get(`?username=${username}`, {
     });
 }
-function UserDataPost(postData) {
+function postUserData(postData) {
     return user.post('', postData);
 }
 function updateUserData(updateData) {
     return user.put('', updateData);
 }
-export { getUser, getUserByStudySeq, getUserId, UserDataPost, updateUserData };
+
+export { getUser,getUserByStudySeq, searchUserByName, postUserData, updateUserData };

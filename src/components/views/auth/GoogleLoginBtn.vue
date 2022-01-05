@@ -7,7 +7,7 @@
     <div class="google-login-btn-text">구글 아이디로 로그인</div>
   </a> -->
   <!-- <p>GOOGLE User INFO : {{ googleUser }}</p> -->
-  <div class="login-buttons">
+  <div class="login-buttons" @click="onClickGoogleLoginButton">
     <button id="my-signin2"></button>
     <div class="google-login-btn">
       <img src="@/assets/img/icon_google.svg" />
@@ -27,17 +27,17 @@ export default {
       googleUser: null,
     };
   },
-  mounted() {
-    window.gapi.signin2.render('my-signin2', {
-      scope: 'profile email',
-      width: 292,
-      height: 44,
-      longtitle: false,
-      onsuccess: this.onSuccess,
-      onfailure: this.onFailure,
-    });
-  },
   methods: {
+    onClickGoogleLoginButton() {
+      window.gapi.signin2.render('my-signin2', {
+        scope: 'profile email',
+        width: 292,
+        height: 44,
+        longtitle: false,
+        onsuccess: this.onSuccess,
+        onfailure: this.onFailure,
+      });
+    },
     async onSuccess(googleUser) {
       this.googleUser = googleUser.getBasicProfile();
 
@@ -52,16 +52,16 @@ export default {
       //get받아온 user정보
       this.$store.state.auth.userSeq = myDBuser.data.content[0].userSeq;
       console.log('userSeq값:', this.$store.state.auth.userSeq);
-      if (myDBuser.data == null) {
+      if (myDBuser.data == null || myDBuser.data.content[0].image == null) {
         this.$router.push({
           name: 'signup-form',
         });
       } else {
         this.$store.commit('setUser', myDBuser.data.content[0]);
         console.log('구글로그인userData', myDBuser);
-        // this.$router.push({
-        //   name: 'home',
-        // });
+        this.$router.push({
+          name: 'mypage',
+        });
       }
       this.$store.commit('loginCheck');
     },

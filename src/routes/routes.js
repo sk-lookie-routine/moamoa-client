@@ -46,7 +46,7 @@ export default [
   {
     path: '/edit',
     name: 'editComponent',
-    component: () => import('@/components/views/mypage/MyPage_edit.vue'),
+    component: () => import('@/components/views/mypage/MyPageEditProfile.vue'),
   },
   {
     path: '/posts/:postId',

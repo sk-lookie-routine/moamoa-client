@@ -91,8 +91,12 @@
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
-import { getUserId, updateUserData } from '@/api/user.js';
-import { UserDataPost } from '@/api/user.js';
+import {
+  searchUserByName,
+  updateUserData,
+  postUserData,
+  getUser,
+} from '@/api/user.js';
 export default {
   components: { TheFooter },
   data() {
@@ -132,15 +136,17 @@ export default {
       this.isAllFilled = true;
       const myUser = {
         email: this.$store.state.auth.email,
-        username: this.$store.state.auth.username,
+        username: this.nickname,
         providerType: this.$store.state.auth.providerType,
         userId: this.$store.state.auth.userId,
-        image: this.$store.state.auth.image,
-        userInfo: this.$store.state.auth.userInfo,
+        image: this.imgName,
+        userInfo: this.desc,
         userSeq: this.$store.state.auth.userSeq,
       };
-      if (myUser.userSeq == '') {
-        UserDataPost(myUser);
+      this.$store.commit('setUser', myUser);
+      console.log('data:', this.$store.state.auth);
+      if (myUser.userSeq == null) {
+        postUserData(myUser);
       } else {
         updateUserData(myUser);
       }
@@ -150,10 +156,10 @@ export default {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
       this.randomProfile = this.imgList[randomNumber];
     },
-    checkIdDuplicate() {
+    async checkIdDuplicate() {
       this.isClickedDuplicatedButton = true;
       //중복 확인 버튼 눌렀다고 체크
-      getUserId(this.nickname).then(response => {
+      searchUserByName(this.nickname).then(response => {
         if (typeof response.data.content === 'undefined') {
           this.isNicknameDuplicated = false;
           this.text = '사용 가능한 닉네임입니다.';
@@ -162,20 +168,21 @@ export default {
           this.text = '이미 사용중인 닉네임입니다.';
         }
       });
+      const ExistUser = await getUser(this.$store.state.auth.userId);
+      this.$store.state.auth.userSeq = ExistUser.data.content[0].userSeq;
+      //userSeq 업데이트 -- 나중엔 지우거나 수정해야 할 코드
+
       this.imgName = this.randomProfile.name.toString();
       this.imgName = this.imgName.substr(5, 12);
+      console.log('this.imgName', this.imgName);
       //이미지 경로에서 소스만 추출
-      this.$store.state.auth.image = this.imgName;
-      this.$store.state.auth.userInfo = this.desc;
-      this.$store.state.auth.username = this.nickname;
-      //state에 한줄소개, 이미지경로 저장
       const myUser = {
         email: this.$store.state.auth.email,
-        username: this.$store.state.auth.username,
+        username: this.nickname,
         providerType: this.$store.state.auth.providerType,
         userId: this.$store.state.auth.userId,
-        image: this.$store.state.auth.image,
-        userInfo: this.$store.state.auth.userInfo,
+        image: this.imgName,
+        userInfo: this.desc,
         userSeq: this.$store.state.auth.userSeq,
       };
       console.log('put넣을 데이터', myUser);

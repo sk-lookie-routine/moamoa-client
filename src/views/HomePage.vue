@@ -1,5 +1,5 @@
 <template>
-  <main class="noselect" v-if="this.$store.state.auth.profileImageUrl != null">
+  <main class="noselect">
     <the-banner></the-banner>
     <div class="main-container">
       <div class="tabs-and-btn-container">
@@ -26,7 +26,6 @@
       <study-guide-jumbotron></study-guide-jumbotron>
     </div>
   </main>
-  <auth-signup-form-page v-else></auth-signup-form-page>
   <the-footer></the-footer>
 </template>
 
@@ -35,13 +34,11 @@ import TheBanner from '@/components/views/home/TheBanner.vue';
 import StudyGuideJumbotron from '@/components/views/home/StudyGuideJumbotron.vue';
 import { fetchPostsByStudyType } from '@/api/posts.js';
 import { STUDY_TYPE } from '@/utils/constValue';
-import AuthSignupFormPage from './AuthSignupFormPage.vue';
 
 export default {
   components: {
     TheBanner,
     StudyGuideJumbotron,
-    AuthSignupFormPage,
   },
   data() {
     return {

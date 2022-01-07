@@ -21,18 +21,26 @@
       </ul>
     </nav>
     <div class="header-btns-container">
-      <button class="auth-btn" @click="menuToggled">
-        <div v-if="!this.$store.state.auth.isLogin">
+      <div v-if="!this.$store.state.auth.isLogin">
+        <button class="auth-btn" @click="menuToggled">
           <router-link to="/login">로그인</router-link>
-        </div>
-        <div v-if="this.$store.state.auth.isLogin" @click="signout">
-          <router-link to="/login"> 로그아웃 </router-link>
-        </div>
-      </button>
+        </button>
+        <button class="signup-link" @click="menuToggled">
+          <router-link to="/signup">회원가입</router-link>
+        </button>
+      </div>
+      <div v-else>
+        <button class="auth-btn" @click="menuToggled">
+          <router-link to="/login" @click="signout"> 로그아웃 </router-link>
+        </button>
+        <button class="signup-link" @click="menuToggled">
+          <router-link to="/mypage">마이페이지</router-link>
+        </button>
+      </div>
+
       <button class="mypage-btn" @click="menuToggled">
         <router-link to="/mypage">마이페이지</router-link>
       </button>
-      <!-- <button class="mypage-btn">마이페이지</button> -->
     </div>
   </header>
 </template>
@@ -45,7 +53,6 @@ export default {
         { name: '홈', linkTo: '/home' },
         { name: '스터디목록', linkTo: '/posts' },
         { name: '스터디룸', linkTo: '/rooms' },
-        //{ name: '공지사항', linkTo: '/notice' },
       ],
       isMenuClicked: false,
     };
@@ -60,7 +67,7 @@ export default {
         authInst.signOut().then(() => {
           alert('로그아웃 되었습니다.');
         });
-      } else {
+      } else if (this.$store.state.auth.providerType == 'KAKAO') {
         window.Kakao.API.request({
           url: '/v1/user/unlink',
           success: function (response) {
@@ -148,12 +155,20 @@ button {
   background-color: transparent;
   cursor: pointer;
 }
+.auth-btn {
+  height: 4rem;
+}
 
-.auth-btn a {
+.auth-btn a,
+.signup-link a {
   color: var(--black);
 }
-.auth-btn a:hover {
+.auth-btn a:hover,
+.signup-link a:hover {
   color: var(--gray02);
+}
+.signup-link {
+  display: none;
 }
 .mypage-btn {
   padding: 0.8rem 1.9rem;
@@ -206,16 +221,18 @@ button {
 
   li a,
   .auth-btn,
-  .mypage-btn {
+  .mypage-btn,
+  .signup-link {
+    display: block;
     color: var(--black);
     font-size: 1.5rem;
     font-weight: normal;
     font-family: Spoqa Han Sans Neo;
   }
-
   li,
   .auth-btn,
-  .mypage-btn {
+  .mypage-btn,
+  .signup-link {
     padding: 1.9rem 2.4rem;
   }
 
@@ -224,10 +241,9 @@ button {
     gap: 0rem;
     align-items: flex-start;
   }
-
-  /* .mypage-btn {
-    background-color: transparent;
-  } */
+  .auth-btn {
+    height: auto;
+  }
   .mypage-btn {
     background-color: transparent;
   }

@@ -1,12 +1,4 @@
 <template>
-  <!-- <a
-    href="http://moa-moa.kr:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000"
-    class="google-login-btn"
-  >
-    <img src="@/assets/img/icon_google.svg" />
-    <div class="google-login-btn-text">구글 아이디로 로그인</div>
-  </a> -->
-  <!-- <p>GOOGLE User INFO : {{ googleUser }}</p> -->
   <div class="login-buttons" @click="onClickGoogleLoginButton">
     <button id="my-signin2"></button>
     <div class="google-login-btn">
@@ -14,11 +6,9 @@
       <div class="google-login-btn-text">구글 아이디로 로그인</div>
     </div>
   </div>
-  <!-- <button @click="signout" align="left">signout</button> -->
 </template>
 
 <script>
-// import { UserDataPost } from '@/api/auth.js';
 import { PROVIDER_TYPE } from '@/utils/constValue.js';
 import { getUser } from '@/api/user.js';
 export default {
@@ -50,9 +40,7 @@ export default {
       //store에 저장
       const myDBuser = await getUser(DataForLocal.userId);
       //get받아온 user정보
-      this.$store.state.auth.userSeq = myDBuser.data.content[0].userSeq;
-      console.log('userSeq값:', this.$store.state.auth.userSeq);
-      if (myDBuser.data == null || myDBuser.data.content[0].image == null) {
+      if (myDBuser.data == '' || myDBuser.data.content[0].image == null) {
         this.$router.push({
           name: 'signup-form',
         });
@@ -63,7 +51,7 @@ export default {
           name: 'mypage',
         });
       }
-      this.$store.commit('loginCheck');
+      this.$store.commit('login');
     },
     onFailure(error) {
       console.log(error);
@@ -95,6 +83,9 @@ a {
   border: 1px solid black;
   border-radius: 1rem;
   margin-bottom: 9.5rem;
+}
+.google-login-btn:hover {
+  cursor: pointer;
 }
 .google-login-btn img {
   padding-left: 1.5rem;

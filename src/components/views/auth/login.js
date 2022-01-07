@@ -11,8 +11,8 @@ const getKakaoToken = async (code) => {
         const data = {
             grant_type: 'authorization_code',
             client_id: 'a75b5aef214abdc69ec5214ce6706d98',
-            redirect_uri: 'http://localhost:3000',
-            // redirect_uri: 'http://moa-moa.kr',
+            // redirect_uri: 'http://localhost:3000',
+            redirect_uri: 'http://moa-moa.kr',
             code: code,
         };
         const queryString = Object.keys(data)

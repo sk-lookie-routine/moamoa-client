@@ -18,11 +18,8 @@ function searchUserByName(username) {
     return user.get(`?username=${username}`, {
     });
 }
-function postUserData(postData) {
-    return user.post('', postData);
-}
 function updateUserData(updateData) {
     return user.put('', updateData);
 }
 
-export { getUser,getUserByStudySeq, searchUserByName, postUserData, updateUserData };
+export { getUser, getUserByStudySeq, searchUserByName, updateUserData };

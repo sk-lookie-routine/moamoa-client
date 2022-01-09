@@ -100,6 +100,7 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.6rem;
+  animation: fadeinAndZoom 300ms ease-in-out forwards;
 }
 
 .btns-container button {
@@ -126,6 +127,7 @@ export default {
 .apply-state {
   font-weight: bold;
   font-size: 1.6rem;
+  animation: fadeinAndZoom 300ms ease-in-out forwards;
 }
 
 .accepted {
@@ -140,6 +142,20 @@ export default {
   .btns-container button,
   .apply-state {
     font-size: 1.4rem;
+  }
+}
+
+@keyframes fadeinAndZoom {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2, 1.2);
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
   }
 }
 </style>

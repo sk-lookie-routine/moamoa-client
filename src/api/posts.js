@@ -5,7 +5,7 @@ function createPost(postData) {
 }
 
 function updatePost(postData) {
-  return post.get('/', postData);
+  return post.put('/', postData);
 }
 
 function fetchPosts() {
@@ -19,15 +19,8 @@ function fetchPostById(studySeq) {
     },
   });
 }
-function fetchPostsByStudyType(studyType) {
-  return post.get('/', {
-    params: {
-      studyType,
-    },
-  });
-}
 
-function fetchPostsByStudyTypeList(studyTypeList) {
+function fetchPostsByStudyType(studyTypeList) {
   return post.get('/', {
     params: {
       studyTypeList,
@@ -49,6 +42,5 @@ export {
   fetchPosts,
   fetchPostById,
   fetchPostsByStudyType,
-  fetchPostsByStudyTypeList,
   fetchPostsByTitle,
 };

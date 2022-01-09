@@ -9,35 +9,48 @@
           <div class="post-info">
             <div class="post__writer">
               <img
-                src="@/assets/img/profile/profile_tr_b.svg"
-                alt=""
+                :src="require(`@/assets/img/profile/${user.image}.svg`)"
+                alt="게시글 작성자 프로필 이미지"
                 class="writer__profile-img"
               />
-              <div class="writer__nickname">이채윤</div>
+              <div class="writer__nickname">{{ user.username }}</div>
             </div>
-            <div class="post__posted-date">{{ post.createdAt }}</div>
+            <div class="post__posted-date">
+              {{ formatDate(post.createdAt) }}
+            </div>
           </div>
-          <base-button :size="'small'" @click="showApplyPage(studySeq)"
-            >신청하기</base-button
+          <base-button
+            :size="'small'"
+            @click="
+              user.userSeq == 49
+                ? closeApplicaption(studySeq)
+                : showApplyPage(studySeq)
+            "
+            >{{
+              user.userSeq == 49 ? '모집 마감하기' : '신청하기'
+            }}</base-button
           >
         </div>
       </div>
       <div class="post-apply box--underline">
         <div class="post-apply__header">
           <h2>신청한 사람들</h2>
-          <button class="post-apply__btn">
+          <button
+            class="post-apply__btn"
+            @click="showApplyList = !showApplyList"
+          >
             <img
-              src="@/assets/img/icon_arrow_up.svg"
+              :src="require(`@/assets/img/${applyListToggleBtnImage}.svg`)"
               alt="신청 리스트 토글 버튼"
             />
           </button>
         </div>
-        <ul v-if="applyList" class="apply-list">
+        <ul v-if="applyList && showApplyList" class="apply-list">
           <li v-for="apply in applyList" :key="apply.joinSeq">
             <base-apply
               :id="apply.joinSeq"
               :imgSrc="apply.image"
-              :nickname="apply.userInfo"
+              :nickname="apply.username"
               :content="apply.comment"
               :joinType="apply.joinType"
               @reject="
@@ -149,7 +162,7 @@
           <base-reply
             :id="reply.replySeq"
             :imgSrc="reply.image"
-            :nickname="reply.userInfo"
+            :nickname="reply.username"
             :date="formatDate(reply.createdAt)"
             :content="reply.content"
           ></base-reply>
@@ -161,10 +174,11 @@
 </template>
 
 <script>
-import { fetchPostById } from '@/api/posts.js';
+import { fetchPostById, updatePost } from '@/api/posts.js';
 import { fetchReply, createReply } from '@/api/reply.js';
 import { fetchJoinByStudySeq, updateJoin } from '@/api/join.js';
 import { getUserByUserSeq } from '@/api/user.js';
+import { STUDY_TYPE } from '@/utils/constValue';
 import BaseReply from '@/components/base/BaseReply.vue';
 import BaseApply from '@/components/base/BaseApply.vue';
 
@@ -173,14 +187,33 @@ export default {
   data() {
     return {
       studySeq: null,
+      user: null,
       post: null,
       replyContent: '',
       replyList: [],
       applyList: [],
-      showApplyList: false,
+      showApplyList: true,
+      applyListToggleBtnImage: 'icon_arrow_up',
     };
   },
+  watch: {
+    showApplyList: {
+      handler(value) {
+        value
+          ? (this.applyListToggleBtnImage = 'icon_arrow_up')
+          : (this.applyListToggleBtnImage = 'icon_arrow_down');
+      },
+    },
+  },
   methods: {
+    async closeApplicaption() {
+      const post = {
+        ...this.post,
+        studyType: STUDY_TYPE.PROGRESS,
+      };
+      console.log(post);
+      await updatePost(post);
+    },
     showApplyPage(postId) {
       this.$router.push({
         name: 'apply',
@@ -220,7 +253,7 @@ export default {
           const apply = {
             ...item,
             image: res.data.content[0].image,
-            userInfo: res.data.content[0].userInfo,
+            username: res.data.content[0].username,
           };
           return apply;
         }),
@@ -235,7 +268,7 @@ export default {
           const reply = {
             ...item,
             image: res.data.content[0].image,
-            userInfo: res.data.content[0].userInfo,
+            username: res.data.content[0].username,
           };
           return reply;
         }),
@@ -245,7 +278,8 @@ export default {
     async fetchData() {
       const postResponse = await fetchPostById(this.studySeq);
       this.post = postResponse.data.content[0];
-      this.post.createdAt = this.formatDate(this.post.createdAt);
+      const userResponse = await getUserByUserSeq(this.post.userSeq);
+      this.user = userResponse.data.content[0];
       this.fetchReply(this.post.studySeq);
       this.fetchApplyData(this.post.studySeq);
     },
@@ -312,7 +346,20 @@ export default {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 3.8rem;
+}
+
+.post-apply__btn {
+  padding: 0;
+  background: transparent;
+}
+
+.apply-list {
+  margin-top: 3.8rem;
+}
+
+.apply-list li {
+  transform-origin: top center;
+  animation: rotateX 300ms ease-in-out forwards;
 }
 
 .apply-list li:not(:last-child) {

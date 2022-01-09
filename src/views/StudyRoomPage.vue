@@ -1,28 +1,24 @@
 <template>
-  <div class="noselect">
-    <div class="main-container">
+  <div>
+    <div v-if="room" class="room main-container">
       <div class="room-header">
         <div class="box--underline bottom-padding">
-          <h1>스터디 룸 제목</h1>
+          <h1>{{ room.title }}</h1>
         </div>
       </div>
       <div class="room-contents">
         <div class="room-content">
           <h2>스터디 기간</h2>
           <div class="box--gray-background">
-            <p>2021. 01. 09~2021.02.09</p>
+            <p>{{ room.startDate }}~{{ room.endDate }}</p>
           </div>
         </div>
         <div class="room-content">
           <h2>스터디 목표 & 소개</h2>
           <div class="box--gray-background">
-            <p class="p-text--red">2월 10일 HSK 5급 합격!</p>
+            <p class="p-text--red">{{ room.goal }}</p>
             <p>
-              안녕하세요! 저는 중어중문학부에 재학중인 땡땡땡이라고 합니다.저희
-              스터디에서는 어쩌고저쩌고... 대략적인 커리큘럼은 말이죠,, 1주차 :
-              ~~~~~~~~ 2주차 : 21@#!@#! 이런 식으로 서로 멘토링 형식으로 진행이
-              될 예정입니다~ 많관부! [규칙] 캠은 꼭 켜고 진행할 예정 스터디 일지
-              작성 안하면 강퇴
+              {{ room.info }}
             </p>
           </div>
         </div>
@@ -30,8 +26,7 @@
           <h2>스터디 진행 방식</h2>
           <div class="box--gray-background">
             <p>
-              매주 금요일 13시~20시 진행 예정입니다. <br />줌으로 진행될 것
-              같고, 캠은 켜주시면 좋겠습니다.
+              {{ room.how }}
             </p>
           </div>
         </div>
@@ -42,10 +37,8 @@
               <h3>🔗 스터디</h3>
               <div class="box--gray-background">
                 <p>
-                  <a
-                    href="https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786"
-                  >
-                    https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786
+                  <a target="_blank" :href="room.linkStudy">
+                    {{ room.linkStudy }}
                   </a>
                 </p>
               </div>
@@ -54,10 +47,8 @@
               <h3>🔗 스터디 일지</h3>
               <div class="box--gray-background">
                 <p>
-                  <a
-                    href="https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786"
-                  >
-                    https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786
+                  <a target="_blank" :href="room.linkNotion">
+                    {{ room.linkNotion }}
                   </a>
                 </p>
               </div>
@@ -66,10 +57,8 @@
               <h3>🔗 오픈 채팅</h3>
               <div class="box--gray-background">
                 <p>
-                  <a
-                    href="https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786"
-                  >
-                    https://www.figma.com/file/cpTWmxP2n0d9mXzBuMMXp2/%5BMOAMOA%5D-%ED%8C%80%EC%9B%90%EA%B3%B5%EA%B0%9C?node-id=486%3A1786
+                  <a target="_blank" :href="room.linkChat">
+                    {{ room.linkChat }}
                   </a>
                 </p>
               </div>
@@ -78,12 +67,13 @@
         </div>
         <div class="room-content">
           <h2>태그</h2>
-          <div class="tags">
+          <div class="tags-container">
             <span class="tag-icon">#</span>
-            <base-tag>또 다른 길 태그</base-tag>
-            <base-tag>어쩌라고</base-tag>
-            <base-tag>또 다른 길 태그</base-tag>
-            <base-tag>어쩌라고</base-tag>
+            <ul v-if="room.hashTags.length > 0" class="tags">
+              <li v-for="(tag, index) in room.hashTags" :key="index">
+                <base-tag>{{ tag }}</base-tag>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -92,30 +82,9 @@
     <div class="main-container">
       <h2 class="study-mate-title">스터디 메이트</h2>
       <ul class="study-mate-list">
-        <li class="study-mate">
-          <img
-            src="@/assets/img/profile/profile_tr_p.svg"
-            alt=""
-            class="study-mate__profile-img"
-          />
-          <div class="study-mate__nickname study-leader">스터디장</div>
-        </li>
-        <li class="study-mate">
-          <img
-            src="@/assets/img/profile/profile_tr_p.svg"
-            alt=""
-            class="study-mate__profile-img"
-          />
-          <div class="study-mate__nickname">스터디원 1</div>
-        </li>
-        <li class="study-mate">
-          <img
-            src="@/assets/img/profile/profile_tr_p.svg"
-            alt=""
-            class="study-mate__profile-img"
-          />
-          <div class="study-mate__nickname">스터디원 2</div>
-        </li>
+        <study-mate></study-mate>
+        <study-mate></study-mate>
+        <study-mate></study-mate>
       </ul>
     </div>
     <the-footer></the-footer>
@@ -123,7 +92,34 @@
 </template>
 
 <script>
-export default {};
+import { fetchPostById } from '@/api/posts.js';
+import { getUserByUserSeq } from '@/api/user.js';
+import StudyMate from '@/components/views/studyroom/StudyMate.vue';
+
+export default {
+  components: {
+    StudyMate,
+  },
+  data() {
+    return {
+      studySeq: null,
+      user: null,
+      room: null,
+    };
+  },
+  methods: {
+    async fetchData() {
+      const roomResponse = await fetchPostById(this.studySeq);
+      this.room = roomResponse.data.content[0];
+      const userResponse = await getUserByUserSeq(this.room.userSeq);
+      this.user = userResponse.data.content[0];
+    },
+  },
+  created() {
+    this.studySeq = this.$route.params.roomId;
+    this.fetchData();
+  },
+};
 </script>
 
 <style scoped>
@@ -161,7 +157,7 @@ a {
   color: var(--blue);
 }
 
-.tags {
+.tags-container {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -176,6 +172,12 @@ a {
   margin-right: 0.3rem;
 }
 
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
 hr {
   border: none;
   height: 1rem;
@@ -186,28 +188,6 @@ hr {
 
 .study-mate-title {
   margin-bottom: 3.2rem;
-}
-
-.study-mate {
-  display: flex;
-  align-items: center;
-  padding: 1.4rem 0;
-  border-bottom: 0.05rem solid #dedede;
-}
-
-.study-mate__profile-img {
-  width: 4.4rem;
-  height: 4.4rem;
-  margin-right: 1rem;
-}
-
-.study-mate__nickname {
-  font-weight: bold;
-  font-size: 1.4rem;
-}
-
-.study-leader {
-  color: var(--orange);
 }
 
 @media (max-width: 768px) {

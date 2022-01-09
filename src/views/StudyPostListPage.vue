@@ -8,8 +8,8 @@
       <base-tab
         firstTab="모집중인 스터디"
         secondTab="모집 완료된 스터디"
-        @firstTabClicked="showUnRecruitedPostList"
-        @SecondTabClicked="showRecruitedPostList"
+        @firstTabClicked="fetchPostList('READY')"
+        @SecondTabClicked="fetchPostList('PROGRESS,COMPLETE')"
       ></base-tab>
       <router-link to="/post-write">
         <button class="create-study-btn">개설하기</button>
@@ -38,11 +38,7 @@
 <script>
 import SearchBar from '@/components/views/studypostlist/SearchBar.vue';
 import CreateStudyJumbotron from '@/components/views/studypostlist/CreateStudyJumbotron.vue';
-import {
-  fetchPostsByStudyTypeList,
-  fetchPostsByStudyType,
-  fetchPostsByTitle,
-} from '@/api/posts.js';
+import { fetchPostsByStudyType, fetchPostsByTitle } from '@/api/posts.js';
 import { STUDY_TYPE } from '@/utils/constValue';
 
 export default {
@@ -61,27 +57,17 @@ export default {
         },
       });
     },
-    async fetchDataByType(studyType) {
+    async fetchPostList(studyType) {
       const response = await fetchPostsByStudyType(studyType);
-      this.postList = response.data.content;
-    },
-    async fetchDataByTypeList(studyTypeList) {
-      const response = await fetchPostsByStudyTypeList(studyTypeList);
       this.postList = response.data.content;
     },
     async showSearchResult(value) {
       const response = await fetchPostsByTitle(value);
       this.postList = response.data.content;
     },
-    showUnRecruitedPostList() {
-      this.fetchDataByType(STUDY_TYPE.READY);
-    },
-    showRecruitedPostList() {
-      this.fetchDataByTypeList(`${STUDY_TYPE.PROGRESS},${STUDY_TYPE.COMPLETE}`);
-    },
   },
   created() {
-    this.fetchDataByType(STUDY_TYPE.READY);
+    this.fetchPostList(STUDY_TYPE.READY);
   },
 };
 </script>

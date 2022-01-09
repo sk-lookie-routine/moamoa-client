@@ -2,18 +2,25 @@
   <div class="main-container noselect">
     <div class="box--underline bottom-padding"><h1>스터디룸</h1></div>
     <div class="tabs-container">
-      <base-tab firstTab="참여중인 스터디" secondTab="완료한 스터디"></base-tab>
+      <base-tab
+        firstTab="참여중인 스터디"
+        secondTab="완료한 스터디"
+        @firstTabClicked="fetchRoomList('PROGRESS')"
+        @SecondTabClicked="fetchRoomList('COMPLETE')"
+      ></base-tab>
     </div>
     <ul class="card-column-list card-list-gap">
-      <li v-for="post in joiningStudyRooms" :key="post.id">
+      <li v-for="room in roomList" :key="room.studySeq">
         <base-card
-          :imgSrc="post.imgSrc"
-          :title="post.title"
-          :startDate="post.startDate"
-          :endDate="post.endDate"
-          :peopleRegisterCount="post.peopleRegisterCount"
-          :peopleTotalCount="post.peopleTotalCount"
-          :hashTags="post.tags"
+          @click="showPostPage(room.studySeq)"
+          :id="room.studySeq"
+          :imgSrc="room.image"
+          :title="room.title"
+          :startDate="room.startDate"
+          :endDate="room.endDate"
+          :peopleRegisterCount="1"
+          :peopleTotalCount="room.memberCount"
+          :hashTags="room.hashTags"
         ></base-card>
       </li>
     </ul>
@@ -22,7 +29,33 @@
 </template>
 
 <script>
-export default {};
+import { fetchPostsByStudyType } from '@/api/posts.js';
+import { STUDY_TYPE } from '@/utils/constValue';
+
+export default {
+  data() {
+    return {
+      roomList: null,
+    };
+  },
+  methods: {
+    showPostPage(roomId) {
+      this.$router.push({
+        name: 'room',
+        params: {
+          roomId,
+        },
+      });
+    },
+    async fetchRoomList(studyType) {
+      const response = await fetchPostsByStudyType(studyType);
+      this.roomList = response.data.content;
+    },
+  },
+  created() {
+    this.fetchRoomList(STUDY_TYPE.PROGRESS);
+  },
+};
 </script>
 
 <style scoped>

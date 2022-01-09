@@ -36,6 +36,16 @@ function fetchPostsByTitle(title) {
   });
 }
 
+function fetchPostByPageAndStudyType(page, studyTypeList) {
+  return post.get('/', {
+    params: {
+      size: 6,
+      page,
+      studyTypeList,
+    },
+  });
+}
+
 export {
   createPost,
   updatePost,
@@ -43,4 +53,5 @@ export {
   fetchPostById,
   fetchPostsByStudyType,
   fetchPostsByTitle,
+  fetchPostByPageAndStudyType,
 };

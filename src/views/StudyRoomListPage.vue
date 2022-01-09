@@ -9,7 +9,7 @@
         @SecondTabClicked="fetchRoomList('COMPLETE')"
       ></base-tab>
     </div>
-    <ul class="card-column-list card-list-gap">
+    <ul v-if="roomList" class="card-column-list card-list-gap">
       <li v-for="room in roomList" :key="room.studySeq">
         <base-card
           @click="showPostPage(room.studySeq)"
@@ -24,6 +24,11 @@
         ></base-card>
       </li>
     </ul>
+    <no-study-room v-else>{{
+      selectedTab === 'PROGRESS'
+        ? '참여중인 스터디가 없어요'
+        : '완료한 스터디가 없어요'
+    }}</no-study-room>
   </div>
   <the-footer></the-footer>
 </template>
@@ -31,11 +36,14 @@
 <script>
 import { fetchPostsByStudyType } from '@/api/posts.js';
 import { STUDY_TYPE } from '@/utils/constValue';
+import NoStudyRoom from '@/components/views/studyroom/NoStudyRoom.vue';
 
 export default {
+  components: { NoStudyRoom },
   data() {
     return {
       roomList: null,
+      selectedTab: STUDY_TYPE.PROGRESS,
     };
   },
   methods: {
@@ -50,6 +58,7 @@ export default {
     async fetchRoomList(studyType) {
       const response = await fetchPostsByStudyType(studyType);
       this.roomList = response.data.content;
+      this.selectedTab = studyType;
     },
   },
   created() {

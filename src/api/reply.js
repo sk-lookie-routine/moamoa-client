@@ -8,8 +8,8 @@ function fetchReply(studySeq) {
   });
 }
 
-function createReply(reply) {
-  return reply.post('/', reply);
+function createReply(data) {
+  return reply.post('/', data);
 }
 
 export { fetchReply, createReply };

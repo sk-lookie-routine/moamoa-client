@@ -1,5 +1,5 @@
 <template>
-  <li class="comment box--underline">
+  <div class="comment box--underline">
     <img
       :src="imgUrl"
       alt="댓글 사용자 프로필 이미지"
@@ -14,7 +14,7 @@
         {{ content }}
       </div>
     </div>
-  </li>
+  </div>
 </template>
 
 <script>

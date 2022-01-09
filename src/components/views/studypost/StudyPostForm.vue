@@ -136,7 +136,7 @@ export default {
         startDate: null,
         endDate: null,
         studyType: 'READY',
-        userSeq: 2,
+        userSeq: 50,
         hashTags: [],
         memberCount: 1,
         linkStudy: null,

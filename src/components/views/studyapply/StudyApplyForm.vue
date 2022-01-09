@@ -33,7 +33,8 @@
 
 <script>
 import StudyApplyCautions from '@/components/views/studyapply/StudyApplyCautions.vue';
-import { createJoin } from '@/api/room.js';
+import { createJoin } from '@/api/join';
+import { JOIN_TYPE } from '@/utils/constValue';
 
 export default {
   components: { StudyApplyCautions },
@@ -54,9 +55,9 @@ export default {
     submitForm() {
       const join = {
         studySeq: this.$route.params.postId,
-        userSeq: 4,
+        userSeq: 50,
         comment: this.content,
-        joinType: 'WAIT',
+        joinType: JOIN_TYPE.WAIT,
       };
       createJoin(join);
     },

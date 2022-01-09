@@ -39,6 +39,11 @@ export default [
     component: () => import('@/views/StudyRoomListPage.vue'),
   },
   {
+    path: '/room-write',
+    name: 'room-write',
+    component: () => import('@/views/StudyRoomWritePage.vue'),
+  },
+  {
     path: '/mypage',
     name: 'mypage',
     component: () => import('@/components/views/mypage/MyPage.vue'),

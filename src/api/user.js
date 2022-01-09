@@ -8,7 +8,7 @@ function getUser(userId) {
     });
 }
 
-function getUserByStudySeq(userSeq) {
+function getUserByUserSeq(userSeq) {
     return user.get('/', {
         params: { userSeq },
     });
@@ -25,4 +25,4 @@ function updateUserData(updateData) {
     return user.put('', updateData);
 }
 
-export { getUser,getUserByStudySeq, searchUserByName, postUserData, updateUserData };
+export { getUser,getUserByUserSeq, searchUserByName, postUserData, updateUserData };

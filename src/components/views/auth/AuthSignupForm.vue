@@ -1,5 +1,6 @@
 <template>
   <div>
+    <auth-modal :isClicked="isAllFilled"></auth-modal>
     <div class="container">
       <div class="signup-form">
         <div class="title">회원가입</div>
@@ -91,6 +92,7 @@
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
+import AuthModal from './AuthModal.vue';
 import {
   searchUserByName,
   updateUserData,
@@ -98,7 +100,7 @@ import {
   getUser,
 } from '@/api/user.js';
 export default {
-  components: { TheFooter },
+  components: { TheFooter, AuthModal },
   data() {
     return {
       nickname: '',
@@ -134,6 +136,7 @@ export default {
   methods: {
     moveToHome() {
       this.isAllFilled = true;
+      this.getImageSubstr();
       const myUser = {
         email: this.$store.state.auth.email,
         username: this.nickname,
@@ -146,15 +149,23 @@ export default {
       this.$store.commit('setUser', myUser);
       console.log('data:', this.$store.state.auth);
       if (myUser.userSeq == null) {
-        postUserData(myUser);
+        postUserData(myUser).then(response =>
+          console.log('post반환값', response),
+        );
       } else {
-        updateUserData(myUser);
+        updateUserData(myUser).then(response =>
+          console.log('update반환값', response),
+        );
       }
-      this.$router.push('/home');
     },
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
       this.randomProfile = this.imgList[randomNumber];
+    },
+    getImageSubstr() {
+      this.imgName = this.randomProfile.name.toString();
+      this.imgName = this.imgName.substr(5, 12);
+      //이미지 경로에서 소스만 추출
     },
     async checkIdDuplicate() {
       this.isClickedDuplicatedButton = true;
@@ -171,21 +182,7 @@ export default {
       const ExistUser = await getUser(this.$store.state.auth.userId);
       this.$store.state.auth.userSeq = ExistUser.data.content[0].userSeq;
       //userSeq 업데이트 -- 나중엔 지우거나 수정해야 할 코드
-
-      this.imgName = this.randomProfile.name.toString();
-      this.imgName = this.imgName.substr(5, 12);
-      console.log('this.imgName', this.imgName);
-      //이미지 경로에서 소스만 추출
-      const myUser = {
-        email: this.$store.state.auth.email,
-        username: this.nickname,
-        providerType: this.$store.state.auth.providerType,
-        userId: this.$store.state.auth.userId,
-        image: this.imgName,
-        userInfo: this.desc,
-        userSeq: this.$store.state.auth.userSeq,
-      };
-      console.log('put넣을 데이터', myUser);
+      this.getImageSubstr();
     },
   },
 };

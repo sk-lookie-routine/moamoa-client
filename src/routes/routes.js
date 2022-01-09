@@ -46,12 +46,17 @@ export default [
   {
     path: '/mypage',
     name: 'mypage',
-    component: () => import('@/components/views/mypage/MyPage.vue'),
+    component: () => import('@/components/views/mypage/MyPageBottomBox.vue'),
   },
   {
     path: '/edit',
     name: 'editComponent',
     component: () => import('@/components/views/mypage/MyPageEditProfile.vue'),
+  },
+  {
+    path: '/account-manage',
+    name: 'accountManage',
+    component: () => import('@/views/MyPageAccountManage.vue'),
   },
   {
     path: '/posts/:postId',

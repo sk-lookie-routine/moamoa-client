@@ -12,18 +12,20 @@
       </button>
     </div>
     <div class="nickname">
-      닉네임 :
-      <input
-        type="text"
-        v-model="nickname"
-        placeholder="{{nickname}}"
-        maxlength="8"
-        class="text_ph"
-        minlength="2"
-      />
-      <button class="check-idOverlap" @click="checkIdDuplicate">
-        중복확인
-      </button>
+      <div class="nickname-box">
+        <p>닉네임 :</p>
+        <input
+          type="text"
+          v-model="nickname"
+          placeholder="{{nickname}}"
+          maxlength="8"
+          class="text_ph"
+          minlength="2"
+        />
+        <button class="check-idOverlap" @click="checkIdDuplicate">
+          중복확인
+        </button>
+      </div>
       <div class="box--underline"></div>
     </div>
     <div class="check">
@@ -50,18 +52,20 @@
       </div>
     </div>
     <div class="account">
-      로그인 계정 :
-      <input
-        type="text"
-        v-model="account"
-        placeholder="routine@naver.com"
-        class="text_ph"
-      />
+      <div class="account-box">
+        <div class="account-text">
+          <p>로그인 계정 :</p>
 
+          <div class="text_ph">{{ account }}</div>
+        </div>
+        <button @click="onClickAccountManage">
+          <img src="@/assets/img/icon_arrow_right.svg" />
+        </button>
+      </div>
       <div class="box--underline"></div>
     </div>
     <div class="description">
-      한줄 소개 :
+      <p>한줄 소개 :</p>
       <input
         type="text"
         v-model="desc"
@@ -94,7 +98,7 @@ export default {
       desc: this.$store.state.auth.userInfo,
       account: this.$store.state.auth.email,
       isAllFilled: false,
-      isNicknameDuplicated: false,
+      isNicknameDuplicated: true,
       isClickedDuplicatedButton: false,
       randomProfile: {
         name: require(`@/assets/img/profile/${this.$store.state.auth.image}.svg`),
@@ -147,6 +151,10 @@ export default {
     },
     handleEdit() {
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {
+        if (this.isNicknameDuplicated == true) {
+          alert('이미 사용중인 닉네임입니다.');
+          return;
+        }
         const updateData = {
           username: this.nickname,
           userInfo: this.desc,
@@ -163,6 +171,9 @@ export default {
         alert('모든 빈칸을 채워주세요.');
       }
     },
+    onClickAccountManage() {
+      this.$router.push('/account-manage');
+    },
   },
 };
 </script>
@@ -174,25 +185,22 @@ export default {
   justify-content: space-between;
 }
 .mypage-title-text {
-  font-family: Spoqa Han Sans Neo;
   font-weight: bold;
   font-size: 2.2rem;
   line-height: 26px;
   color: var(--black);
 }
 .container {
-  /* display: float; */
   height: 70rem;
-  margin: 0 1.2rem;
+  margin: 0 7%;
   margin-bottom: 1.6rem;
 }
 .box--underline {
   margin-top: 1rem;
 }
 .title {
-  font-family: Spoqa Han Sans Neo;
   font-weight: bold;
-  font-size: 2.2rem;
+  font-size: 2rem;
   line-height: 3.4rem;
   color: var(--black);
 }
@@ -207,7 +215,6 @@ export default {
 .text {
   width: 4.7rem;
   height: 1.4rem;
-  font-family: Spoqa Han Sans Neo;
   font-size: 1.2rem;
   line-height: 1.4rem;
   color: var(--orange);
@@ -233,29 +240,52 @@ input:focus {
 .nickname,
 .description,
 .account {
-  font-family: Spoqa Han Sans Neo;
   font-weight: bold;
   font-size: 1.8rem;
   line-height: 2.6rem;
   color: var(--black);
 }
+.nickname-box p {
+  width: 6rem;
+  align-items: center;
+  display: flex;
+}
+.nickname-box {
+  display: flex;
+}
 .description,
 .account {
   margin-top: 4.8rem;
 }
-.account-more-icon {
+.account-box p {
+  width: 9rem;
+  align-items: center;
+  display: flex;
+}
+.account-box {
+  display: flex;
+  justify-content: space-between;
+}
+.account-text {
+  display: flex;
+}
+.account button {
+  background: none;
+  margin: 0 5% 0 0;
+  padding: 0;
+}
+.account button img {
   width: 3.2rem;
   height: 3.2rem;
-  color: red;
-  border: 1px solid red;
 }
 .text_ph,
 .desc_ph {
-  font-family: 'Spoqa Han Sans Neo';
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 2.6rem;
   color: var(--black);
   border: none;
+  display: flex;
+  align-items: center;
 }
 .edit-btn {
   justify-content: flex-end;
@@ -309,46 +339,84 @@ button {
   font-size: 1.4rem;
   color: var(--orange-dark);
 }
-.check-idOverlap {
-  padding: 0.6rem;
-  font-size: 1.2rem;
-  margin: 0;
-  position: absolute;
-  right: 23%;
-  width: 6.3rem;
-  height: 2.6rem;
-  background: #757575;
-  color: white;
-}
-@media (max-width: 350px) {
+
+@media (max-width: 320px) {
   .container {
     display: flex;
     flex-direction: column;
-    width: 32rem;
-    margin: 0 auto;
+    margin: 0 1.6rem;
     height: 67.8rem;
   }
   .signup-form {
     margin: 0 1.6rem;
   }
-  .title {
-    margin-top: 9.5rem;
-    margin-bottom: 1.5rem;
+  .mypage-title-text {
     font-size: 2rem;
+  }
+  .profile-img .randomBtn {
+    position: absolute;
+    left: 5rem;
+  }
+  .randomBtn {
+    margin-top: 5rem;
+  }
+  .text {
+    right: 2rem;
+  }
+  .profile-img .randomBtn img {
+    width: 2.4rem;
+    height: 2.4rem;
   }
   .profile-img {
     margin: 0 auto;
     margin-top: 4.1rem;
+    margin-bottom: 1.2rem;
+  }
+  .profile-img img {
+    width: 7.2rem;
+    height: 7.2rem;
   }
   .profile-info {
     margin-top: 1.6rem;
     font-size: 1.4rem;
   }
-  .nickname-text,
-  .nickname-text input,
+  .account button {
+    right: 2rem;
+    bottom: 3.4rem;
+  }
+  .nickname-box p {
+    width: 5rem;
+  }
+  .account-box p {
+    width: 7rem;
+  }
+  .nickname-box p,
+  .account-box p {
+    font-size: 1.2rem;
+  }
+  .account button {
+    width: 5rem;
+    border: 1px solid red;
+  }
+  .account button img {
+    width: 1.6rem;
+    height: 1.6rem;
+    border: 1px solid red;
+  }
+  .nickname,
+  .nickname input,
   .description,
-  .description input {
+  .description input,
+  .account,
+  .account input {
     font-size: 1.4rem;
+  }
+  .text_ph,
+  .desc_ph {
+    font-size: 1.4rem;
+    line-height: 2.6rem;
+    color: var(--black);
+    border: none;
   }
   .base-button,
   .base-button-disable {
@@ -357,6 +425,9 @@ button {
   }
   .start-btn {
     margin: 0;
+  }
+  .box--underline {
+    margin: 1rem 0;
   }
 }
 </style>

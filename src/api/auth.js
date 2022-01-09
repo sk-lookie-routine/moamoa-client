@@ -1,9 +1,7 @@
 /* eslint-disable prettier/prettier */
-// import { auth } from './index';
+import { auth } from './index';
 
-// function getToken(code) {
-//     return auth.get('kakao', {
-//         // params: { code: store.state.code },
-//         params: { code },
-//     });
-// }
+function postUserData(postData) {
+    return auth.post('/login', postData);
+}
+export default { postUserData }

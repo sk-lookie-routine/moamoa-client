@@ -19,12 +19,8 @@ const auth = {
     },
   },
   mutations: {
-    loginCheck(state) {
-      if (state.userId == '') {
-        state.isLogin = false;
-      } else {
-        state.isLogin = true;
-      }
+    login(state) {
+      state.isLogin = true;
     },
     logout(state) {
       state.isLogin = false;

@@ -1,12 +1,22 @@
 <template>
-  <a class="kakao-login-btn">
+  <a class="kakao-login-btn" @click="kakaoLogin">
     <img src="@/assets/img/icon_kakao.svg" />
     <div class="kakao-login-btn-text">카카오 아이디로 가입</div>
   </a>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    kakaoLogin() {
+      const params = {
+        // redirectUri: 'http://localhost:3000',
+        redirectUri: 'http://moa-moa.kr',
+      };
+      window.Kakao.Auth.authorize(params);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -30,6 +40,9 @@ a {
   border: none;
   border-radius: 1rem;
   background: #fee500;
+}
+.kakao-login-btn:hover {
+  cursor: pointer;
 }
 .kakao-login-btn img {
   padding-left: 1.5rem;

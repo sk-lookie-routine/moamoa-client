@@ -84,6 +84,7 @@ export default {
           name: 'home',
         });
       }
+      this.$store.commit('login');
     },
   },
 };

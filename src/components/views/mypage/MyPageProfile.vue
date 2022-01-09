@@ -68,8 +68,8 @@ export default {
   },
   methods: {
     async getMyUser() {
-      this.$store.commit('loginCheck');
       const response = await getUser(this.$store.state.auth.userId);
+      this.$store.commit('setUser', response.data.content[0]);
       console.log('현재 store 정보', this.$store.state.auth);
       for (let i = 0; i < response.data.content.length; i++) {
         if (response.data.content[i].userId == this.$store.state.auth.userId) {
@@ -89,7 +89,7 @@ export default {
 
 <style scoped>
 .container {
-  margin: 0 1.6rem;
+  margin: 0 5%;
 }
 .mypage-title {
   display: flex;
@@ -187,6 +187,9 @@ export default {
   .profile-image img {
     width: 7.2rem;
     height: 7.2rem;
+  }
+  .profile-box {
+    padding-top: 4.1rem;
   }
   .profile-nickname {
     font-size: 1.8rem;

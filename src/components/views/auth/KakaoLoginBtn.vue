@@ -10,7 +10,8 @@ export default {
   methods: {
     kakaoLogin() {
       const params = {
-        redirectUri: 'http://localhost:3000',
+        // redirectUri: 'http://localhost:3000',
+        redirectUri: 'http://moa-moa.kr',
       };
       window.Kakao.Auth.authorize(params);
     },

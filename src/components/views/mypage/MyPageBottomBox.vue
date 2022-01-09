@@ -28,9 +28,17 @@
         <div class="nothing-apply-text">
           {{ textOfEachTab }} 스터디가 없어요.
         </div>
-        <a href="https://www.naver.com"
-          >스터디 {{ textOfGuideLineOfEachTab }} 가이드라인</a
+        <a
+          href="https://www.notion.so/bbc074266f8e4c8d97cf6b6a0f93474c?p=196f7e861d154e2eb50d92ac2fdae49b"
+          v-if="this.textOfEachTab == '개설한'"
+          >스터디 개설 가이드라인</a
         >
+        <a
+          href="https://www.notion.so/bbc074266f8e4c8d97cf6b6a0f93474c?p=d76f3437c77544858f9232dec22f3a12"
+          v-if="this.textOfEachTab == '신청한'"
+        >
+          스터디 신청 가이드라인
+        </a>
       </div>
     </div>
     <the-footer></the-footer>
@@ -49,17 +57,14 @@ export default {
       studyList: [],
       index: 0,
       textOfEachTab: '신청한',
-      textOfGuideLineOfEachTab: '신청',
     };
   },
   methods: {
     applicatedStudyList() {
       this.textOfEachTab = '신청한';
-      this.textOfGuideLineOfEachTab = '신청';
     },
     openStudyList() {
       this.textOfEachTab = '개설한';
-      this.textOfGuideLineOfEachTab = '개설';
     },
   },
 };
@@ -71,7 +76,7 @@ export default {
   width: 100%;
 }
 .base--tab {
-  margin: 7rem 12rem;
+  margin: 7rem 5%;
 }
 .nothing-apply {
   padding-top: 11rem;
@@ -97,15 +102,24 @@ export default {
 .my-studyList {
   margin: 3rem 12rem;
 }
-@media (max-width: 351px) {
+@media (max-width: 320px) {
   .default-container {
     padding-top: 9.5rem;
   }
-
   .base--tab {
-    margin-top: 5.8rem;
+    /* margin-top: 5.8rem;
     margin-left: 1.6rem;
-    width: max-content;
+    width: max-content; */
+    display: none;
+  }
+  .nothing-apply {
+    margin: 0 auto;
+  }
+  .nothing-apply-text {
+    font-size: 1.2rem;
+  }
+  .nothing-apply a {
+    font-size: 1rem;
   }
 }
 </style>

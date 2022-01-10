@@ -45,7 +45,10 @@
 import SearchBar from '@/components/views/studypostlist/SearchBar.vue';
 import PaginationButton from '@/components/views/studypostlist/PaginationButton.vue';
 import CreateStudyJumbotron from '@/components/views/studypostlist/CreateStudyJumbotron.vue';
-import { fetchPostsByTitle, fetchPostByPageAndStudyType } from '@/api/posts.js';
+import {
+  fetchPostsByKeyword,
+  fetchPostByPageAndStudyType,
+} from '@/api/posts.js';
 import { STUDY_TYPE } from '@/utils/constValue';
 
 export default {
@@ -87,7 +90,7 @@ export default {
       }
     },
     async showSearchResult(value) {
-      const response = await fetchPostsByTitle(value);
+      const response = await fetchPostsByKeyword(value);
       this.postList = response.data.content;
     },
   },

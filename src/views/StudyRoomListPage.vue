@@ -9,7 +9,10 @@
         @SecondTabClicked="fetchRoomList('COMPLETE')"
       ></base-tab>
     </div>
-    <ul v-if="roomList" class="card-column-list card-list-gap">
+    <ul
+      v-if="roomList && roomList.length > 0"
+      class="card-column-list card-list-gap"
+    >
       <li v-for="room in roomList" :key="room.studySeq">
         <base-card
           @click="showPostPage(room.studySeq)"
@@ -42,7 +45,7 @@ export default {
   components: { NoStudyRoom },
   data() {
     return {
-      roomList: null,
+      roomList: [],
       selectedTab: STUDY_TYPE.PROGRESS,
     };
   },

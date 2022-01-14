@@ -21,14 +21,10 @@
           </div>
           <base-button
             :size="'small'"
-            @click="
-              user.userSeq == 49
-                ? closeApplicaption(studySeq)
-                : showApplyPage(studySeq)
-            "
-            >{{
-              user.userSeq == 49 ? '모집 마감하기' : '신청하기'
-            }}</base-button
+            :disable="baseButton.disable"
+            :color="baseButton.color"
+            @click="onClickBaseButton"
+            >{{ baseButton.text }}</base-button
           >
         </div>
       </div>
@@ -121,11 +117,11 @@
             </p>
           </div>
         </div>
-        <div class="post-content">
+        <div v-if="post.hashTags.length > 0" class="post-content">
           <h2>태그</h2>
           <div class="tags-container">
             <span class="tag-icon">#</span>
-            <ul v-if="post.hashTags.length > 0" class="tags">
+            <ul class="tags">
               <li v-for="(tag, index) in post.hashTags" :key="index">
                 <base-tag>{{ tag }}</base-tag>
               </li>
@@ -136,14 +132,21 @@
     </div>
     <div class="post-comments">
       <h2>댓글</h2>
-      <div class="comment-register-container">
+      <div
+        v-if="this.$store.state.auth.isLogin"
+        class="comment-register-container"
+      >
         <div class="comment-register__user-profile">
           <img
-            src="@/assets/img/profile/profile_tr_p.svg"
-            alt=""
+            :src="
+              require(`@/assets/img/profile/${this.$store.state.auth.image}.svg`)
+            "
+            alt="댓글 등록 프로필 이미지"
             class="user__profile-img"
           />
-          <div class="user__nickname">개발천재서영</div>
+          <div class="user__nickname">
+            {{ this.$store.state.auth.username }}
+          </div>
         </div>
         <form @submit.prevent="submitReply">
           <textarea
@@ -151,13 +154,19 @@
             name="comment"
             rows="5"
             v-model="replyContent"
+            @input="changeReplyContent"
           ></textarea>
           <div class="comment-register-btn-container">
-            <button class="comment-register__register-btn">등록</button>
+            <button
+              class="comment-register__register-btn"
+              :disabled="isReplyBtnDisabled"
+            >
+              등록
+            </button>
           </div>
         </form>
       </div>
-      <ul v-if="replyList" class="comment-list">
+      <ul v-if="replyList && replyList.length > 0" class="comment-list">
         <li v-for="reply in replyList" :key="reply.replySeq">
           <base-reply
             :id="reply.replySeq"
@@ -165,9 +174,13 @@
             :nickname="reply.username"
             :date="formatDate(reply.createdAt)"
             :content="reply.content"
+            :showMoreMenu="canShowMoreMenuInReply(reply.userSeq)"
+            @register="modifyReply"
+            @delete="removeReply(reply.replySeq)"
           ></base-reply>
         </li>
       </ul>
+      <no-reply v-else>아직 댓글이 없어요</no-reply>
     </div>
   </div>
   <the-footer></the-footer>
@@ -175,15 +188,21 @@
 
 <script>
 import { fetchPostById, updatePost } from '@/api/posts.js';
-import { fetchReply, createReply } from '@/api/reply.js';
+import {
+  fetchReply,
+  createReply,
+  updateReply,
+  deleteReply,
+} from '@/api/reply.js';
 import { fetchJoinByStudySeq, updateJoin } from '@/api/join.js';
 import { getUserByUserSeq } from '@/api/user.js';
-import { STUDY_TYPE } from '@/utils/constValue';
+import { STUDY_TYPE, JOIN_TYPE } from '@/utils/constValue';
 import BaseReply from '@/components/base/BaseReply.vue';
 import BaseApply from '@/components/base/BaseApply.vue';
+import NoReply from '@/components/views/studypost/NoReply.vue';
 
 export default {
-  components: { BaseReply, BaseApply },
+  components: { BaseReply, BaseApply, NoReply },
   data() {
     return {
       studySeq: null,
@@ -194,7 +213,18 @@ export default {
       applyList: [],
       showApplyList: true,
       applyListToggleBtnImage: 'icon_arrow_up',
+      baseButton: {
+        disable: false,
+        text: '신청하기',
+        color: 'red',
+      },
     };
+  },
+  computed: {
+    isReplyBtnDisabled() {
+      if (this.replyContent === '') return true;
+      else return false;
+    },
   },
   watch: {
     showApplyList: {
@@ -223,6 +253,60 @@ export default {
         query: { title: this.post.title },
       });
     },
+    setBaseButton() {
+      if (
+        this.$store.state.auth.userSeq &&
+        this.user.userSeq == this.$store.state.auth.userSeq
+      ) {
+        this.baseButton.text = '모집 마감하기';
+      } else {
+        this.applyList.forEach(item => {
+          if (
+            item.joinType === JOIN_TYPE.WAIT &&
+            item.userSeq === this.$store.state.auth.userSeq
+          ) {
+            this.baseButton.text = '신청 취소';
+            this.baseButton.disable = false;
+            this.baseButton.color = 'gray';
+            return;
+          } else if (
+            item.joinType === JOIN_TYPE.APPROVED &&
+            item.userSeq === this.$store.state.auth.userSeq
+          ) {
+            this.baseButton.text = '신청 완료';
+            this.baseButton.disable = true;
+          } else if (
+            item.joinType === JOIN_TYPE.REFUSED &&
+            item.userSeq === this.$store.state.auth.userSeq
+          ) {
+            this.baseButton.text = '신청 거부';
+            this.baseButton.disable = true;
+          }
+        });
+      }
+    },
+    onClickBaseButton() {
+      if (!this.$store.state.auth.isLogin) {
+        this.$router.push({
+          name: 'login',
+        });
+      } else {
+        this.user.userSeq == this.$store.state.auth.userSeq
+          ? this.closeApplicaption(this.studySeq)
+          : this.showApplyPage(this.studySeq);
+      }
+    },
+    changeReplyContent(e) {
+      this.replyContent = e.target.value;
+    },
+    canShowMoreMenuInReply(userSeq) {
+      if (
+        this.$store.state.auth.isLogin &&
+        userSeq == this.$store.state.auth.userSeq
+      )
+        return true;
+      else return false;
+    },
     async setApply(joinType, joinSeq, userSeq, comment) {
       const join = {
         studySeq: this.studySeq,
@@ -236,13 +320,25 @@ export default {
     },
     async submitReply() {
       const reply = {
-        userSeq: 50,
+        userSeq: this.$store.state.auth.userSeq,
         studySeq: this.studySeq,
         content: this.replyContent,
       };
       console.log(reply);
       await createReply(reply);
       this.replyContent = '';
+      this.fetchReply(this.post.studySeq);
+    },
+    async modifyReply(replySeq, content) {
+      const reply = {
+        replySeq,
+        content,
+      };
+      await updateReply(reply);
+      this.fetchReply(this.post.studySeq);
+    },
+    async removeReply(replySeq) {
+      await deleteReply(replySeq);
       this.fetchReply(this.post.studySeq);
     },
     async fetchApplyData() {
@@ -281,7 +377,8 @@ export default {
       const userResponse = await getUserByUserSeq(this.post.userSeq);
       this.user = userResponse.data.content[0];
       this.fetchReply(this.post.studySeq);
-      this.fetchApplyData(this.post.studySeq);
+      await this.fetchApplyData(this.post.studySeq);
+      this.setBaseButton();
     },
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -454,6 +551,10 @@ textarea {
   font-size: 1.6rem;
   color: white;
   background-color: var(--orange-dark);
+}
+
+.comment-register__register-btn:disabled {
+  background-color: var(--gray03);
 }
 
 .comment-list {

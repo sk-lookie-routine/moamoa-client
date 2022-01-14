@@ -20,6 +20,15 @@ function fetchPostById(studySeq) {
   });
 }
 
+function fetchPostsByUserSeqAndStudyType(userSeq, studyTypeList) {
+  return post.get('/', {
+    params: {
+      userSeq,
+      studyTypeList,
+    },
+  });
+}
+
 function fetchPostsByStudyType(studyTypeList) {
   return post.get('/', {
     params: {
@@ -51,6 +60,7 @@ export {
   updatePost,
   fetchPosts,
   fetchPostById,
+  fetchPostsByUserSeqAndStudyType,
   fetchPostsByStudyType,
   fetchPostsByKeyword,
   fetchPostByPageAndStudyType,

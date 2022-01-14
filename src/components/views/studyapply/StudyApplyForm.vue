@@ -55,7 +55,7 @@ export default {
     submitForm() {
       const join = {
         studySeq: this.$route.params.postId,
-        userSeq: 50,
+        userSeq: this.$store.state.auth.userSeq,
         comment: this.content,
         joinType: JOIN_TYPE.WAIT,
       };

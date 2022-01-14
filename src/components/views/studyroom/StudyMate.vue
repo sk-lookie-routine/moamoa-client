@@ -2,11 +2,11 @@
   <div class="study-mate">
     <div class="userinfo">
       <img
-        src="@/assets/img/profile/profile_tr_p.svg"
-        alt=""
+        :src="imgUrl"
+        alt="스터디 메이트 프로필 이미지"
         class="profile-img"
       />
-      <div class="nickname">스터디원 2</div>
+      <div class="nickname">{{ nickname }}</div>
     </div>
     <button @click="showMenu = !showMenu" class="more-btn">
       <div></div>
@@ -24,9 +24,29 @@
 
 <script>
 export default {
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    },
+    imgSrc: {
+      type: String,
+      required: true,
+    },
+    nickname: {
+      type: String,
+      required: true,
+    },
+    isLeader: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
   data() {
     return {
       showMenu: false,
+      imgUrl: require('@/assets/img/profile/' + this.imgSrc + '.svg'),
     };
   },
 };

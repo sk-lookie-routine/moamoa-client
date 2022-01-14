@@ -114,7 +114,7 @@
       </div>
     </div>
     <div class="btn-container">
-      <base-button>모집글 등록하기</base-button>
+      <base-button :disabled="isSubmitBtnDisabled">모집글 등록하기</base-button>
     </div>
   </form>
 </template>
@@ -131,12 +131,12 @@ export default {
         goal: '',
         how: '',
         comment: '',
-        image: 'profile_sc_o',
+        image: this.$store.state.auth.image,
         deadLine: null,
         startDate: null,
         endDate: null,
         studyType: 'READY',
-        userSeq: 50,
+        userSeq: this.$store.state.auth.userSeq,
         hashTags: [],
         memberCount: 1,
         linkStudy: null,
@@ -145,12 +145,22 @@ export default {
       },
       errorMessages: {
         noValue: '필수 입력 항목입니다.',
+        wordCountUnder15: '최소 15자~최대 300자 가능합니다.',
+        wordCountOver15: '최대 15자 가능합니다.',
+        wordCountOver30: '30자 이내로 입력해주세요.',
+        wordCountOver300: '300자 이내로 입력해주세요.',
       },
       rangeDate: null,
       memberCountOptions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       tagInput: '',
       isTagLengthLongEnough: false,
     };
+  },
+  computed: {
+    isSubmitBtnDisabled() {
+      if (this.post.title === '') return true;
+      else return false;
+    },
   },
   watch: {
     'post.hashTags': {

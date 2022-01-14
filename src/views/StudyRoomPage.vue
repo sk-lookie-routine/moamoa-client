@@ -82,9 +82,18 @@
     <div class="main-container">
       <h2 class="study-mate-title">스터디 메이트</h2>
       <ul class="study-mate-list">
-        <study-mate></study-mate>
-        <study-mate></study-mate>
-        <study-mate></study-mate>
+        <study-mate
+          :id="user.userSeq"
+          :imgSrc="user.image"
+          :nickname="user.username"
+        ></study-mate>
+        <li v-for="mate in studyMateList" :key="mate.joinSeq">
+          <study-mate
+            :id="mate.joinSeq"
+            :imgSrc="mate.image"
+            :nickname="mate.username"
+          ></study-mate>
+        </li>
       </ul>
     </div>
     <the-footer></the-footer>
@@ -94,6 +103,7 @@
 <script>
 import { fetchPostById } from '@/api/posts.js';
 import { getUserByUserSeq } from '@/api/user.js';
+import { fetchApprovedJoinByStudySeq } from '@/api/join.js';
 import StudyMate from '@/components/views/studyroom/StudyMate.vue';
 
 export default {
@@ -105,6 +115,7 @@ export default {
       studySeq: null,
       user: null,
       room: null,
+      studyMateList: [],
     };
   },
   methods: {
@@ -113,6 +124,21 @@ export default {
       this.room = roomResponse.data.content[0];
       const userResponse = await getUserByUserSeq(this.room.userSeq);
       this.user = userResponse.data.content[0];
+      const joinResponse = await fetchApprovedJoinByStudySeq(this.studySeq);
+      const list = await Promise.all(
+        joinResponse.data.content.map(async item => {
+          const res = await getUserByUserSeq(item.userSeq);
+          const mate = {
+            ...item,
+            image: res.data.content[0].image,
+            username: res.data.content[0].username,
+          };
+          return mate;
+        }),
+      );
+      this.studyMateList = list;
+      console.log(this.user);
+      console.log(this.studyMateList);
     },
   },
   created() {

@@ -1,5 +1,5 @@
 <template>
-  <button :class="buttonClass">
+  <button :class="buttonClass" :disabled="disable">
     <slot></slot>
   </button>
 </template>
@@ -14,10 +14,26 @@ export default {
         return ['big', 'small'].indexOf(value) !== -1;
       },
     },
+    color: {
+      type: String,
+      default: 'red',
+      validator: function (value) {
+        return ['red', 'gray'].indexOf(value) !== -1;
+      },
+    },
+    disable: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     buttonClass() {
-      return this.size === 'big' ? 'btn--big' : 'btn--small';
+      return {
+        'btn--big': this.size === 'big',
+        'btn--small': this.size === 'small',
+        'btn--red': this.color === 'red',
+        'btn--gray': this.color === 'gray',
+      };
     },
   },
 };
@@ -34,13 +50,13 @@ button {
   border-radius: 1rem;
 }
 
+button:disabled {
+  background-color: var(--gray03);
+}
+
 .btn--small {
   width: 25rem;
   padding: 1.4rem 0;
-}
-
-button:disable {
-  background-color: var(--gray03);
 }
 
 .btn--big {
@@ -48,9 +64,12 @@ button:disable {
   padding: 1.6rem 0;
 }
 
-.btn--small {
-  width: 25rem;
-  padding: 1.4rem 0;
+.btn--red {
+  background-color: var(--orange-dark);
+}
+
+.btn--gray {
+  background-color: var(--gray02);
 }
 
 @media (max-width: 768px) {

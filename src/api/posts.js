@@ -29,6 +29,16 @@ function fetchPostsByUserSeqAndStudyType(userSeq, studyTypeList) {
   });
 }
 
+function fetchPostsInStudyRoom(userSeq, studyType) {
+  return post.get('/', {
+    params: {
+      isMyPage: 'YES',
+      userSeq,
+      studyType,
+    },
+  });
+}
+
 function fetchPostsByStudyType(studyTypeList) {
   return post.get('/', {
     params: {
@@ -61,6 +71,7 @@ export {
   fetchPosts,
   fetchPostById,
   fetchPostsByUserSeqAndStudyType,
+  fetchPostsInStudyRoom,
   fetchPostsByStudyType,
   fetchPostsByKeyword,
   fetchPostByPageAndStudyType,

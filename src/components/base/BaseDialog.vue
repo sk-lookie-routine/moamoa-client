@@ -1,38 +1,35 @@
 <template>
-  <div v-if="!isDialogClosed" class="background-container"></div>
-  <div v-if="!isDialogClosed" class="dialog-container">
-    <dialog ref="dialog" open>
+  <div v-if="showDialog" class="background-container"></div>
+  <div v-if="showDialog" class="dialog-container">
+    <div class="dialog">
+      <button class="close-btn">
+        <img @click="closeBtnClick" src="@/assets/img/icon_close.svg" />
+      </button>
       <header>
-        <div>
-          <img @click="closeBtnClick" src="@/assets/img/icon_close.svg" />
-        </div>
-        <slot name="header">
-          <h3>잠깐!</h3>
-        </slot>
+        <h3>
+          <slot name="header"></slot>
+        </h3>
       </header>
-      <section class="dialog__content"><slot></slot></section>
-      <section><slot name="actions"></slot></section>
-    </dialog>
+      <main>
+        <section class="dialog__content"><slot></slot></section>
+        <section class="dialog__actions"><slot name="actions"></slot></section>
+      </main>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    title: {
-      type: String,
-      required: false,
+    showDialog: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
-  data() {
-    return {
-      isDialogClosed: false,
-    };
-  },
   methods: {
-    closeBtnClick: function () {
-      this.isDialogClosed = true;
-      this.$refs.dialog.close();
+    closeBtnClick() {
+      this.$emit('closed');
     },
   },
 };
@@ -62,36 +59,69 @@ export default {
   flex-wrap: wrap;
 }
 
-dialog {
+.dialog {
+  z-index: 4;
+  position: relative;
   width: 50rem;
   height: 27.5rem;
   border-radius: 1rem;
   border: none;
   box-shadow: 0px 4px 10px rgba(162, 162, 162, 0.25);
   padding: 2.4rem;
-}
-
-header {
-}
-
-header div {
   display: flex;
+  flex-direction: column;
   justify-content: flex-end;
+  background: white;
 }
 
-header div img:hover {
-  cursor: pointer;
+.close-btn {
+  position: absolute;
+  top: 2.4rem;
+  right: 2.4rem;
+  background: transparent;
 }
 
 header h3 {
   color: var(--orange-dark);
   text-align: center;
-  margin: 1rem 0 2.6rem 0;
+  margin: 1rem 0 2.2rem 0;
+}
+
+main {
+  height: 72%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .dialog__content {
   font-size: 1.6rem;
   text-align: center;
   line-height: 175%;
+}
+
+.dialog__actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .dialog {
+    width: 32.7rem;
+    height: 19.2rem;
+    padding: 1.5rem 1.6rem;
+  }
+
+  header h3 {
+    color: var(--orange-dark);
+    text-align: center;
+    margin: 1rem 0 1rem 0;
+  }
+
+  .dialog__content {
+    font-size: 1.4rem;
+    line-height: 143%;
+  }
 }
 </style>

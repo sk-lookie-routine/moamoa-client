@@ -7,10 +7,11 @@
         name="title"
         placeholder="스터디 제목"
         @keypress.enter.prevent
+        @input="changeTitleContent"
       />
     </div>
-    <div class="error-text" :class="{ invisible: post.title }">
-      {{ this.errorMessages.noValue }}
+    <div class="error-text" :class="{ invisible: titleValidation }">
+      {{ titleValidationText }}
     </div>
     <div class="input-container box--underline bottom-padding">
       <label for="deadline">모집 마감 일자 :</label>
@@ -38,10 +39,16 @@
         @update:modelValue="formatRangeDate"
       ></date-picker>
     </div>
-    <div class="error-text">필수 입력 항목입니다.</div>
+    <div
+      class="error-text"
+      :class="{ invisible: post.startDate && post.endDate }"
+    >
+      필수 입력 항목입니다.
+    </div>
     <div class="input-container box--underline bottom-padding">
       <label for="count">모집 인원:</label>
       <select v-model="post.memberCount" name="count">
+        <option value="none">선택해 주세요.</option>
         <option
           v-for="optionValue in memberCountOptions"
           v-bind:value="optionValue"
@@ -51,7 +58,9 @@
         </option>
       </select>
     </div>
-    <div class="error-text">필수 입력 항목입니다.</div>
+    <div class="error-text" :class="{ invisible: post.memberCount != 'none' }">
+      필수 입력 항목입니다.
+    </div>
     <div class="input-container box--underline bottom-padding">
       <label for="goal">스터디 목표:</label>
       <input
@@ -60,9 +69,15 @@
         name="goal"
         placeholder="한 줄로 소개하세요."
         @keypress.enter.prevent
+        @input="changeGoalContent"
       />
     </div>
-    <div class="error-text">필수 입력 항목입니다.</div>
+    <div
+      class="error-text"
+      :class="{ invisible: post.goal && post.goal != '' }"
+    >
+      필수 입력 항목입니다.
+    </div>
     <div class="textarea-container">
       <label for="introduction">스터디 소개:</label>
       <textarea
@@ -70,6 +85,7 @@
         placeholder="스터디에서 지키고 싶은 규칙 등을 자유롭게 서술해 주세요!"
         name="introduction"
         rows="12"
+        @input="changeInfoContent"
       ></textarea>
       <div class="error-text">필수 입력 항목입니다.</div>
     </div>
@@ -80,6 +96,7 @@
         placeholder="희망 요일 및 시간대, 이용할 플랫폼, 캠 ON/OFF 등 스터디를 어떤 식으로 진행할지 알려주세요!"
         name="proceedway"
         rows="7"
+        @input="changeHowContent"
       ></textarea>
       <div class="error-text">필수 입력 항목입니다.</div>
     </div>
@@ -90,6 +107,7 @@
         placeholder="스터디 신청자가 폼에 작성해주었으면 하는 것들에 대해 작성해주셔도 좋아요."
         name="introduction"
         rows="7"
+        @input="changeCommentContent"
       ></textarea>
     </div>
     <div class="tag-container">
@@ -138,7 +156,7 @@ export default {
         studyType: 'READY',
         userSeq: this.$store.state.auth.userSeq,
         hashTags: [],
-        memberCount: 1,
+        memberCount: 'none',
         linkStudy: null,
         linkNotion: null,
         linkChat: null,
@@ -158,8 +176,23 @@ export default {
   },
   computed: {
     isSubmitBtnDisabled() {
-      if (this.post.title === '') return true;
+      if (!this.titleValidation) return true;
       else return false;
+    },
+    titleValidation() {
+      return (
+        this.post.title &&
+        this.post.title.length > 0 &&
+        this.post.title.length <= 15
+      );
+    },
+    titleValidationText() {
+      if (!this.post.title || this.post.title.length <= 0) {
+        return this.errorMessages.noValue;
+      } else if (this.post.title.length > 15) {
+        return this.errorMessages.wordCountOver15;
+      }
+      return '안니';
     },
   },
   watch: {
@@ -199,6 +232,21 @@ export default {
       const day = ('0' + date.getDate()).slice(-2);
       return year + '-' + month + '-' + day;
     },
+    changeTitleContent(e) {
+      this.post.title = e.target.value;
+    },
+    changeGoalContent(e) {
+      this.post.goal = e.target.value;
+    },
+    changeInfoContent(e) {
+      this.post.info = e.target.value;
+    },
+    changeHowContent(e) {
+      this.post.how = e.target.value;
+    },
+    changeCommentContent(e) {
+      this.post.comment = e.target.value;
+    },
   },
 };
 </script>
@@ -216,6 +264,29 @@ export default {
 .input-container:first-child input {
   font-size: 2.2rem;
   font-weight: bold;
+}
+
+select[name='count'] {
+  width: 15rem;
+  padding: 0.25rem 0 0.25rem 0.5rem;
+  border-radius: 0.4rem;
+  outline: none;
+  border: 0.15rem solid var(--gray02);
+  font-size: 1.4rem;
+  font-family: Noto Sans KR;
+  font-weight: bold;
+  color: var(--black);
+}
+
+select[name='count']:focus {
+  outline: 0.17rem solid var(--black);
+}
+
+select[name='count'] option {
+  color: var(--black);
+  padding: 4rem 0.5rem;
+  font-size: 1.4rem;
+  font-family: Noto Sans KR;
 }
 
 .textarea-container textarea,

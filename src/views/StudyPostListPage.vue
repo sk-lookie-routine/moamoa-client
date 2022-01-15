@@ -11,9 +11,7 @@
         @firstTabClicked="fetchPostList('READY')"
         @SecondTabClicked="fetchPostList('PROGRESS,COMPLETE')"
       ></base-tab>
-      <router-link to="/post-write">
-        <button class="create-study-btn">개설하기</button>
-      </router-link>
+      <button @click="createBtnClick" class="create-study-btn">개설하기</button>
     </div>
     <ul class="postlist card-column-list card-list-gap">
       <li v-for="post in postList" :key="post.studySeq">
@@ -68,6 +66,17 @@ export default {
         params: {
           postId,
         },
+      });
+    },
+    createBtnClick() {
+      if (!this.$store.state.auth.isLogin) {
+        this.$router.push({
+          name: 'login',
+        });
+        return;
+      }
+      this.$router.push({
+        name: 'post-write',
       });
     },
     async fetchPostList(studyType) {

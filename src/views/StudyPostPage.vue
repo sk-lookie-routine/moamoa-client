@@ -197,12 +197,10 @@ import {
 import { fetchJoinByStudySeq, updateJoin } from '@/api/join.js';
 import { getUserByUserSeq } from '@/api/user.js';
 import { STUDY_TYPE, JOIN_TYPE } from '@/utils/constValue';
-import BaseReply from '@/components/base/BaseReply.vue';
-import BaseApply from '@/components/base/BaseApply.vue';
 import NoReply from '@/components/views/studypost/NoReply.vue';
 
 export default {
-  components: { BaseReply, BaseApply, NoReply },
+  components: { NoReply },
   data() {
     return {
       studySeq: null,

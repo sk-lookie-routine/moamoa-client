@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { fetchPostsByStudyType } from '@/api/posts.js';
+import { fetchPostsInStudyRoom } from '@/api/posts.js';
 import { STUDY_TYPE } from '@/utils/constValue';
 import NoStudyRoom from '@/components/views/studyroom/NoStudyRoom.vue';
 
@@ -59,12 +59,22 @@ export default {
       });
     },
     async fetchRoomList(studyType) {
-      const response = await fetchPostsByStudyType(studyType);
+      console.log('데이터 받아온다');
+      const response = await fetchPostsInStudyRoom(
+        this.$store.state.auth.userSeq,
+        studyType,
+      );
       this.roomList = response.data.content;
       this.selectedTab = studyType;
     },
   },
   created() {
+    if (!this.$store.state.auth.isLogin) {
+      this.$router.push({
+        name: 'login',
+      });
+      return;
+    }
     this.fetchRoomList(STUDY_TYPE.PROGRESS);
   },
 };

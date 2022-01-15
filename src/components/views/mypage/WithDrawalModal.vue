@@ -2,23 +2,37 @@
   <div class="modal">
     <div class="modal-bg"></div>
     <div class="modal-box">
-      <div class="modal-box-title">정말로 탈퇴하실건가요?</div>
-      <div class="modal-box-contents">
-        <p>아래 버튼을 누르면 회원탈퇴가 완료되어 계정이 삭제됩니다.</p>
-        <p>동일한 이메일로 재가입 할 수 없습니다.</p>
+      <div class="select-withdrawal" v-if="!isClicked">
+        <div class="modal-box-title">정말로 탈퇴하실건가요?</div>
+        <div class="modal-box-contents">
+          <p>아래 버튼을 누르면 회원탈퇴가 완료되어 계정이 삭제됩니다.</p>
+          <p>동일한 이메일로 재가입 할 수 없습니다.</p>
+        </div>
+        <div class="buttons">
+          <base-button
+            :size="'small'"
+            class="cancel-button"
+            @click="onClickCancel"
+            >취소</base-button
+          >
+          <base-button
+            :size="'small'"
+            class="withdrawal-button"
+            @click="onClickWithdrawal"
+            >탈퇴</base-button
+          >
+        </div>
       </div>
-      <div class="buttons">
+      <div class="real-withdrawal" v-if="isClicked">
+        <div class="withdrawal-contents">
+          <p>탈퇴되었습니다.</p>
+          <p>그동안 MOAMOA를 이용해주셔서 감사합니다.</p>
+        </div>
         <base-button
           :size="'small'"
-          class="cancel-button"
-          @click="onClickCancel"
-          >취소</base-button
-        >
-        <base-button
-          :size="'small'"
-          class="withdrawal-button"
-          @click="onClickWithdrawal"
-          >탈퇴</base-button
+          class="confirm-button"
+          @click="onClickConfirm"
+          >확인</base-button
         >
       </div>
     </div>
@@ -27,12 +41,29 @@
 </template>
 
 <script>
+import { deleteUser } from '@/api/auth.js';
 export default {
+  data() {
+    return {
+      isClicked: false,
+    };
+  },
   methods: {
+    onClickWithdrawal() {
+      this.isClicked = true;
+      deleteUser(this.$store.state.auth.userSeq);
+    },
     onClickCancel() {
       this.$store.state.account.withdrawal = false;
     },
-    onClickWithdrawal() {},
+
+    onClickConfirm() {
+      //회원탈퇴, state 초기화 및 홈으로 이동
+      this.$store.commit('initUser');
+      this.$store.commit('logout');
+      this.$store.state.account.withdrawal = false;
+      this.$router.push('/home');
+    },
   },
 };
 </script>
@@ -41,6 +72,10 @@ export default {
 .cancel-button,
 .withdrawal-button {
   width: 8.4rem;
+}
+.confirm-button {
+  width: 18rem;
+  height: 4.4rem;
 }
 .cancel-button {
   background-color: var(--gray03);
@@ -101,6 +136,17 @@ export default {
   width: 40%;
   margin: 0 auto;
 }
+.withdrawal-contents {
+  height: 30%;
+  justify-content: space-around;
+}
+.real-withdrawal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 @media (max-width: 320px) {
   .modal {
     width: 25rem;
@@ -122,6 +168,7 @@ export default {
     align-items: center;
     display: flex;
     justify-content: center;
+    z-index: -1;
   }
   .buttons {
     display: flex;

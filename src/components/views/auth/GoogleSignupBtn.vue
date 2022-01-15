@@ -40,14 +40,13 @@ export default {
       //store에 저장
       const myDBuser = await getUser(DataForLocal.userId);
       //get받아온 user정보
-      this.$store.state.auth.userSeq = myDBuser.data.content[0].userSeq;
-      console.log('userSeq값:', this.$store.state.auth.userSeq);
-      if (myDBuser.data == null || myDBuser.data.content[0].image == null) {
+      if (myDBuser.data == null) {
         this.$router.push({
           name: 'signup-form',
         });
       } else {
         this.$store.commit('setUser', myDBuser.data.content[0]);
+        console.log('구글버튼클릭시state', this.$store.state.auth);
         console.log('구글로그인userData', myDBuser);
         this.$router.push({
           name: 'mypage',

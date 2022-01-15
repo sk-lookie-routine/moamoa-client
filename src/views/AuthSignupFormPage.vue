@@ -1,5 +1,5 @@
 <template>
-  <auth-modal v-if="isAllFilled"></auth-modal>
+  <auth-modal></auth-modal>
   <auth-signup-form></auth-signup-form>
 </template>
 

@@ -93,12 +93,8 @@
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
 import AuthModal from './AuthModal.vue';
-import {
-  searchUserByName,
-  updateUserData,
-  postUserData,
-  getUser,
-} from '@/api/user.js';
+import { postUserData } from '@/api/auth.js';
+import { searchUserByName, updateUserData, getUser } from '@/api/user.js';
 export default {
   components: { TheFooter, AuthModal },
   data() {
@@ -180,6 +176,7 @@ export default {
         }
       });
       const ExistUser = await getUser(this.$store.state.auth.userId);
+      console.log('ExistUser', ExistUser);
       this.$store.state.auth.userSeq = ExistUser.data.content[0].userSeq;
       //userSeq 업데이트 -- 나중엔 지우거나 수정해야 할 코드
       this.getImageSubstr();

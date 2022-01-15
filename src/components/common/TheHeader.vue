@@ -31,15 +31,17 @@
       </div>
       <div v-else>
         <button class="auth-btn" @click="menuToggled">
-          <router-link to="/login" @click="signout"> 로그아웃 </router-link>
+          <router-link to="/home" @click="signout"> 로그아웃 </router-link>
         </button>
         <button class="signup-link" @click="menuToggled">
-          <router-link to="/mypage">마이페이지</router-link>
+          <a @click="showUserPage(this.$store.state.auth.userSeq)"
+            >마이페이지</a
+          >
         </button>
       </div>
 
       <button class="mypage-btn" @click="menuToggled">
-        <router-link to="/mypage">마이페이지</router-link>
+        <a @click="showUserPage(this.$store.state.auth.userSeq)">마이페이지</a>
       </button>
     </div>
   </header>
@@ -58,6 +60,14 @@ export default {
     };
   },
   methods: {
+    showUserPage(userSeq) {
+      this.$router.push({
+        name: 'mypage',
+        params: {
+          userSeq,
+        },
+      });
+    },
     menuToggled() {
       this.isMenuClicked = !this.isMenuClicked;
     },
@@ -72,6 +82,7 @@ export default {
           url: '/v1/user/unlink',
           success: function (response) {
             console.log(response);
+            alert('로그아웃 되었습니다.');
           },
           fail: function (error) {
             console.log(error);
@@ -79,6 +90,7 @@ export default {
         });
       }
       this.$store.commit('initUser');
+      console.log('state초기화', this.$store.state.auth);
       this.$store.commit('logout');
     },
   },

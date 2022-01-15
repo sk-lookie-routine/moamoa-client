@@ -1,13 +1,13 @@
 <template>
   <div>
-    <my-page-default :editProfile="editProfile"></my-page-default>
+    <my-page-profile :editProfile="editProfile"></my-page-profile>
   </div>
 </template>
 
 <script>
-import MyPageDefault from './MyPageProfile.vue';
+import MyPageProfile from './MyPageProfile.vue';
 export default {
-  components: { MyPageDefault },
+  components: { MyPageProfile },
   data() {
     return {};
   },

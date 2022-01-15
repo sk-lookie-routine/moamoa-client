@@ -22,5 +22,14 @@ function fetchJoinByStudySeq(studySeq) {
     },
   });
 }
+function fetchOnlyApprovedJoinByUserSeq(userSeq) {
+  return join.get(`?userSeq=${userSeq}&joinType=APPROVED`);
+}
 
-export { createJoin, updateJoin, fetchJoinByUserSeq, fetchJoinByStudySeq };
+export {
+  createJoin,
+  updateJoin,
+  fetchJoinByUserSeq,
+  fetchJoinByStudySeq,
+  fetchOnlyApprovedJoinByUserSeq,
+};

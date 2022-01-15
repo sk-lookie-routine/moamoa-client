@@ -44,7 +44,7 @@ export default [
     component: () => import('@/views/StudyRoomWritePage.vue'),
   },
   {
-    path: '/mypage',
+    path: '/mypage/:userSeq',
     name: 'mypage',
     component: () => import('@/components/views/mypage/MyPageBottomBox.vue'),
   },

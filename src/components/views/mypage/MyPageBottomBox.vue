@@ -9,19 +9,27 @@
         @firstTabClicked="applicatedStudyList"
         @SecondTabClicked="openStudyList"
       ></base-tab>
-      <div v-if="studyList.length">
+      <div
+        v-if="
+          textOfEachTab == '신청한'
+            ? applicatedStudy != null
+            : openStudy != null
+        "
+      >
         <ul class="my-studyList">
-          <base-card
-            @click="applicatedStudyList"
-            :id="1"
-            :imgSrc="'profile_sc_p'"
-            title="test"
-            startDate="2021.11.05"
-            endDate="2021.11.08"
-            :peopleRegisterCount="1"
-            :peopleTotalCount="2"
-            hashTags="test"
-          ></base-card>
+          <li v-for="card in openStudy" :key="card.studySeq">
+            <base-card
+              @click="showPostPage(card.studySeq)"
+              :id="card.studySeq"
+              :imgSrc="card.image"
+              :title="card.title"
+              :startDate="card.startDate"
+              :endDate="card.endDate"
+              :peopleRegisterCount="1"
+              :peopleTotalCount="card.memberCount"
+              :hashTags="card.hashTags"
+            ></base-card>
+          </li>
         </ul>
       </div>
       <div class="nothing-apply" v-else>
@@ -50,11 +58,15 @@
 import TheFooter from '@/components/common/TheFooter.vue';
 import MyPageUpperProfileBox from './MyPageProfileBox.vue';
 import AuthLoginPage from '@/views/AuthLoginPage.vue';
+import { getStudyForMyPage } from '@/api/posts.js';
+
 export default {
   components: { TheFooter, MyPageUpperProfileBox, AuthLoginPage },
+
   data() {
     return {
-      studyList: [],
+      applicatedStudy: null,
+      openStudy: null,
       index: 0,
       textOfEachTab: '신청한',
     };
@@ -63,8 +75,19 @@ export default {
     applicatedStudyList() {
       this.textOfEachTab = '신청한';
     },
-    openStudyList() {
+    async openStudyList() {
       this.textOfEachTab = '개설한';
+      const response = await getStudyForMyPage(this.$store.state.auth.userSeq);
+      this.openStudy = response.data.content;
+      console.log('studyList:', this.openStudy);
+    },
+    showPostPage(postId) {
+      this.$router.push({
+        name: 'post',
+        params: {
+          postId,
+        },
+      });
     },
   },
 };
@@ -73,7 +96,6 @@ export default {
 <style scoped>
 .default-container {
   padding-top: 19.2rem;
-  width: 100%;
 }
 .base--tab {
   margin: 7rem 5%;
@@ -100,17 +122,14 @@ export default {
   color: var(--gray00);
 }
 .my-studyList {
-  margin: 3rem 12rem;
+  margin: 0 12%;
+}
+.my-studyList li {
+  margin-top: 3rem;
 }
 @media (max-width: 320px) {
   .default-container {
     padding-top: 9.5rem;
-  }
-  .base--tab {
-    /* margin-top: 5.8rem;
-    margin-left: 1.6rem;
-    width: max-content; */
-    display: none;
   }
   .nothing-apply {
     margin: 0 auto;
@@ -120,6 +139,12 @@ export default {
   }
   .nothing-apply a {
     font-size: 1rem;
+  }
+  .my-studyList {
+    margin: 0 5%;
+  }
+  .my-studyList li {
+    margin-top: 2rem;
   }
 }
 </style>

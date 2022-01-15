@@ -42,9 +42,6 @@ export default {
   },
   methods: {
     async setKakaoToken() {
-      this.$store.state.auth.code = this.$route.query.code;
-      console.log('카카오 인증 코드', this.$store.state.auth.code);
-
       const { data } = await getKakaoToken(this.$route.query.code);
       if (data.error) {
         alert('카카오톡 로그인 오류입니다.');
@@ -64,19 +61,14 @@ export default {
         userId: res.id.toString(),
         providerType: PROVIDER_TYPE.KAKAO,
       };
+
       const myDBuser = await getUser(DataForLocal.userId);
-      console.log('myDBuser(회원가입여부):', myDBuser);
       if (myDBuser.data == '' || myDBuser.data.content[0].image == '') {
-        console.log('회원가입 기록이 없습니다.');
         this.$store.commit('setUser', DataForLocal);
         this.$router.push({
           name: 'signup-form',
         });
       } else {
-        console.log(
-          '회원가입 기록이 있습니다. 로그인정보:',
-          myDBuser.data.content[0],
-        );
         const storeData = myDBuser.data.content[0];
         this.$store.commit('setUser', storeData);
         console.log('kakao로그인 store정보', this.$store.state.auth);

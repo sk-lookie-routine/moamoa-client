@@ -97,7 +97,6 @@ export default {
       nickname: this.$store.state.auth.username,
       desc: this.$store.state.auth.userInfo,
       account: this.$store.state.auth.email,
-      isAllFilled: false,
       isNicknameDuplicated: true,
       isClickedDuplicatedButton: false,
       randomProfile: {
@@ -149,7 +148,7 @@ export default {
       //image에 넣어줌 -> image는 이미지 소스만 받는역할
       //randomProfile -> template에서 출력하기 위한 변수
     },
-    handleEdit() {
+    async handleEdit() {
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {
         if (this.isNicknameDuplicated == true) {
           alert('이미 사용중인 닉네임입니다.');
@@ -164,7 +163,7 @@ export default {
           image: this.image,
           userSeq: this.$store.state.auth.userSeq,
         };
-        updateUserData(updateData);
+        await updateUserData(updateData);
         this.$store.commit('setUser', updateData);
         this.$router.replace('mypage');
       } else {
@@ -396,12 +395,10 @@ button {
   }
   .account button {
     width: 5rem;
-    border: 1px solid red;
   }
   .account button img {
     width: 1.6rem;
     height: 1.6rem;
-    border: 1px solid red;
   }
   .nickname,
   .nickname input,

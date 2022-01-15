@@ -36,6 +36,11 @@ function fetchPostsByTitle(title) {
   });
 }
 
+function getStudyForMyPage(userSeq) {
+  console.log('userSeq', userSeq);
+  return post.get(`?isMyPage=YES&userSeq=${userSeq}&studyType=READY`);
+}
+
 export {
   createPost,
   updatePost,
@@ -43,4 +48,5 @@ export {
   fetchPostById,
   fetchPostsByStudyType,
   fetchPostsByTitle,
+  getStudyForMyPage,
 };

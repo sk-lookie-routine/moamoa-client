@@ -8,7 +8,7 @@
     </div>
     <div class="auth-isMember">
       아직 MOAMOA의 회원이 아니신가요?
-      <router-link to="/signup-form" class="auth-link">회원가입</router-link>
+      <router-link to="/signup" class="auth-link">회원가입</router-link>
     </div>
     <div class="auth-etc">
       귀하는 MOAMOA의 이용약관과 개인정보처리방침을 읽고 이해했으며 그에

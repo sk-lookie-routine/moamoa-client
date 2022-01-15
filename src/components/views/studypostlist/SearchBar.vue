@@ -36,7 +36,7 @@ h2 {
 
 form {
   border: 0.1rem solid var(--gray02);
-  padding: 2rem 1.3rem;
+  padding: 1.8rem 1.3rem;
   border-radius: 1rem;
   display: flex;
   align-items: center;

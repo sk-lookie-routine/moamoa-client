@@ -15,7 +15,7 @@
         <button class="create-study-btn">개설하기</button>
       </router-link>
     </div>
-    <ul class="card-column-list card-list-gap">
+    <ul class="postlist card-column-list card-list-gap">
       <li v-for="post in postList" :key="post.studySeq">
         <base-card
           @click="showPostPage(post.studySeq)"
@@ -30,6 +30,12 @@
         ></base-card>
       </li>
     </ul>
+    <div class="button-container">
+      <pagination-button
+        v-if="showMoreBtn"
+        @showMore="fetchPostList(selectedType)"
+      ></pagination-button>
+    </div>
     <create-study-jumbotron></create-study-jumbotron>
   </div>
   <the-footer></the-footer>
@@ -37,15 +43,22 @@
 
 <script>
 import SearchBar from '@/components/views/studypostlist/SearchBar.vue';
+import PaginationButton from '@/components/views/studypostlist/PaginationButton.vue';
 import CreateStudyJumbotron from '@/components/views/studypostlist/CreateStudyJumbotron.vue';
-import { fetchPostsByStudyType, fetchPostsByTitle } from '@/api/posts.js';
+import {
+  fetchPostsByKeyword,
+  fetchPostByPageAndStudyType,
+} from '@/api/posts.js';
 import { STUDY_TYPE } from '@/utils/constValue';
 
 export default {
-  components: { SearchBar, CreateStudyJumbotron },
+  components: { SearchBar, PaginationButton, CreateStudyJumbotron },
   data() {
     return {
-      postList: null,
+      postList: [],
+      pageNum: 0,
+      showMoreBtn: true,
+      selectedType: 'READY',
     };
   },
   methods: {
@@ -58,11 +71,26 @@ export default {
       });
     },
     async fetchPostList(studyType) {
-      const response = await fetchPostsByStudyType(studyType);
-      this.postList = response.data.content;
+      if (this.selectedType !== studyType) {
+        this.postList = [];
+        this.pageNum = 0;
+        this.selectedType = studyType;
+      }
+      const response = await fetchPostByPageAndStudyType(
+        this.pageNum,
+        studyType,
+      );
+      if (this.pageNum < response.data.totalPages) {
+        response.data.content.map(item => this.postList.push(item));
+        ++this.pageNum < response.data.totalPages
+          ? (this.showMoreBtn = true)
+          : (this.showMoreBtn = false);
+      } else {
+        this.showMoreBtn = false;
+      }
     },
     async showSearchResult(value) {
-      const response = await fetchPostsByTitle(value);
+      const response = await fetchPostsByKeyword(value);
       this.postList = response.data.content;
     },
   },
@@ -91,6 +119,16 @@ export default {
   color: white;
   padding: 1rem 2rem;
   background-color: var(--orange-dark);
+}
+
+.postlist {
+  margin-bottom: 3rem;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @media (max-width: 768px) {

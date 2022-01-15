@@ -28,10 +28,20 @@ function fetchPostsByStudyType(studyTypeList) {
   });
 }
 
-function fetchPostsByTitle(title) {
+function fetchPostsByKeyword(search) {
   return post.get('/', {
     params: {
-      title,
+      search,
+    },
+  });
+}
+
+function fetchPostByPageAndStudyType(page, studyTypeList) {
+  return post.get('/', {
+    params: {
+      size: 6,
+      page,
+      studyTypeList,
     },
   });
 }
@@ -47,6 +57,7 @@ export {
   fetchPosts,
   fetchPostById,
   fetchPostsByStudyType,
-  fetchPostsByTitle,
+  fetchPostsByKeyword,
+  fetchPostByPageAndStudyType,
   getStudyForMyPage,
 };

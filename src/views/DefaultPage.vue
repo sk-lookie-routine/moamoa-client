@@ -61,7 +61,6 @@ export default {
       const res = await getKakaoUserInfo();
       const DataForLocal = {
         email: res.kakao_account.email,
-        // username: res.kakao_account.profile.nickname,
         userId: res.id.toString(),
         providerType: PROVIDER_TYPE.KAKAO,
       };
@@ -85,8 +84,8 @@ export default {
         console.log('userResponse in DefaultPage', userResponse);
         //post보내서 들어가있는 userId로 userSeq조회한다.
         this.$store.state.auth.userSeq = userResponse.data.content[0].userSeq;
+        this.$store.state.auth.providerType = PROVIDER_TYPE.KAKAO;
         //userSeq를 미리 store에 저장해둔다.
-        console.log('userSeq in Store', this.$store.state.auth.userSeq);
 
         if (isWithDrawalUser == true) {
           this.$router.push({

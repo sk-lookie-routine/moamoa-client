@@ -140,11 +140,11 @@
       <div class="comment-register-container">
         <div class="comment-register__user-profile">
           <img
-            src="@/assets/img/profile/profile_tr_p.svg"
+            :src="require(`@/assets/img/profile/${user.image}.svg`)"
             alt=""
             class="user__profile-img"
           />
-          <div class="user__nickname">개발천재서영</div>
+          <div class="user__nickname">{{ user.username }}</div>
         </div>
         <form @submit.prevent="submitReply">
           <textarea

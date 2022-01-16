@@ -1,7 +1,7 @@
 <template>
   <div v-if="this.$store.state.auth.isLogin">
     <div class="default-container">
-      <my-page-upper-profile-box></my-page-upper-profile-box>
+      <my-page-profile></my-page-profile>
       <base-tab
         class="base--tab"
         firstTab="신청한 스터디"
@@ -56,12 +56,12 @@
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
-import MyPageUpperProfileBox from './MyPageProfileBox.vue';
+import MyPageProfile from '@/components/views/mypage/MyPageProfile.vue';
 import AuthLoginPage from '@/views/AuthLoginPage.vue';
 import { getStudyForMyPage } from '@/api/posts.js';
 
 export default {
-  components: { TheFooter, MyPageUpperProfileBox, AuthLoginPage },
+  components: { TheFooter, MyPageProfile, AuthLoginPage },
 
   data() {
     return {

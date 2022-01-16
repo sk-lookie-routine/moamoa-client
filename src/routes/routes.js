@@ -50,7 +50,7 @@ export default [
   },
   {
     path: '/edit',
-    name: 'editComponent',
+    name: 'edit',
     component: () => import('@/components/views/mypage/MyPageEditProfile.vue'),
   },
   {

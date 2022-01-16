@@ -177,9 +177,6 @@ export default {
   },
   computed: {
     isSubmitBtnDisabled() {
-      console.log(
-        `rangeDate: ${this.rangeDate}, deadLine: ${this.post.deadLine}, startDate: ${this.post.startDate}, endDate: ${this.post.endDate},`,
-      );
       if (
         this.isTitleValidate &&
         this.post.deadLine &&
@@ -294,8 +291,18 @@ export default {
     },
   },
   methods: {
-    submitForm() {
-      createPost(this.post);
+    showApplyPage() {
+      this.$router.push({
+        name: 'posts',
+      });
+    },
+    async submitForm() {
+      try {
+        await createPost(this.post);
+        this.showApplyPage();
+      } catch (e) {
+        console.error(e);
+      }
     },
     formatDeadlineDate() {
       if (this.post.deadLine)

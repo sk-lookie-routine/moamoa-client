@@ -3,12 +3,24 @@
     <base-dialog :showDialog="showDialog" @closed="showDialog = false">
       <template #header> {{ dialog.header }} </template>
       <template #default> {{ dialog.content }}</template>
-      <template #actions v-if="true">
-        <base-dialog-button size="small" color="gray">취소</base-dialog-button>
-        <base-dialog-button size="small">신청</base-dialog-button>
+      <template #actions v-if="!agreeWithCautions">
+        <base-dialog-button @click="showDialog = false">
+          확인
+        </base-dialog-button>
+      </template>
+      <template #actions v-else-if="finishApply">
+        <base-dialog-button @click="showPage">확인</base-dialog-button>
       </template>
       <template #actions v-else>
-        <base-dialog-button>확인</base-dialog-button>
+        <base-dialog-button
+          size="small"
+          color="gray"
+          @click="showDialog = false"
+          >취소</base-dialog-button
+        >
+        <base-dialog-button size="small" @click="submitForm">
+          신청
+        </base-dialog-button>
       </template>
     </base-dialog>
     <div class="main-container">
@@ -67,10 +79,10 @@ export default {
       },
       showDialog: false,
       agreeWithCautions: false,
+      finishApply: false,
       dialog: {
         header: null,
         content: '',
-        buttons: null,
       },
     };
   },
@@ -81,6 +93,15 @@ export default {
     },
   },
   methods: {
+    showPage() {
+      this.showDialog = false;
+      this.$router.push({
+        name: 'post',
+        params: {
+          postId: this.$route.params.postId,
+        },
+      });
+    },
     checkValidation() {
       if (this.content == '') {
         this.validate.isValidate = false;
@@ -102,12 +123,12 @@ export default {
     handleBtnCllcked() {
       console.log(this.agreeWithCautions);
       if (!this.agreeWithCautions) {
+        this.dialog.header = '';
         this.dialog.content = '신청 주의사항에 동의해 주세요.';
         this.showDialog = true;
       } else {
         this.dialog.header = '잠깐!!';
-        this.dialog.content = `스터디 모집 마감 이후에는 취소할 수 없어요.\n
-          신청하시겠어요?`;
+        this.dialog.content = `스터디 모집 마감 이후에는 취소할 수 없어요.신청하시겠어요?`;
         this.showDialog = true;
       }
     },
@@ -119,6 +140,11 @@ export default {
         joinType: JOIN_TYPE.WAIT,
       };
       await createJoin(join);
+      this.finishApply = true;
+      this.dialog.header = '';
+      this.dialog.content =
+        '신청 완료되었습니다. 승인/거부는 [마이페이지]에서 확인할 수 있어요.';
+      this.showDialog = true;
     },
   },
   created() {

@@ -47,7 +47,6 @@ export default {
   },
   methods: {
     sliceArray(array) {
-      console.log(array.length);
       return array.length > 6 ? array.slice(0, 6) : array;
     },
     async fetchData() {

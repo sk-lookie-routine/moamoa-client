@@ -1,4 +1,19 @@
 <template>
+  <base-dialog :showDialog="showDialog" @closed="showDialog = false">
+    <template #header>{{ dialog.header }}</template>
+    <template #default>{{ dialog.content }}</template>
+    <template #actions v-if="true">
+      <base-dialog-button size="small" color="gray" @click="closeApplicaption"
+        >취소</base-dialog-button
+      >
+      <base-dialog-button size="small" @click="submitForm">
+        마감
+      </base-dialog-button>
+    </template>
+    <template #actions v-else>
+      <base-dialog-button @click="showDialog = false">확인</base-dialog-button>
+    </template>
+  </base-dialog>
   <div class="main-container">
     <div v-if="post" class="post">
       <div class="post-header">
@@ -18,6 +33,17 @@
             <div class="post__posted-date">
               {{ formatDate(post.createdAt) }}
             </div>
+            <div
+              v-if="
+                this.$store.state.auth.userSeq &&
+                this.user.userSeq == this.$store.state.auth.userSeq
+              "
+              class="post__btns-container"
+            >
+              <button>편집</button>
+              <div></div>
+              <button>삭제</button>
+            </div>
           </div>
           <base-button
             :size="'small'"
@@ -28,7 +54,13 @@
           >
         </div>
       </div>
-      <div class="post-apply box--underline">
+      <div
+        v-if="
+          this.$store.state.auth.userSeq &&
+          this.user.userSeq == this.$store.state.auth.userSeq
+        "
+        class="post-apply box--underline"
+      >
         <div class="post-apply__header">
           <h2>신청한 사람들</h2>
           <button
@@ -72,21 +104,21 @@
               <li>
                 <p>
                   <span class="p-text--em">모집 마감 :</span>
-                  {{ post.deadLine }}
+                  {{ post.deadLine.replaceAll('-', '.') }}
                 </p>
               </li>
               <li>
                 <p>
-                  <span class="p-text--em">기간 :</span> {{ post.startDate }}~{{
-                    post.endDate
+                  <span class="p-text--em">기간 :</span>
+                  {{ post.startDate.replaceAll('-', '.') }}~{{
+                    post.endDate.replaceAll('-', '.')
                   }}
                 </p>
               </li>
               <li>
                 <p>
-                  <span class="p-text--em">신청 인원 :</span> 2명/{{
-                    post.memberCount
-                  }}명
+                  <span class="p-text--em">신청 인원 :</span>
+                  {{ applyList.length }}명/{{ post.memberCount }}명
                 </p>
               </li>
             </ul>
@@ -216,6 +248,11 @@ export default {
         text: '신청하기',
         color: 'red',
       },
+      showDialog: false,
+      dialog: {
+        header: null,
+        content: '',
+      },
     };
   },
   computed: {
@@ -239,7 +276,6 @@ export default {
         ...this.post,
         studyType: STUDY_TYPE.PROGRESS,
       };
-      console.log(post);
       await updatePost(post);
     },
     showApplyPage(postId) {
@@ -251,8 +287,34 @@ export default {
         query: { title: this.post.title },
       });
     },
+    setDialog(joinType) {
+      if (joinType == JOIN_TYPE.APPROVED) {
+        this.dialog.header = '';
+        this.dialog.content = '승인하였습니다.';
+        this.showDialog = true;
+      } else if (joinType == JOIN_TYPE.REFUSED) {
+        this.dialog.header = '';
+        this.dialog.content = '거절하였습니다.';
+        this.showDialog = true;
+      }
+    },
     setBaseButton() {
       if (
+        this.post.studyType == STUDY_TYPE.PROGRESS ||
+        this.post.studyType == STUDY_TYPE.COMPLETE
+      ) {
+        this.baseButton.text = '마감된 스터디';
+        this.baseButton.disable = true;
+        this.applyList.forEach(item => {
+          if (
+            item.userSeq === this.$store.state.auth.userSeq &&
+            item.joinType === JOIN_TYPE.APPROVED
+          ) {
+            this.baseButton.text = '신청 완료';
+            this.baseButton.disable = true;
+          }
+        });
+      } else if (
         this.$store.state.auth.userSeq &&
         this.user.userSeq == this.$store.state.auth.userSeq
       ) {
@@ -263,9 +325,8 @@ export default {
             item.joinType === JOIN_TYPE.WAIT &&
             item.userSeq === this.$store.state.auth.userSeq
           ) {
-            this.baseButton.text = '신청 취소';
-            this.baseButton.disable = false;
-            this.baseButton.color = 'gray';
+            this.baseButton.text = '신청함';
+            this.baseButton.disable = true;
             return;
           } else if (
             item.joinType === JOIN_TYPE.APPROVED &&
@@ -314,9 +375,11 @@ export default {
         comment,
       };
       await updateJoin(join);
+      this.setDialog(joinType);
       await this.fetchApplyData(this.post.studySeq);
     },
     async submitReply() {
+      console.log(this.$store.state.auth.userSeq);
       const reply = {
         userSeq: this.$store.state.auth.userSeq,
         studySeq: this.studySeq,
@@ -341,17 +404,20 @@ export default {
     },
     async fetchApplyData() {
       const res = await fetchJoinByStudySeq(this.post.studySeq);
-      const list = await Promise.all(
-        res.data.content.map(async item => {
-          const res = await getUserByUserSeq(item.userSeq);
-          const apply = {
-            ...item,
-            image: res.data.content[0].image,
-            username: res.data.content[0].username,
-          };
-          return apply;
-        }),
-      );
+      const list =
+        res.data.content == undefined
+          ? []
+          : await Promise.all(
+              res.data.content.map(async item => {
+                const res = await getUserByUserSeq(item.userSeq);
+                const apply = {
+                  ...item,
+                  image: res.data.content[0].image,
+                  username: res.data.content[0].username,
+                };
+                return apply;
+              }),
+            );
       this.applyList = list;
     },
     async fetchReply(studySeq) {
@@ -431,6 +497,29 @@ export default {
 .post__posted-date {
   font-size: 1.6rem;
   color: var(--gray00);
+}
+
+.post__btns-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-left: 1.6rem;
+}
+
+.post__btns-container button {
+  font-family: Spoqa Han Sans Neo;
+  font-weight: 500;
+  font-size: 1.6rem;
+  color: var(--gray02);
+  background: transparent;
+  padding: 0;
+}
+
+.post__btns-container div {
+  width: 0.2rem;
+  height: 0.2rem;
+  border-radius: 50%;
+  background: var(--gray02);
 }
 
 .post-apply {

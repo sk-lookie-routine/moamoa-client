@@ -32,7 +32,7 @@ function fetchPostsByUserSeqAndStudyType(userSeq, studyTypeList) {
 function fetchPostsInStudyRoom(userSeq, studyType) {
   return post.get('/', {
     params: {
-      isMyPage: 'YES',
+      origin: 'studyRoom',
       userSeq,
       studyType,
     },

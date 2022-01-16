@@ -1,14 +1,20 @@
 <template>
-  <div class="study-mate">
+  <div @mouseleave="mouseLeave" class="study-mate">
     <div class="userinfo">
       <img
         :src="imgUrl"
         alt="스터디 메이트 프로필 이미지"
         class="profile-img"
       />
-      <div class="nickname">{{ nickname }}</div>
+      <div class="nickname" :class="{ 'study-leader': isLeader }">
+        {{ nickname }}
+      </div>
     </div>
-    <button @click="showMenu = !showMenu" class="more-btn">
+    <button
+      v-if="!isLeader && showMoreMenu"
+      @click="showMenu = !showMenu"
+      class="more-btn"
+    >
       <div></div>
       <div></div>
       <div></div>
@@ -42,12 +48,22 @@ export default {
       required: false,
       default: false,
     },
+    showMoreMenu: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     return {
       showMenu: false,
+      showMoreMenuByHover: false,
       imgUrl: require('@/assets/img/profile/' + this.imgSrc + '.svg'),
     };
+  },
+  methods: {
+    mouseLeave() {
+      this.showMenu = false;
+    },
   },
 };
 </script>

@@ -61,12 +61,19 @@ export default {
   },
   methods: {
     showUserPage(userSeq) {
-      this.$router.push({
-        name: 'mypage',
-        params: {
-          userSeq,
-        },
-      });
+      console.log(userSeq);
+      if (userSeq == null) {
+        this.$router.push({
+          name: 'login',
+        });
+      } else {
+        this.$router.push({
+          name: 'mypage',
+          params: {
+            userSeq,
+          },
+        });
+      }
     },
     menuToggled() {
       this.isMenuClicked = !this.isMenuClicked;

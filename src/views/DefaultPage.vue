@@ -68,6 +68,7 @@ export default {
       let isWithDrawalUser = false; //탈퇴여부 체크
       const response = await getUser(DataForLocal.userId);
       if (response.data == '' || response.data.content[0].image == '') {
+        //DB에 저장되어있지 않은 유저라면.
         await postUserData({
           userId: DataForLocal.userId,
           email: DataForLocal.email,
@@ -109,7 +110,7 @@ export default {
           });
           this.$store.commit('login');
         }
-      } else if (!isWithDrawalUser) {
+      } else {
         const dataForStore = response.data.content[0];
         this.$store.commit('setUser', dataForStore);
 

@@ -12,7 +12,10 @@
             <span class="banner__title--color">모아모아</span>!
           </span>
         </h1>
-        <a href="https://www.notion.so/bbc074266f8e4c8d97cf6b6a0f93474c">
+        <a
+          target="_blank"
+          href="https://www.notion.so/bbc074266f8e4c8d97cf6b6a0f93474c"
+        >
           <button class="banner__btn">
             모집/참여 방법
             <div class="btn-icon">

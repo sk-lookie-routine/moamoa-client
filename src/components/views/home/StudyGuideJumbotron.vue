@@ -5,12 +5,23 @@
       src="@/assets/img/img_moa_highlight_character.svg"
     />
     <div class="jumbotron-text">스터디메이트를 모아보세요!</div>
-    <base-button>스터디 개설하기</base-button>
+    <base-button @click="movePage">스터디 개설하기</base-button>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    movePage() {
+      this.$router.push({
+        name: 'post-write',
+        params: {
+          postId: 'new',
+        },
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>

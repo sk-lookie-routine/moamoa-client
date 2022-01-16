@@ -55,22 +55,25 @@ function fetchPostsByStudyType(studyTypeList) {
   });
 }
 
-function fetchPostsByKeyword(search) {
-  return post.get('/', {
-    params: {
-      search,
-    },
-  });
-}
-
-function fetchPostByPageAndStudyType(page, studyTypeList) {
-  return post.get('/', {
-    params: {
-      size: 6,
-      page,
-      studyTypeList,
-    },
-  });
+function fetchPostsByKeywordAndStudyType(search, page, studyTypeList) {
+  if (search == '') {
+    return post.get('/', {
+      params: {
+        size: 6,
+        page,
+        studyTypeList,
+      },
+    });
+  } else {
+    return post.get('/', {
+      params: {
+        search,
+        size: 6,
+        page,
+        studyTypeList,
+      },
+    });
+  }
 }
 
 function getStudyForMyPage(userSeq) {
@@ -91,8 +94,7 @@ export {
   fetchPostsByUserSeqAndStudyType,
   fetchPostsInStudyRoom,
   fetchPostsByStudyType,
-  fetchPostsByKeyword,
-  fetchPostByPageAndStudyType,
+  fetchPostsByKeywordAndStudyType,
   getStudyForMyPage,
   getCompletedStudy,
 };

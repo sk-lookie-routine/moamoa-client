@@ -10,7 +10,7 @@
         @input="changeTitleContent"
       />
     </div>
-    <div class="error-text" :class="{ invisible: titleValidation }">
+    <div class="error-text" :class="{ invisible: isTitleValidate }">
       {{ titleValidationText }}
     </div>
     <div class="input-container box--underline bottom-padding">
@@ -39,16 +39,12 @@
         @update:modelValue="formatRangeDate"
       ></date-picker>
     </div>
-    <div
-      class="error-text"
-      :class="{ invisible: post.startDate && post.endDate }"
-    >
+    <div class="error-text" :class="{ invisible: rangeDate }">
       필수 입력 항목입니다.
     </div>
-    <div class="input-container box--underline bottom-padding">
+    <div class="input-container box--underline bottom-padding select-container">
       <label for="count">모집 인원:</label>
       <select v-model="post.memberCount" name="count">
-        <option value="none">선택해 주세요.</option>
         <option
           v-for="optionValue in memberCountOptions"
           v-bind:value="optionValue"
@@ -57,9 +53,6 @@
           {{ optionValue }}명
         </option>
       </select>
-    </div>
-    <div class="error-text" :class="{ invisible: post.memberCount != 'none' }">
-      필수 입력 항목입니다.
     </div>
     <div class="input-container box--underline bottom-padding">
       <label for="goal">스터디 목표:</label>
@@ -72,14 +65,14 @@
         @input="changeGoalContent"
       />
     </div>
-    <div
-      class="error-text"
-      :class="{ invisible: post.goal && post.goal != '' }"
-    >
-      필수 입력 항목입니다.
+    <div class="error-text" :class="{ invisible: isGoalValidate }">
+      {{ goalValidationText }}
     </div>
     <div class="textarea-container">
-      <label for="introduction">스터디 소개:</label>
+      <div class="label-and-counting">
+        <label for="introduction">스터디 소개</label>
+        <div class="counting">{{ post.info.length }}/300</div>
+      </div>
       <textarea
         v-model="post.info"
         placeholder="스터디에서 지키고 싶은 규칙 등을 자유롭게 서술해 주세요!"
@@ -87,7 +80,9 @@
         rows="12"
         @input="changeInfoContent"
       ></textarea>
-      <div class="error-text">필수 입력 항목입니다.</div>
+      <div class="error-text" :class="{ invisible: isInfoValidate }">
+        {{ infoValidationText }}
+      </div>
     </div>
     <div class="textarea-container">
       <label for="proceedway">스터디 진행 방식</label>
@@ -98,9 +93,11 @@
         rows="7"
         @input="changeHowContent"
       ></textarea>
-      <div class="error-text">필수 입력 항목입니다.</div>
+      <div class="error-text" :class="{ invisible: isHowValidate }">
+        {{ howValidationText }}
+      </div>
     </div>
-    <div class="textarea-container input-with-no-error-container">
+    <div class="textarea-container">
       <label for="comments">신청자에게 한마디!</label>
       <textarea
         v-model="post.comment"
@@ -109,6 +106,9 @@
         rows="7"
         @input="changeCommentContent"
       ></textarea>
+      <div class="error-text" :class="{ invisible: isCommentValidate }">
+        {{ commentValidationText }}
+      </div>
     </div>
     <div class="tag-container">
       <label for="tag">태그</label>
@@ -156,12 +156,13 @@ export default {
         studyType: 'READY',
         userSeq: this.$store.state.auth.userSeq,
         hashTags: [],
-        memberCount: 'none',
+        memberCount: 1,
         linkStudy: null,
         linkNotion: null,
         linkChat: null,
       },
       errorMessages: {
+        default: 'default',
         noValue: '필수 입력 항목입니다.',
         wordCountUnder15: '최소 15자~최대 300자 가능합니다.',
         wordCountOver15: '최대 15자 가능합니다.',
@@ -176,15 +177,30 @@ export default {
   },
   computed: {
     isSubmitBtnDisabled() {
-      if (!this.titleValidation) return true;
-      else return false;
+      console.log(
+        `rangeDate: ${this.rangeDate}, deadLine: ${this.post.deadLine}, startDate: ${this.post.startDate}, endDate: ${this.post.endDate},`,
+      );
+      if (
+        this.isTitleValidate &&
+        this.post.deadLine &&
+        this.post.startDate &&
+        this.post.endDate &&
+        this.isGoalValidate &&
+        this.isInfoValidate &&
+        this.isHowValidate &&
+        this.isCommentValidate
+      )
+        return false;
+      else return true;
     },
-    titleValidation() {
-      return (
+    isTitleValidate() {
+      if (
         this.post.title &&
         this.post.title.length > 0 &&
         this.post.title.length <= 15
-      );
+      )
+        return true;
+      else return false;
     },
     titleValidationText() {
       if (!this.post.title || this.post.title.length <= 0) {
@@ -192,7 +208,77 @@ export default {
       } else if (this.post.title.length > 15) {
         return this.errorMessages.wordCountOver15;
       }
-      return '안니';
+      return this.errorMessages.default;
+    },
+    isGoalValidate() {
+      if (
+        this.post.goal &&
+        this.post.goal.length > 0 &&
+        this.post.goal.length <= 30
+      )
+        return true;
+      else return false;
+    },
+    goalValidationText() {
+      if (!this.post.goal || this.post.goal.length <= 0) {
+        return this.errorMessages.noValue;
+      } else if (this.post.goal.length > 30) {
+        return this.errorMessages.wordCountOver30;
+      }
+      return this.errorMessages.default;
+    },
+    isInfoValidate() {
+      if (
+        this.post.info &&
+        this.post.info.length >= 15 &&
+        this.post.info.length <= 300
+      )
+        return true;
+      else return false;
+    },
+    infoValidationText() {
+      if (!this.post.info || this.post.info.length <= 0) {
+        return this.errorMessages.noValue;
+      } else if (this.post.info.length < 15) {
+        return this.errorMessages.wordCountUnder15;
+      } else if (this.post.info.length > 300) {
+        return this.errorMessages.wordCountOver300;
+      }
+      return this.errorMessages.default;
+    },
+    isHowValidate() {
+      if (
+        this.post.how &&
+        this.post.how.length > 0 &&
+        this.post.how.length <= 300
+      )
+        return true;
+      else return false;
+    },
+    howValidationText() {
+      if (!this.post.how || this.post.how.length <= 0) {
+        return this.errorMessages.noValue;
+      } else if (this.post.how.length > 300) {
+        return this.errorMessages.wordCountOver300;
+      }
+      return this.errorMessages.default;
+    },
+    isCommentValidate() {
+      if (
+        this.post.comment &&
+        this.post.comment.length > 0 &&
+        this.post.comment.length <= 300
+      )
+        return true;
+      else return false;
+    },
+    commentValidationText() {
+      if (!this.post.comment || this.post.comment.length <= 0) {
+        return this.errorMessages.noValue;
+      } else if (this.post.comment.length > 300) {
+        return this.errorMessages.wordCountOver300;
+      }
+      return this.errorMessages.default;
     },
   },
   watch: {
@@ -212,11 +298,17 @@ export default {
       createPost(this.post);
     },
     formatDeadlineDate() {
-      this.post.deadLine = this.formatDate(this.post.deadLine);
+      if (this.post.deadLine)
+        this.post.deadLine = this.formatDate(this.post.deadLine);
     },
     formatRangeDate() {
-      this.post.startDate = this.formatDate(this.rangeDate[0]);
-      this.post.endDate = this.formatDate(this.rangeDate[1]);
+      if (this.rangeDate) {
+        this.post.startDate = this.formatDate(this.rangeDate[0]);
+        this.post.endDate = this.formatDate(this.rangeDate[1]);
+      } else {
+        this.post.startDate = null;
+        this.post.endDate = null;
+      }
     },
     addTag() {
       if (this.tagInput === '') return;
@@ -289,6 +381,18 @@ select[name='count'] option {
   font-family: Noto Sans KR;
 }
 
+.label-and-counting {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.8rem;
+}
+
+.counting {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 1.4rem;
+  color: var(--gray00);
+}
+
 .textarea-container textarea,
 .tags {
   margin-top: 1rem;
@@ -303,12 +407,17 @@ select[name='count'] option {
 }
 
 .input-container,
-.textarea-container {
+.textarea-container,
+.tag-container {
   margin-top: 2.1rem;
 }
 
 .input-container:nth-child(3) {
   margin-top: 5.2rem;
+}
+
+.select-container {
+  margin-bottom: 4rem;
 }
 
 .btn-container {

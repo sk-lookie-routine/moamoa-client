@@ -30,6 +30,7 @@
 import { PROVIDER_TYPE } from '@/utils/constValue.js';
 import { saveAccessTokenToCookie } from '@/utils/cookies.js';
 import { getUser } from '@/api/user.js';
+import { postUserData } from '@/api/auth.js';
 import {
   getKakaoToken,
   getKakaoUserInfo,
@@ -38,13 +39,13 @@ export default {
   created() {
     if (this.$route.query.code) {
       this.setKakaoToken();
+    } else {
+      this.$store.commit('logout');
+      console.log(this.$store.state.auth.isLogin);
     }
   },
   methods: {
     async setKakaoToken() {
-      this.$store.state.auth.code = this.$route.query.code;
-      console.log('카카오 인증 코드', this.$store.state.auth.code);
-
       const { data } = await getKakaoToken(this.$route.query.code);
       if (data.error) {
         alert('카카오톡 로그인 오류입니다.');
@@ -64,27 +65,50 @@ export default {
         userId: res.id.toString(),
         providerType: PROVIDER_TYPE.KAKAO,
       };
-      const myDBuser = await getUser(DataForLocal.userId);
-      console.log('myDBuser(회원가입여부):', myDBuser);
-      if (myDBuser.data == '' || myDBuser.data.content[0].image == '') {
-        console.log('회원가입 기록이 없습니다.');
-        this.$store.commit('setUser', DataForLocal);
-        this.$router.push({
-          name: 'signup-form',
+
+      let isWithDrawalUser = false; //탈퇴여부 체크
+      const response = await getUser(DataForLocal.userId);
+      if (response.data == '' || response.data.content[0].image == '') {
+        await postUserData({
+          userId: DataForLocal.userId,
+          email: DataForLocal.email,
+        }).catch(function (err) {
+          if (err.toString().indexOf('422') != -1) {
+            alert('탈퇴한 유저');
+            isWithDrawalUser = true;
+          }
         });
+        console.log('isWithD...', isWithDrawalUser);
+        //탈퇴한 유저인지 post요청 후 422에러 나면 홈으로 라우팅
+        if (isWithDrawalUser == true) {
+          this.$router.push({
+            name: 'home',
+          });
+          //홈으로 이동 및 로그아웃(연결 끊어서 새로운 계정으로 로그인하도록 함)
+          window.Kakao.API.request({
+            url: '/v1/user/unlink',
+            success: function (response) {
+              console.log(response);
+            },
+            fail: function (error) {
+              console.log(error);
+            },
+          });
+        } else {
+          this.$store.commit('setUser', DataForLocal);
+          this.$router.push({
+            name: 'signup-form',
+          });
+          this.$store.commit('login');
+        }
       } else {
-        console.log(
-          '회원가입 기록이 있습니다. 로그인정보:',
-          myDBuser.data.content[0],
-        );
-        const storeData = myDBuser.data.content[0];
-        this.$store.commit('setUser', storeData);
-        console.log('kakao로그인 store정보', this.$store.state.auth);
+        const dataForStore = response.data.content[0];
+        this.$store.commit('setUser', dataForStore);
         this.$router.push({
           name: 'home',
         });
+        this.$store.commit('login');
       }
-      this.$store.commit('login');
     },
   },
 };

@@ -27,6 +27,7 @@
                 :src="require(`@/assets/img/profile/${user.image}.svg`)"
                 alt="게시글 작성자 프로필 이미지"
                 class="writer__profile-img"
+                @click="onClickUserProfile"
               />
               <div class="writer__nickname">{{ user.username }}</div>
             </div>
@@ -271,6 +272,12 @@ export default {
     },
   },
   methods: {
+    onClickUserProfile() {
+      this.$router.push({
+        name: 'mypage',
+        params: { userSeq: this.post.userSeq },
+      });
+    },
     async closeApplicaption() {
       const post = {
         ...this.post,

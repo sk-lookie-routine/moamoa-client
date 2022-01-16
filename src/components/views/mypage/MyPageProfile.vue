@@ -1,32 +1,29 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="user">
     <div class="mypage-title">
       <div class="mypage-title-text">프로필</div>
 
-      <div class="mypage-edit" @click="editProfile">
+      <div class="mypage-edit" @click="editProfile" v-if="handleEditButton">
         <img src="@/assets/img/icon_edit.svg" />편집
       </div>
     </div>
     <div class="box--underline"></div>
     <div class="profile-box">
-      <div v-for="image in imgList" :key="image.id">
-        <div
-          class="profile-image"
-          v-if="image.name.search(this.$store.state.auth.image) != -1"
-        >
-          <img :src="image.name" />
-        </div>
+      <div class="profile-image">
+        <img :src="require(`@/assets/img/profile/${user.image}.svg`)" />
       </div>
-      <div class="profile-nickname">{{ currentUser.username }}</div>
-      <div class="profile-email">{{ currentUser.email }}</div>
-      <div class="profile-desc">{{ currentUser.userInfo }}</div>
+      <div class="profile-nickname">{{ user.username }}</div>
+      <div class="profile-email">{{ user.email }}</div>
+      <div class="profile-desc">{{ user.userInfo }}</div>
       <div class="box--underline-under-email"></div>
       <div class="profile-study-info">
         <div class="profile-study-completed">
-          완료한 스터디 : <span>2</span>개
+          완료한 스터디 : <span>{{ completedStudy }}</span
+          >개
         </div>
         <div class="profile-study-participated">
-          참여중인 스터디 : <span>2</span>개
+          참여중인 스터디 : <span>{{ participatingStudy }}</span
+          >개
         </div>
       </div>
     </div>
@@ -35,54 +32,60 @@
 </template>
 
 <script>
-import { getUser } from '@/api/user.js';
+import { getUserByUserSeq } from '@/api/user.js';
+import { getCompletedStudy } from '@/api/posts.js';
+import { fetchOnlyApprovedJoinByUserSeq } from '@/api/join.js';
 export default {
-  props: {
-    editProfile: Function,
-  },
-  created() {
-    this.getMyUser();
-  },
   data() {
     return {
-      currentUser: { username: '', email: '', userInfo: '', image: '' },
-      profile: '',
-      imgList: [
-        { id: 0, name: require('@/assets/img/profile/profile_sc_o.svg') },
-        { id: 1, name: require('@/assets/img/profile/profile_sc_p.svg') },
-        { id: 2, name: require('@/assets/img/profile/profile_sc_r.svg') },
-        { id: 3, name: require('@/assets/img/profile/profile_sc_b.svg') },
-        { id: 4, name: require('@/assets/img/profile/profile_sc_y.svg') },
-        { id: 5, name: require('@/assets/img/profile/profile_sq_b.svg') },
-        { id: 6, name: require('@/assets/img/profile/profile_sq_o.svg') },
-        { id: 7, name: require('@/assets/img/profile/profile_sq_p.svg') },
-        { id: 8, name: require('@/assets/img/profile/profile_sq_r.svg') },
-        { id: 9, name: require('@/assets/img/profile/profile_sq_y.svg') },
-        { id: 10, name: require('@/assets/img/profile/profile_tr_b.svg') },
-        { id: 11, name: require('@/assets/img/profile/profile_tr_o.svg') },
-        { id: 12, name: require('@/assets/img/profile/profile_tr_p.svg') },
-        { id: 13, name: require('@/assets/img/profile/profile_tr_r.svg') },
-        { id: 14, name: require('@/assets/img/profile/profile_tr_y.svg') },
-      ],
+      handleEditButton: true,
+      participatingStudy: null,
+      user: null,
+      userSeq: null,
+      completedStudy: null,
     };
   },
   methods: {
-    async getMyUser() {
-      const response = await getUser(this.$store.state.auth.userId);
-      this.$store.commit('setUser', response.data.content[0]);
-      console.log('현재 store 정보', this.$store.state.auth);
-      for (let i = 0; i < response.data.content.length; i++) {
-        if (response.data.content[i].userId == this.$store.state.auth.userId) {
-          this.currentUser = {
-            username: response.data.content[i].username,
-            email: response.data.content[i].email,
-            userInfo: response.data.content[i].userInfo,
-            image: response.data.content[i].image,
-          };
-        }
-      }
-      this.profile = this.$store.state.auth.image;
+    editProfile() {
+      this.$router.push({
+        name: 'edit',
+      });
     },
+    async fetchData() {
+      const userResponse = await getUserByUserSeq(this.userSeq);
+      this.user = userResponse.data.content[0];
+      console.log(this.user);
+      //유저 정보 저장
+      const joinResponse = await fetchOnlyApprovedJoinByUserSeq(
+        this.$store.state.auth.userSeq,
+      );
+      if (joinResponse.data == '') {
+        this.participatingStudy = 0;
+      } else {
+        this.participatingStudy = joinResponse.data.content.length;
+      }
+      //조인 정보 저장
+      const studyResponse = await getCompletedStudy(
+        this.$store.state.auth.userSeq,
+      );
+      if (studyResponse.data == '') {
+        this.completedStudy = 0;
+      } else {
+        this.completedStudy = studyResponse.data.content[0];
+        console.log('스터디', this.completedStudy);
+      }
+
+      if (this.userSeq == this.$store.state.auth.userSeq) {
+        this.handleEditButton = true;
+      } else {
+        this.handleEditButton = false;
+      }
+    },
+  },
+  created() {
+    this.userSeq = this.$route.params.userSeq;
+    //라우팅 파라미터로 넘겨받은 userSeq 저장
+    this.fetchData();
   },
 };
 </script>
@@ -164,9 +167,6 @@ export default {
   line-height: 1.7rem;
   color: var(--gray01);
   margin-top: 1.5rem;
-}
-.profile-study-completed {
-  padding-right: 2rem;
 }
 .profile-study-info span {
   color: var(--orange-dark);

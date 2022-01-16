@@ -23,6 +23,9 @@ function fetchJoinByStudySeq(studySeq) {
     },
   });
 }
+function fetchOnlyApprovedJoinByUserSeq(userSeq) {
+  return join.get(`?userSeq=${userSeq}&joinType=APPROVED`);
+}
 
 function fetchApprovedJoinByStudySeq(studySeq) {
   return join.get('/', {
@@ -39,4 +42,5 @@ export {
   fetchJoinByUserSeq,
   fetchJoinByStudySeq,
   fetchApprovedJoinByStudySeq,
+  fetchOnlyApprovedJoinByUserSeq,
 };

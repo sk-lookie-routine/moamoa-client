@@ -12,13 +12,15 @@
             <span class="banner__title--color">모아모아</span>!
           </span>
         </h1>
-        <button class="banner__btn">
-          모집/참여 방법
-          <div class="btn-icon">
-            <div class="btn-icon__bottom-line"></div>
-            <div class="btn-icon__arrow"></div>
-          </div>
-        </button>
+        <a href="https://www.notion.so/bbc074266f8e4c8d97cf6b6a0f93474c">
+          <button class="banner__btn">
+            모집/참여 방법
+            <div class="btn-icon">
+              <div class="btn-icon__bottom-line"></div>
+              <div class="btn-icon__arrow"></div>
+            </div>
+          </button>
+        </a>
       </div>
       <div class="banner-img-container">
         <img

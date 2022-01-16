@@ -15,8 +15,7 @@ function getUserByUserSeq(userSeq) {
 }
 
 function searchUserByName(username) {
-    return user.get(`?username=${username}`, {
-    });
+    return user.get(`?username=${username}`);
 }
 function updateUserData(updateData) {
     return user.put('', updateData);

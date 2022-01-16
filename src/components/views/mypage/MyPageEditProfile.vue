@@ -76,7 +76,7 @@
       <div class="box--underline"></div>
     </div>
     <div class="edit-btn">
-      <base-button class="cancel" @click="this.$router.replace('mypage')"
+      <base-button class="cancel" @click="this.$router.go(-1)"
         >취소</base-button
       >
       <base-button class="edit-done" @click="handleEdit">변경완료</base-button>
@@ -97,7 +97,6 @@ export default {
       nickname: this.$store.state.auth.username,
       desc: this.$store.state.auth.userInfo,
       account: this.$store.state.auth.email,
-      isAllFilled: false,
       isNicknameDuplicated: true,
       isClickedDuplicatedButton: false,
       randomProfile: {
@@ -127,6 +126,14 @@ export default {
     };
   },
   methods: {
+    showUserPage(userSeq) {
+      this.$router.push({
+        name: 'mypage',
+        params: {
+          userSeq,
+        },
+      });
+    },
     checkIdDuplicate() {
       this.isClickedDuplicatedButton = true;
       //중복 확인 버튼 눌렀다고 체크
@@ -149,7 +156,7 @@ export default {
       //image에 넣어줌 -> image는 이미지 소스만 받는역할
       //randomProfile -> template에서 출력하기 위한 변수
     },
-    handleEdit() {
+    async handleEdit() {
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {
         if (this.isNicknameDuplicated == true) {
           alert('이미 사용중인 닉네임입니다.');
@@ -164,9 +171,9 @@ export default {
           image: this.image,
           userSeq: this.$store.state.auth.userSeq,
         };
-        updateUserData(updateData);
+        await updateUserData(updateData);
         this.$store.commit('setUser', updateData);
-        this.$router.replace('mypage');
+        this.showUserPage(this.$store.state.auth.userSeq);
       } else {
         alert('모든 빈칸을 채워주세요.');
       }
@@ -396,12 +403,10 @@ button {
   }
   .account button {
     width: 5rem;
-    border: 1px solid red;
   }
   .account button img {
     width: 1.6rem;
     height: 1.6rem;
-    border: 1px solid red;
   }
   .nickname,
   .nickname input,

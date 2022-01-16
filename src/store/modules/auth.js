@@ -1,6 +1,5 @@
 const auth = {
   state: {
-    code: '',
     userId: '',
     username: '',
     image: '', //이걸로 최초 회원가입 여부 체크?

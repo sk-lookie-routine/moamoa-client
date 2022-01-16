@@ -65,6 +65,15 @@ function fetchPostByPageAndStudyType(page, studyTypeList) {
   });
 }
 
+function getStudyForMyPage(userSeq) {
+  console.log('userSeq', userSeq);
+  return post.get(`?isMyPage=YES&userSeq=${userSeq}&studyType=READY`);
+} //신청한 스터디 가져오기 위함
+
+function getCompletedStudy(userSeq) {
+  return post.get(`?origin=studyRoom&userSeq=${userSeq}&studyType=완료`);
+} //완료된 스터디 개수 가져오기 위함
+
 export {
   createPost,
   updatePost,
@@ -75,4 +84,6 @@ export {
   fetchPostsByStudyType,
   fetchPostsByKeyword,
   fetchPostByPageAndStudyType,
+  getStudyForMyPage,
+  getCompletedStudy,
 };

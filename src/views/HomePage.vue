@@ -64,6 +64,7 @@ export default {
   },
   created() {
     this.fetchData();
+    console.log('userSeq', this.$store.state.auth.userSeq);
   },
 };
 </script>

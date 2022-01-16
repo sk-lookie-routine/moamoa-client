@@ -21,7 +21,10 @@
         <p>로그아웃</p>
         <div class="box--underline"></div>
       </div>
-      <div class="withdrawal" @click="withdrawal">
+      <div
+        class="withdrawal"
+        @click="this.$store.state.account.withdrawal = true"
+      >
         <p>회원 탈퇴</p>
         <div class="box--underline"></div>
       </div>
@@ -41,9 +44,6 @@ export default {
       this.$store.commit('logout');
       alert('로그아웃했습니다.');
       this.$router.push('/login');
-    },
-    withdrawal() {
-      this.$store.state.account.withdrawal = true;
     },
   },
 };

@@ -2,6 +2,7 @@
 const account = {
     state: {
         withdrawal: false,
+        isInvalid: false,
     },
     getters: {},
     mutations: {},

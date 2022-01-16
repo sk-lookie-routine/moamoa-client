@@ -77,6 +77,9 @@ export default {
       }
       this.$router.push({
         name: 'post-write',
+        params: {
+          postId: 'new',
+        },
       });
     },
     async fetchPostList(studyType) {

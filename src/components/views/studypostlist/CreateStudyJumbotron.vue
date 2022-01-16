@@ -12,7 +12,12 @@
 export default {
   methods: {
     movePage() {
-      this.$router.push({ name: 'post-write' });
+      this.$router.push({
+        name: 'post-write',
+        params: {
+          postId: 'new',
+        },
+      });
     },
   },
 };

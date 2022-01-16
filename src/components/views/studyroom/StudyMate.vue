@@ -5,6 +5,7 @@
         :src="imgUrl"
         alt="스터디 메이트 프로필 이미지"
         class="profile-img"
+        @click="showProfile"
       />
       <div class="nickname" :class="{ 'study-leader': isLeader }">
         {{ nickname }}
@@ -21,7 +22,7 @@
     </button>
     <div v-if="showMenu" class="menu">
       <div class="menu-item">
-        <div class="menu-item--gray">프로필 보기</div>
+        <div class="menu-item--gray" @click="showProfile">프로필 보기</div>
       </div>
       <div class="menu-item"><div class="menu-item--red">스터디 탈퇴</div></div>
     </div>
@@ -64,6 +65,9 @@ export default {
     mouseLeave() {
       this.showMenu = false;
     },
+    showProfile() {
+      this.$emit('profileClicked');
+    },
   },
 };
 </script>
@@ -87,6 +91,7 @@ export default {
 .profile-img {
   width: 4.4rem;
   height: 4.4rem;
+  cursor: pointer;
 }
 
 .nickname {

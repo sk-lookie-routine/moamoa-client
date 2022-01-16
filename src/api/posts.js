@@ -8,6 +8,14 @@ function updatePost(postData) {
   return post.put('/', postData);
 }
 
+function deletePost(studySeq) {
+  return post.delete('/', {
+    data: {
+      studySeq,
+    },
+  });
+}
+
 function fetchPosts() {
   return post.get('/');
 }
@@ -77,6 +85,7 @@ function getCompletedStudy(userSeq) {
 export {
   createPost,
   updatePost,
+  deletePost,
   fetchPosts,
   fetchPostById,
   fetchPostsByUserSeqAndStudyType,

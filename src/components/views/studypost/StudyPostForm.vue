@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { createPost } from '@/api/posts.js';
+import { createPost, fetchPostById, updatePost } from '@/api/posts.js';
 
 export default {
   data() {
@@ -291,15 +291,19 @@ export default {
     },
   },
   methods: {
-    showApplyPage() {
+    showPage() {
       this.$router.push({
         name: 'posts',
       });
     },
     async submitForm() {
       try {
-        await createPost(this.post);
-        this.showApplyPage();
+        if (this.$route.params.postId == 'new') {
+          await createPost(this.post);
+        } else {
+          await updatePost(this.post);
+        }
+        this.showPage();
       } catch (e) {
         console.error(e);
       }
@@ -346,6 +350,19 @@ export default {
     changeCommentContent(e) {
       this.post.comment = e.target.value;
     },
+    async fetchData() {
+      const postResponse = await fetchPostById(this.$route.params.postId);
+      this.post = postResponse.data.content[0];
+      this.rangeDate = [
+        new Date(this.post.startDate),
+        new Date(this.post.endDate),
+      ];
+    },
+  },
+  async created() {
+    if (this.$route.params.postId != 'new') {
+      await this.fetchData();
+    }
   },
 };
 </script>

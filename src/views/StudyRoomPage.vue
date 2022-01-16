@@ -17,10 +17,10 @@
         </button>
         <div v-if="showMenu" class="menu">
           <div class="menu-item">
-            <div class="menu-item--gray">내용 편집</div>
+            <div class="menu-item--gray" @click="editRoom">내용 편집</div>
           </div>
           <div class="menu-item">
-            <div class="menu-item--red">스터디 종료</div>
+            <div class="menu-item--red" @click="closeRoom">스터디 종료</div>
           </div>
         </div>
       </div>
@@ -106,6 +106,7 @@
           :nickname="user.username"
           :isLeader="true"
           :showMoreMenu="canShowMoreMenu"
+          @profileClicked="onClickUserProfile(user.userSeq)"
         ></study-mate>
         <li v-for="mate in studyMateList" :key="mate.joinSeq">
           <study-mate
@@ -113,6 +114,7 @@
             :imgSrc="mate.image"
             :nickname="mate.username"
             :showMoreMenu="canShowMoreMenu"
+            @profileClicked="onClickUserProfile(mate.userSeq)"
           ></study-mate>
         </li>
       </ul>
@@ -122,10 +124,11 @@
 </template>
 
 <script>
-import { fetchPostById } from '@/api/posts.js';
+import { fetchPostById, updatePost } from '@/api/posts.js';
 import { getUserByUserSeq } from '@/api/user.js';
 import { fetchApprovedJoinByStudySeq } from '@/api/join.js';
 import StudyMate from '@/components/views/studyroom/StudyMate.vue';
+import { STUDY_TYPE } from '@/utils/constValue';
 
 export default {
   components: {
@@ -155,10 +158,35 @@ export default {
     },
   },
   methods: {
+    onClickUserProfile(userSeq) {
+      this.$router.push({
+        name: 'mypage',
+        params: { userSeq },
+      });
+    },
+    async closeRoom() {
+      console.log(this.room);
+      const room = {
+        ...this.room,
+        studyType: STUDY_TYPE.COMPLETE,
+      };
+      console.log(room);
+      await updatePost(room);
+      this.$router.push({
+        name: 'rooms',
+      });
+    },
+    editRoom() {
+      this.$router.push({
+        name: 'room-write',
+        params: {
+          roomId: this.studySeq,
+        },
+      });
+    },
     mouseLeave() {
       this.showMenu = false;
     },
-
     async fetchData() {
       const roomResponse = await fetchPostById(this.studySeq);
       this.room = roomResponse.data.content[0];

@@ -29,19 +29,9 @@ export default [
     component: () => import('@/views/StudyPostListPage.vue'),
   },
   {
-    path: '/post-write',
-    name: 'post-write',
-    component: () => import('@/views/StudyPostWritePage.vue'),
-  },
-  {
     path: '/rooms',
     name: 'rooms',
     component: () => import('@/views/StudyRoomListPage.vue'),
-  },
-  {
-    path: '/room-write',
-    name: 'room-write',
-    component: () => import('@/views/StudyRoomWritePage.vue'),
   },
   {
     path: '/mypage/:userSeq',
@@ -64,9 +54,19 @@ export default [
     component: () => import('@/views/StudyPostPage.vue'),
   },
   {
+    path: '/post-write/:postId',
+    name: 'post-write',
+    component: () => import('@/views/StudyPostWritePage.vue'),
+  },
+  {
     path: '/rooms/:roomId',
     name: 'room',
     component: () => import('@/views/StudyRoomPage.vue'),
+  },
+  {
+    path: '/room-write/:roomId',
+    name: 'room-write',
+    component: () => import('@/views/StudyRoomWritePage.vue'),
   },
   {
     path: '/apply/:postId',

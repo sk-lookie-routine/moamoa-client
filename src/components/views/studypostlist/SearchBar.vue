@@ -4,7 +4,12 @@
     <label for="search"
       ><img class="search-icon" src="@/assets/img/icon_search.svg"
     /></label>
+    <div v-if="isSearched" class="keyword">
+      <div>{{ value }}</div>
+      <img @click="removeKeyword" src="@/assets/img/icon_cancel.svg" />
+    </div>
     <input
+      v-else
       @keypress.enter.prevent="searched"
       v-model="value"
       type="text"
@@ -19,10 +24,17 @@ export default {
   data() {
     return {
       value: '',
+      isSearched: false,
     };
   },
   methods: {
     searched() {
+      this.isSearched = true;
+      this.$emit('searched', this.value);
+    },
+    removeKeyword() {
+      this.value = '';
+      this.isSearched = false;
       this.$emit('searched', this.value);
     },
   },
@@ -36,7 +48,8 @@ h2 {
 
 form {
   border: 0.1rem solid var(--gray02);
-  padding: 1.8rem 1.3rem;
+  padding: 0 1.3rem;
+  height: 6rem;
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -44,6 +57,19 @@ form {
 
 .search-icon {
   margin-right: 0.5rem;
+}
+
+.keyword {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 1rem;
+  background-color: var(--gray06);
+  font-family: Spoqa Han Sans Neo;
+  font-size: 1.6rem;
+  font-weight: bold;
+  padding: 0.9rem 1.6rem;
+  margin-left: 0.5rem;
 }
 
 @media (max-width: 768px) {

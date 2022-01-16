@@ -3,10 +3,10 @@
     <template #header>{{ dialog.header }}</template>
     <template #default>{{ dialog.content }}</template>
     <template #actions v-if="true">
-      <base-dialog-button size="small" color="gray" @click="closeApplicaption"
+      <base-dialog-button size="small" color="gray" @click="showDialog = false"
         >취소</base-dialog-button
       >
-      <base-dialog-button size="small" @click="submitForm">
+      <base-dialog-button size="small" @click="closeApplicaption">
         마감
       </base-dialog-button>
     </template>
@@ -27,7 +27,7 @@
                 :src="require(`@/assets/img/profile/${user.image}.svg`)"
                 alt="게시글 작성자 프로필 이미지"
                 class="writer__profile-img"
-                @click="onClickUserProfile"
+                @click="onClickUserProfile(post.userSeq)"
               />
               <div class="writer__nickname">{{ user.username }}</div>
             </div>
@@ -41,7 +41,7 @@
               "
               class="post__btns-container"
             >
-              <button>편집</button>
+              <button @click="editPost">편집</button>
               <div></div>
               <button>삭제</button>
             </div>
@@ -119,7 +119,7 @@
               <li>
                 <p>
                   <span class="p-text--em">신청 인원 :</span>
-                  {{ applyList.length }}명/{{ post.memberCount }}명
+                  {{ appliedApprovedMemberCount }}명/{{ post.memberCount }}명
                 </p>
               </li>
             </ul>
@@ -261,6 +261,13 @@ export default {
       if (this.replyContent === '') return true;
       else return false;
     },
+    appliedApprovedMemberCount() {
+      console.log(this.applyList);
+      const approvedMemberList = this.applyList.filter(
+        item => item.joinType === JOIN_TYPE.APPROVED,
+      );
+      return approvedMemberList.length;
+    },
   },
   watch: {
     showApplyList: {
@@ -272,10 +279,18 @@ export default {
     },
   },
   methods: {
-    onClickUserProfile() {
+    editPost() {
+      this.$router.push({
+        name: 'post-write',
+        params: {
+          postId: this.studySeq,
+        },
+      });
+    },
+    onClickUserProfile(userSeq) {
       this.$router.push({
         name: 'mypage',
-        params: { userSeq: this.post.userSeq },
+        params: { userSeq },
       });
     },
     async closeApplicaption() {
@@ -284,6 +299,7 @@ export default {
         studyType: STUDY_TYPE.PROGRESS,
       };
       await updatePost(post);
+      this.setBaseButton();
     },
     showApplyPage(postId) {
       this.$router.push({
@@ -357,9 +373,20 @@ export default {
           name: 'login',
         });
       } else {
-        this.user.userSeq == this.$store.state.auth.userSeq
-          ? this.closeApplicaption(this.studySeq)
-          : this.showApplyPage(this.studySeq);
+        if (this.user.userSeq == this.$store.state.auth.userSeq) {
+          if (this.applyList.length <= 0) {
+            this.dialog.header = '';
+            this.dialog.content = '신청한 사람이 없을 때는 마감할 수 없어요!';
+            this.showDialog = true;
+          } else {
+            this.dialog.header = '잠깐!!';
+            this.dialog.content =
+              '마감한 스터디는 재모집할 수 없어요. 스터디를 마감하시겠어요?';
+            this.showDialog = true;
+          }
+        } else {
+          this.showApplyPage(this.studySeq);
+        }
       }
     },
     changeReplyContent(e) {
@@ -451,6 +478,7 @@ export default {
       await this.fetchApplyData(this.post.studySeq);
       this.setBaseButton();
     },
+    async deletePost() {},
     formatDate(dateString) {
       const date = new Date(dateString);
       const year = date.getFullYear();

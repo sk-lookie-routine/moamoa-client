@@ -76,7 +76,7 @@
       <div class="box--underline"></div>
     </div>
     <div class="edit-btn">
-      <base-button class="cancel" @click="this.$router.replace('mypage')"
+      <base-button class="cancel" @click="this.$router.go(-1)"
         >취소</base-button
       >
       <base-button class="edit-done" @click="handleEdit">변경완료</base-button>
@@ -126,6 +126,14 @@ export default {
     };
   },
   methods: {
+    showUserPage(userSeq) {
+      this.$router.push({
+        name: 'mypage',
+        params: {
+          userSeq,
+        },
+      });
+    },
     checkIdDuplicate() {
       this.isClickedDuplicatedButton = true;
       //중복 확인 버튼 눌렀다고 체크
@@ -165,7 +173,7 @@ export default {
         };
         await updateUserData(updateData);
         this.$store.commit('setUser', updateData);
-        this.$router.replace('mypage');
+        this.showUserPage(this.$store.state.auth.userSeq);
       } else {
         alert('모든 빈칸을 채워주세요.');
       }

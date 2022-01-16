@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="user">
     <div class="mypage-title">
       <div class="mypage-title-text">프로필</div>
 
@@ -9,16 +9,17 @@
     </div>
     <div class="box--underline"></div>
     <div class="profile-box">
-      <!-- <div class="profile-image">
+      <div class="profile-image">
         <img :src="require(`@/assets/img/profile/${user.image}.svg`)" />
-      </div> -->
+      </div>
       <div class="profile-nickname">{{ user.username }}</div>
       <div class="profile-email">{{ user.email }}</div>
       <div class="profile-desc">{{ user.userInfo }}</div>
       <div class="box--underline-under-email"></div>
       <div class="profile-study-info">
         <div class="profile-study-completed">
-          완료한 스터디 : <span>2</span>개
+          완료한 스터디 : <span>{{ completedStudy }}</span
+          >개
         </div>
         <div class="profile-study-participated">
           참여중인 스터디 : <span>{{ participatingStudy }}</span
@@ -32,20 +33,24 @@
 
 <script>
 import { getUserByUserSeq } from '@/api/user.js';
+import { getCompletedStudy } from '@/api/posts.js';
 import { fetchOnlyApprovedJoinByUserSeq } from '@/api/join.js';
 export default {
-  props: {
-    editProfile: Function,
-  },
   data() {
     return {
       handleEditButton: true,
       participatingStudy: null,
       user: null,
       userSeq: null,
+      completedStudy: null,
     };
   },
   methods: {
+    editProfile() {
+      this.$router.push({
+        name: 'edit',
+      });
+    },
     async fetchData() {
       const userResponse = await getUserByUserSeq(this.userSeq);
       this.user = userResponse.data.content[0];
@@ -54,8 +59,22 @@ export default {
       const joinResponse = await fetchOnlyApprovedJoinByUserSeq(
         this.$store.state.auth.userSeq,
       );
-      this.participatingStudy = joinResponse.data.content.length;
+      if (joinResponse.data == '') {
+        this.participatingStudy = 0;
+      } else {
+        this.participatingStudy = joinResponse.data.content.length;
+      }
       //조인 정보 저장
+      const studyResponse = await getCompletedStudy(
+        this.$store.state.auth.userSeq,
+      );
+      if (studyResponse.data == '') {
+        this.completedStudy = 0;
+      } else {
+        this.completedStudy = studyResponse.data.content[0];
+        console.log('스터디', this.completedStudy);
+      }
+
       if (this.userSeq == this.$store.state.auth.userSeq) {
         this.handleEditButton = true;
       } else {
@@ -148,9 +167,6 @@ export default {
   line-height: 1.7rem;
   color: var(--gray01);
   margin-top: 1.5rem;
-}
-.profile-study-completed {
-  padding-right: 2rem;
 }
 .profile-study-info span {
   color: var(--orange-dark);

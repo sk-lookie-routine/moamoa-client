@@ -94,7 +94,7 @@
 import TheFooter from '@/components/common/TheFooter.vue';
 import AuthModal from './AuthModal.vue';
 import { postUserData } from '@/api/auth.js';
-import { searchUserByName, updateUserData, getUser } from '@/api/user.js';
+import { searchUserByName, getUser } from '@/api/user.js';
 export default {
   components: { TheFooter, AuthModal },
   data() {
@@ -130,7 +130,7 @@ export default {
     };
   },
   methods: {
-    moveToHome() {
+    async moveToHome() {
       this.isAllFilled = true;
       this.getImageSubstr();
       const myUser = {
@@ -143,16 +143,15 @@ export default {
         userSeq: this.$store.state.auth.userSeq,
       };
       this.$store.commit('setUser', myUser);
-      console.log('data:', this.$store.state.auth);
-      if (myUser.userSeq == null) {
-        postUserData(myUser).then(response =>
-          console.log('post반환값', response),
-        );
-      } else {
-        updateUserData(myUser).then(response =>
-          console.log('update반환값', response),
-        );
-      }
+      //store에 유저정보 저장
+      console.log('저장된 store 값', this.$store.state.auth);
+
+      await postUserData(myUser).then(response =>
+        console.log('post반환값', response),
+      );
+      const response = await getUser(this.$store.state.auth.userId);
+      this.$store.state.auth.userSeq = response.data.content[0].userSeq;
+      //userSeq 업데이트 -- 나중엔 지우거나 수정해야 할 코드
     },
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
@@ -175,10 +174,6 @@ export default {
           this.text = '이미 사용중인 닉네임입니다.';
         }
       });
-      const ExistUser = await getUser(this.$store.state.auth.userId);
-      console.log('ExistUser', ExistUser);
-      this.$store.state.auth.userSeq = ExistUser.data.content[0].userSeq;
-      //userSeq 업데이트 -- 나중엔 지우거나 수정해야 할 코드
       this.getImageSubstr();
     },
   },

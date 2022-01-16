@@ -1,5 +1,9 @@
 <template>
-  <div class="comment box--underline">
+  <div
+    @mouseenter="mouseEnter"
+    @mouseleave="mouseLeave"
+    class="comment box--underline"
+  >
     <img
       :src="imgUrl"
       alt="댓글 사용자 프로필 이미지"
@@ -39,12 +43,16 @@
         </div>
       </div>
     </div>
-    <button v-if="showMoreMenu" @click="showMenu = !showMenu" class="more-btn">
+    <button
+      :class="{ invisible: !(showMoreMenu && showMoreMenuByHover) }"
+      @click="showMenu = !showMenu"
+      class="more-btn"
+    >
       <div></div>
       <div></div>
       <div></div>
     </button>
-    <div v-if="showMenu" class="menu">
+    <div v-if="showMenu && showMoreMenuByHover" class="menu">
       <div class="menu-item">
         <div class="menu-item--gray" @click="modifyReply">
           {{ showModify ? '수정 취소' : '댓글 수정' }}
@@ -90,6 +98,7 @@ export default {
       replyContent: '',
       showMenu: false,
       showModify: false,
+      showMoreMenuByHover: false,
       imgUrl: require('@/assets/img/profile/' + this.imgSrc + '.svg'),
     };
   },
@@ -100,6 +109,15 @@ export default {
     },
   },
   methods: {
+    mouseEnter() {
+      if (this.showMoreMenu) this.showMoreMenuByHover = true;
+    },
+    mouseLeave() {
+      if (this.showMoreMenu) {
+        this.showMoreMenuByHover = false;
+        this.showMenu = false;
+      }
+    },
     changeReplyContent(e) {
       this.replyContent = e.target.value;
     },
@@ -259,6 +277,10 @@ export default {
 
 .menu-item--red:hover {
   background-color: #ffdedc;
+}
+
+.invisible {
+  visibility: hidden;
 }
 
 @media (max-width: 768px) {

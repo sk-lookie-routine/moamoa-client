@@ -61,7 +61,7 @@ export default {
       const res = await getKakaoUserInfo();
       const DataForLocal = {
         email: res.kakao_account.email,
-        username: res.kakao_account.profile.nickname,
+        // username: res.kakao_account.profile.nickname,
         userId: res.id.toString(),
         providerType: PROVIDER_TYPE.KAKAO,
       };
@@ -72,14 +72,22 @@ export default {
         await postUserData({
           userId: DataForLocal.userId,
           email: DataForLocal.email,
+          providerType: PROVIDER_TYPE.KAKAO,
         }).catch(function (err) {
           if (err.toString().indexOf('422') != -1) {
             alert('탈퇴한 유저');
             isWithDrawalUser = true;
           }
         });
-        console.log('isWithD...', isWithDrawalUser);
         //탈퇴한 유저인지 post요청 후 422에러 나면 홈으로 라우팅
+        this.$store.commit('setUser', DataForLocal);
+        const userResponse = await getUser(DataForLocal.userId);
+        console.log('userResponse in DefaultPage', userResponse);
+        //post보내서 들어가있는 userId로 userSeq조회한다.
+        this.$store.state.auth.userSeq = userResponse.data.content[0].userSeq;
+        //userSeq를 미리 store에 저장해둔다.
+        console.log('userSeq in Store', this.$store.state.auth.userSeq);
+
         if (isWithDrawalUser == true) {
           this.$router.push({
             name: 'home',
@@ -96,14 +104,16 @@ export default {
           });
         } else {
           this.$store.commit('setUser', DataForLocal);
+          console.log('default에서 저장된 store', this.$store.state.auth);
           this.$router.push({
             name: 'signup-form',
           });
           this.$store.commit('login');
         }
-      } else {
+      } else if (!isWithDrawalUser) {
         const dataForStore = response.data.content[0];
         this.$store.commit('setUser', dataForStore);
+
         this.$router.push({
           name: 'home',
         });

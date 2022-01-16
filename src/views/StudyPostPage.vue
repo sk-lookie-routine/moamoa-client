@@ -435,6 +435,8 @@ export default {
 
 .post-apply {
   padding-bottom: 6rem;
+  margin-top: -1rem;
+  margin-bottom: 4.8rem;
 }
 
 .post-apply__header {

@@ -1,9 +1,27 @@
 <template>
   <div>
     <div v-if="room" class="room main-container">
-      <div class="room-header">
-        <div class="box--underline bottom-padding">
-          <h1>{{ room.title }}</h1>
+      <div
+        @mouseleave="mouseLeave"
+        class="room-header box--underline bottom-padding"
+      >
+        <h1>{{ room.title }}</h1>
+        <button
+          v-if="canShowMoreBtn"
+          @click="showMenu = !showMenu"
+          class="more-btn"
+        >
+          <div></div>
+          <div></div>
+          <div></div>
+        </button>
+        <div v-if="showMenu" class="menu">
+          <div class="menu-item">
+            <div class="menu-item--gray">내용 편집</div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item--red">스터디 종료</div>
+          </div>
         </div>
       </div>
       <div class="room-contents">
@@ -65,7 +83,7 @@
             </li>
           </ul>
         </div>
-        <div class="room-content">
+        <div class="room-content" v-if="room.hashTags.length > 0">
           <h2>태그</h2>
           <div class="tags-container">
             <span class="tag-icon">#</span>
@@ -82,9 +100,21 @@
     <div class="main-container">
       <h2 class="study-mate-title">스터디 메이트</h2>
       <ul class="study-mate-list">
-        <study-mate></study-mate>
-        <study-mate></study-mate>
-        <study-mate></study-mate>
+        <study-mate
+          :id="user.userSeq"
+          :imgSrc="user.image"
+          :nickname="user.username"
+          :isLeader="true"
+          :showMoreMenu="canShowMoreMenu"
+        ></study-mate>
+        <li v-for="mate in studyMateList" :key="mate.joinSeq">
+          <study-mate
+            :id="mate.joinSeq"
+            :imgSrc="mate.image"
+            :nickname="mate.username"
+            :showMoreMenu="canShowMoreMenu"
+          ></study-mate>
+        </li>
       </ul>
     </div>
     <the-footer></the-footer>
@@ -94,6 +124,7 @@
 <script>
 import { fetchPostById } from '@/api/posts.js';
 import { getUserByUserSeq } from '@/api/user.js';
+import { fetchApprovedJoinByStudySeq } from '@/api/join.js';
 import StudyMate from '@/components/views/studyroom/StudyMate.vue';
 
 export default {
@@ -105,14 +136,49 @@ export default {
       studySeq: null,
       user: null,
       room: null,
+      showMenu: false,
+      studyMateList: [],
     };
   },
+  computed: {
+    canShowMoreBtn() {
+      if (
+        this.$store.state.auth.userSeq &&
+        this.user.userSeq == this.$store.state.auth.userSeq
+      )
+        return true;
+      else return false;
+    },
+    canShowMoreMenu() {
+      if (this.user.userSeq == this.$store.state.auth.userSeq) return true;
+      else return false;
+    },
+  },
   methods: {
+    mouseLeave() {
+      this.showMenu = false;
+    },
+
     async fetchData() {
       const roomResponse = await fetchPostById(this.studySeq);
       this.room = roomResponse.data.content[0];
       const userResponse = await getUserByUserSeq(this.room.userSeq);
       this.user = userResponse.data.content[0];
+      const joinResponse = await fetchApprovedJoinByStudySeq(this.studySeq);
+      const list = await Promise.all(
+        joinResponse.data.content.map(async item => {
+          const res = await getUserByUserSeq(item.userSeq);
+          const mate = {
+            ...item,
+            image: res.data.content[0].image,
+            username: res.data.content[0].username,
+          };
+          return mate;
+        }),
+      );
+      this.studyMateList = list;
+      console.log(this.user);
+      console.log(this.studyMateList);
     },
   },
   created() {
@@ -124,7 +190,75 @@ export default {
 
 <style scoped>
 .room-header {
+  margin-top: 19.2rem;
   margin-bottom: 10rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.room-header h1 {
+  margin-top: 0;
+}
+
+.more-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.4rem 1rem;
+  background-color: transparent;
+}
+
+.more-btn div {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background-color: var(--gray02);
+}
+
+.menu {
+  z-index: 1;
+  background-color: white;
+  width: 10.4rem;
+  position: absolute;
+  right: 2.4rem;
+  top: 0rem;
+  border: 1px solid var(--gray03);
+  border-radius: 1rem;
+  box-shadow: 0px 4px 4px rgba(178, 178, 178, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item:not(:last-child) {
+  border-bottom: 1px solid var(--gray03);
+}
+
+.menu-item {
+  padding: 0.8rem 0;
+}
+
+.menu-item div {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 0.4rem 0;
+}
+
+.menu-item--gray {
+  color: var(--black);
+}
+.menu-item--gray:hover {
+  background-color: #eff0f3;
+}
+
+.menu-item--red {
+  color: var(--orange-dark);
+}
+
+.menu-item--red:hover {
+  background-color: #ffdedc;
 }
 
 .room-content {

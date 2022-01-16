@@ -1,4 +1,19 @@
 <template>
+  <base-dialog :showDialog="showDialog" @closed="showDialog = false">
+    <template #header>{{ dialog.header }}</template>
+    <template #default>{{ dialog.content }}</template>
+    <template #actions v-if="true">
+      <base-dialog-button size="small" color="gray" @click="closeApplicaption"
+        >취소</base-dialog-button
+      >
+      <base-dialog-button size="small" @click="submitForm">
+        마감
+      </base-dialog-button>
+    </template>
+    <template #actions v-else>
+      <base-dialog-button @click="showDialog = false">확인</base-dialog-button>
+    </template>
+  </base-dialog>
   <div class="main-container">
     <div v-if="post" class="post">
       <div class="post-header">
@@ -19,21 +34,34 @@
             <div class="post__posted-date">
               {{ formatDate(post.createdAt) }}
             </div>
+            <div
+              v-if="
+                this.$store.state.auth.userSeq &&
+                this.user.userSeq == this.$store.state.auth.userSeq
+              "
+              class="post__btns-container"
+            >
+              <button>편집</button>
+              <div></div>
+              <button>삭제</button>
+            </div>
           </div>
           <base-button
             :size="'small'"
-            @click="
-              user.userSeq == 49
-                ? closeApplicaption(studySeq)
-                : showApplyPage(studySeq)
-            "
-            >{{
-              user.userSeq == 49 ? '모집 마감하기' : '신청하기'
-            }}</base-button
+            :disable="baseButton.disable"
+            :color="baseButton.color"
+            @click="onClickBaseButton"
+            >{{ baseButton.text }}</base-button
           >
         </div>
       </div>
-      <div class="post-apply box--underline">
+      <div
+        v-if="
+          this.$store.state.auth.userSeq &&
+          this.user.userSeq == this.$store.state.auth.userSeq
+        "
+        class="post-apply box--underline"
+      >
         <div class="post-apply__header">
           <h2>신청한 사람들</h2>
           <button
@@ -77,21 +105,21 @@
               <li>
                 <p>
                   <span class="p-text--em">모집 마감 :</span>
-                  {{ post.deadLine }}
+                  {{ post.deadLine.replaceAll('-', '.') }}
                 </p>
               </li>
               <li>
                 <p>
-                  <span class="p-text--em">기간 :</span> {{ post.startDate }}~{{
-                    post.endDate
+                  <span class="p-text--em">기간 :</span>
+                  {{ post.startDate.replaceAll('-', '.') }}~{{
+                    post.endDate.replaceAll('-', '.')
                   }}
                 </p>
               </li>
               <li>
                 <p>
-                  <span class="p-text--em">신청 인원 :</span> 2명/{{
-                    post.memberCount
-                  }}명
+                  <span class="p-text--em">신청 인원 :</span>
+                  {{ applyList.length }}명/{{ post.memberCount }}명
                 </p>
               </li>
             </ul>
@@ -122,11 +150,11 @@
             </p>
           </div>
         </div>
-        <div class="post-content">
+        <div v-if="post.hashTags.length > 0" class="post-content">
           <h2>태그</h2>
           <div class="tags-container">
             <span class="tag-icon">#</span>
-            <ul v-if="post.hashTags.length > 0" class="tags">
+            <ul class="tags">
               <li v-for="(tag, index) in post.hashTags" :key="index">
                 <base-tag>{{ tag }}</base-tag>
               </li>
@@ -137,14 +165,21 @@
     </div>
     <div class="post-comments">
       <h2>댓글</h2>
-      <div class="comment-register-container">
+      <div
+        v-if="this.$store.state.auth.isLogin"
+        class="comment-register-container"
+      >
         <div class="comment-register__user-profile">
           <img
-            :src="require(`@/assets/img/profile/${user.image}.svg`)"
-            alt=""
+            :src="
+              require(`@/assets/img/profile/${this.$store.state.auth.image}.svg`)
+            "
+            alt="댓글 등록 프로필 이미지"
             class="user__profile-img"
           />
-          <div class="user__nickname">{{ user.username }}</div>
+          <div class="user__nickname">
+            {{ this.$store.state.auth.username }}
+          </div>
         </div>
         <form @submit.prevent="submitReply">
           <textarea
@@ -152,13 +187,19 @@
             name="comment"
             rows="5"
             v-model="replyContent"
+            @input="changeReplyContent"
           ></textarea>
           <div class="comment-register-btn-container">
-            <button class="comment-register__register-btn">등록</button>
+            <button
+              class="comment-register__register-btn"
+              :disabled="isReplyBtnDisabled"
+            >
+              등록
+            </button>
           </div>
         </form>
       </div>
-      <ul v-if="replyList" class="comment-list">
+      <ul v-if="replyList && replyList.length > 0" class="comment-list">
         <li v-for="reply in replyList" :key="reply.replySeq">
           <base-reply
             :id="reply.replySeq"
@@ -166,9 +207,13 @@
             :nickname="reply.username"
             :date="formatDate(reply.createdAt)"
             :content="reply.content"
+            :showMoreMenu="canShowMoreMenuInReply(reply.userSeq)"
+            @register="modifyReply"
+            @delete="removeReply(reply.replySeq)"
           ></base-reply>
         </li>
       </ul>
+      <no-reply v-else>아직 댓글이 없어요</no-reply>
     </div>
   </div>
   <the-footer></the-footer>
@@ -176,15 +221,19 @@
 
 <script>
 import { fetchPostById, updatePost } from '@/api/posts.js';
-import { fetchReply, createReply } from '@/api/reply.js';
+import {
+  fetchReply,
+  createReply,
+  updateReply,
+  deleteReply,
+} from '@/api/reply.js';
 import { fetchJoinByStudySeq, updateJoin } from '@/api/join.js';
 import { getUserByUserSeq } from '@/api/user.js';
-import { STUDY_TYPE } from '@/utils/constValue';
-import BaseReply from '@/components/base/BaseReply.vue';
-import BaseApply from '@/components/base/BaseApply.vue';
+import { STUDY_TYPE, JOIN_TYPE } from '@/utils/constValue';
+import NoReply from '@/components/views/studypost/NoReply.vue';
 
 export default {
-  components: { BaseReply, BaseApply },
+  components: { NoReply },
   data() {
     return {
       studySeq: null,
@@ -195,7 +244,23 @@ export default {
       applyList: [],
       showApplyList: true,
       applyListToggleBtnImage: 'icon_arrow_up',
+      baseButton: {
+        disable: false,
+        text: '신청하기',
+        color: 'red',
+      },
+      showDialog: false,
+      dialog: {
+        header: null,
+        content: '',
+      },
     };
+  },
+  computed: {
+    isReplyBtnDisabled() {
+      if (this.replyContent === '') return true;
+      else return false;
+    },
   },
   watch: {
     showApplyList: {
@@ -218,7 +283,6 @@ export default {
         ...this.post,
         studyType: STUDY_TYPE.PROGRESS,
       };
-      console.log(post);
       await updatePost(post);
     },
     showApplyPage(postId) {
@@ -230,6 +294,85 @@ export default {
         query: { title: this.post.title },
       });
     },
+    setDialog(joinType) {
+      if (joinType == JOIN_TYPE.APPROVED) {
+        this.dialog.header = '';
+        this.dialog.content = '승인하였습니다.';
+        this.showDialog = true;
+      } else if (joinType == JOIN_TYPE.REFUSED) {
+        this.dialog.header = '';
+        this.dialog.content = '거절하였습니다.';
+        this.showDialog = true;
+      }
+    },
+    setBaseButton() {
+      if (
+        this.post.studyType == STUDY_TYPE.PROGRESS ||
+        this.post.studyType == STUDY_TYPE.COMPLETE
+      ) {
+        this.baseButton.text = '마감된 스터디';
+        this.baseButton.disable = true;
+        this.applyList.forEach(item => {
+          if (
+            item.userSeq === this.$store.state.auth.userSeq &&
+            item.joinType === JOIN_TYPE.APPROVED
+          ) {
+            this.baseButton.text = '신청 완료';
+            this.baseButton.disable = true;
+          }
+        });
+      } else if (
+        this.$store.state.auth.userSeq &&
+        this.user.userSeq == this.$store.state.auth.userSeq
+      ) {
+        this.baseButton.text = '모집 마감하기';
+      } else {
+        this.applyList.forEach(item => {
+          if (
+            item.joinType === JOIN_TYPE.WAIT &&
+            item.userSeq === this.$store.state.auth.userSeq
+          ) {
+            this.baseButton.text = '신청함';
+            this.baseButton.disable = true;
+            return;
+          } else if (
+            item.joinType === JOIN_TYPE.APPROVED &&
+            item.userSeq === this.$store.state.auth.userSeq
+          ) {
+            this.baseButton.text = '신청 완료';
+            this.baseButton.disable = true;
+          } else if (
+            item.joinType === JOIN_TYPE.REFUSED &&
+            item.userSeq === this.$store.state.auth.userSeq
+          ) {
+            this.baseButton.text = '신청 거부';
+            this.baseButton.disable = true;
+          }
+        });
+      }
+    },
+    onClickBaseButton() {
+      if (!this.$store.state.auth.isLogin) {
+        this.$router.push({
+          name: 'login',
+        });
+      } else {
+        this.user.userSeq == this.$store.state.auth.userSeq
+          ? this.closeApplicaption(this.studySeq)
+          : this.showApplyPage(this.studySeq);
+      }
+    },
+    changeReplyContent(e) {
+      this.replyContent = e.target.value;
+    },
+    canShowMoreMenuInReply(userSeq) {
+      if (
+        this.$store.state.auth.isLogin &&
+        userSeq == this.$store.state.auth.userSeq
+      )
+        return true;
+      else return false;
+    },
     async setApply(joinType, joinSeq, userSeq, comment) {
       const join = {
         studySeq: this.studySeq,
@@ -239,11 +382,13 @@ export default {
         comment,
       };
       await updateJoin(join);
+      this.setDialog(joinType);
       await this.fetchApplyData(this.post.studySeq);
     },
     async submitReply() {
+      console.log(this.$store.state.auth.userSeq);
       const reply = {
-        userSeq: 50,
+        userSeq: this.$store.state.auth.userSeq,
         studySeq: this.studySeq,
         content: this.replyContent,
       };
@@ -252,19 +397,34 @@ export default {
       this.replyContent = '';
       this.fetchReply(this.post.studySeq);
     },
+    async modifyReply(replySeq, content) {
+      const reply = {
+        replySeq,
+        content,
+      };
+      await updateReply(reply);
+      this.fetchReply(this.post.studySeq);
+    },
+    async removeReply(replySeq) {
+      await deleteReply(replySeq);
+      this.fetchReply(this.post.studySeq);
+    },
     async fetchApplyData() {
       const res = await fetchJoinByStudySeq(this.post.studySeq);
-      const list = await Promise.all(
-        res.data.content.map(async item => {
-          const res = await getUserByUserSeq(item.userSeq);
-          const apply = {
-            ...item,
-            image: res.data.content[0].image,
-            username: res.data.content[0].username,
-          };
-          return apply;
-        }),
-      );
+      const list =
+        res.data.content == undefined
+          ? []
+          : await Promise.all(
+              res.data.content.map(async item => {
+                const res = await getUserByUserSeq(item.userSeq);
+                const apply = {
+                  ...item,
+                  image: res.data.content[0].image,
+                  username: res.data.content[0].username,
+                };
+                return apply;
+              }),
+            );
       this.applyList = list;
     },
     async fetchReply(studySeq) {
@@ -288,7 +448,8 @@ export default {
       const userResponse = await getUserByUserSeq(this.post.userSeq);
       this.user = userResponse.data.content[0];
       this.fetchReply(this.post.studySeq);
-      this.fetchApplyData(this.post.studySeq);
+      await this.fetchApplyData(this.post.studySeq);
+      this.setBaseButton();
     },
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -345,8 +506,33 @@ export default {
   color: var(--gray00);
 }
 
+.post__btns-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-left: 1.6rem;
+}
+
+.post__btns-container button {
+  font-family: Spoqa Han Sans Neo;
+  font-weight: 500;
+  font-size: 1.6rem;
+  color: var(--gray02);
+  background: transparent;
+  padding: 0;
+}
+
+.post__btns-container div {
+  width: 0.2rem;
+  height: 0.2rem;
+  border-radius: 50%;
+  background: var(--gray02);
+}
+
 .post-apply {
   padding-bottom: 6rem;
+  margin-top: -1rem;
+  margin-bottom: 4.8rem;
 }
 
 .post-apply__header {
@@ -461,6 +647,10 @@ textarea {
   font-size: 1.6rem;
   color: white;
   background-color: var(--orange-dark);
+}
+
+.comment-register__register-btn:disabled {
+  background-color: var(--gray03);
 }
 
 .comment-list {

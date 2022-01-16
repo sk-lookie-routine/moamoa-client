@@ -20,6 +20,25 @@ function fetchPostById(studySeq) {
   });
 }
 
+function fetchPostsByUserSeqAndStudyType(userSeq, studyTypeList) {
+  return post.get('/', {
+    params: {
+      userSeq,
+      studyTypeList,
+    },
+  });
+}
+
+function fetchPostsInStudyRoom(userSeq, studyType) {
+  return post.get('/', {
+    params: {
+      origin: 'studyRoom',
+      userSeq,
+      studyType,
+    },
+  });
+}
+
 function fetchPostsByStudyType(studyTypeList) {
   return post.get('/', {
     params: {
@@ -60,6 +79,8 @@ export {
   updatePost,
   fetchPosts,
   fetchPostById,
+  fetchPostsByUserSeqAndStudyType,
+  fetchPostsInStudyRoom,
   fetchPostsByStudyType,
   fetchPostsByKeyword,
   fetchPostByPageAndStudyType,

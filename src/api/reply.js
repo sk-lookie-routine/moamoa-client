@@ -12,4 +12,16 @@ function createReply(data) {
   return reply.post('/', data);
 }
 
-export { fetchReply, createReply };
+function updateReply(data) {
+  return reply.put('/', data);
+}
+
+function deleteReply(replySeq) {
+  return reply.delete('/', {
+    data: {
+      replySeq,
+    },
+  });
+}
+
+export { fetchReply, createReply, updateReply, deleteReply };

@@ -39,6 +39,9 @@ export default {
   created() {
     if (this.$route.query.code) {
       this.setKakaoToken();
+    } else {
+      this.$store.commit('logout');
+      console.log(this.$store.state.auth.isLogin);
     }
   },
   methods: {

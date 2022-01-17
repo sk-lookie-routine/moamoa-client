@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 <template>
   <a class="kakao-login-btn" @click="kakaoLogin">
     <img src="@/assets/img/icon_kakao.svg" />
@@ -11,7 +12,7 @@ export default {
     kakaoLogin() {
       const params = {
         redirectUri: 'http://localhost:3000',
-        // redirectUri: 'http://moa-moa.kr',
+        // redirectUri: 'https://moa-moa.kr',
       };
       window.Kakao.Auth.authorize(params);
     },

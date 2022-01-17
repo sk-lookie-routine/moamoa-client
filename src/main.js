@@ -16,6 +16,7 @@ import TheFooter from '@/components/common/TheFooter.vue';
 
 import BaseApply from '@/components/base/BaseApply.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
+import BaseBadge from '@/components/base/BaseBadge.vue';
 import BaseCard from '@/components/base/BaseCard.vue';
 import BaseDialog from '@/components/base/BaseDialog.vue';
 import BaseDialogButton from '@/components/base/BaseDialogButton.vue';
@@ -30,6 +31,7 @@ app.component('the-header', TheHeader);
 app.component('the-footer', TheFooter);
 app.component('base-apply', BaseApply);
 app.component('base-button', BaseButton);
+app.component('base-badge', BaseBadge);
 app.component('base-card', BaseCard);
 app.component('base-dialog', BaseDialog);
 app.component('base-dialog-button', BaseDialogButton);

@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div v-if="joinType == 'APPROVED'" class="approved-status">승인 완료</div>
-    <div v-if="joinType == 'REFUSED'" class="refused-status">승인 거부</div>
+    <div v-else-if="joinType == 'REFUSED'" class="refused-status">
+      승인 거부
+    </div>
     <div v-else class="waiting-status">승인 대기</div>
   </div>
 </template>

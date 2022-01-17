@@ -1,5 +1,10 @@
 <template>
   <div class="card" @mouseover="onMouseOver" @mouseleave="onMouseleave">
+    <base-badge
+      class="card__badge"
+      v-if="joinType"
+      :joinType="joinType"
+    ></base-badge>
     <div class="card__thumbnail">
       <!-- "@/assets/img/profile/profile_sc_p.svg" -->
       <img :src="imgUrl" />
@@ -67,6 +72,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    joinType: {
+      type: String,
+      default: null,
+    },
   },
   data() {
     return {
@@ -80,6 +89,7 @@ export default {
 
 <style scoped>
 .card {
+  position: relative;
   width: 100%;
   height: 20rem;
   box-shadow: 0.1rem 0.1rem 1rem rgba(170, 170, 170, 0.25);
@@ -91,6 +101,10 @@ export default {
 
 .card:hover {
   cursor: pointer;
+}
+
+.card__badge {
+  position: absolute;
 }
 
 .card__thumbnail {

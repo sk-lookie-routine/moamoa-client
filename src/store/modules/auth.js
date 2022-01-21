@@ -4,13 +4,13 @@ const auth = {
     username: '',
     image: '', //이걸로 최초 회원가입 여부 체크?
     email: '',
-    roleType: '',
     isLogin: false,
     accessToken: '',
     refreshToken: '',
-    providerType: '',
     userInfo: '',
     userSeq: '',
+    userType: '',
+    providerType: '',
   },
   getters: {
     userToken(state) {
@@ -29,20 +29,20 @@ const auth = {
       state.username = payload.username;
       state.userId = payload.userId;
       state.image = payload.image;
-      state.providerType = payload.providerType;
       state.userSeq = payload.userSeq;
       state.userInfo = payload.userInfo;
+      state.userType = payload.userType;
     },
     initUser(state) {
       state.email = '';
       state.username = '';
       state.userId = '';
       state.image = '';
-      state.providerType = '';
       state.userSeq = '';
       state.userInfo = '';
       state.accessToken = '';
       state.refreshToken = '';
+      state.userType = '';
     },
     setToken(state, payload) {
       state.accessToken = payload.access_token;

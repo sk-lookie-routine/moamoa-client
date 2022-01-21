@@ -75,7 +75,7 @@ function fetchPostsByKeywordAndStudyType(search, page, studyTypeList) {
     });
   }
 }
-
+//?postSeq={}&search={}&userSeq={}&postType={} 변경된 post GET
 function getStudyForMyPage(userSeq) {
   console.log('userSeq', userSeq);
   return post.get(`?isMyPage=YES&userSeq=${userSeq}&studyType=READY`);

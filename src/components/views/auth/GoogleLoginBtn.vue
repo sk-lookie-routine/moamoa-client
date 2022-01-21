@@ -9,9 +9,7 @@
 </template>
 
 <script>
-import { PROVIDER_TYPE } from '@/utils/constValue.js';
 import { getUser } from '@/api/user.js';
-import { postUserData } from '@/api/auth.js';
 export default {
   data() {
     return {
@@ -31,64 +29,29 @@ export default {
     },
     async onSuccess(googleUser) {
       this.googleUser = googleUser.getBasicProfile();
+      this.$store.state.auth.providerType = 'GOOGLE';
+      this.$store.state.auth.email = googleUser.getBasicProfile().getEmail();
+      this.$store.state.auth.userId = googleUser.getBasicProfile().getId();
 
-      const DataForLocal = {
-        email: googleUser.getBasicProfile().getEmail(),
-        username: googleUser.getBasicProfile().getName(),
-        userId: googleUser.getBasicProfile().getId(),
-        providerType: PROVIDER_TYPE.GOOGLE,
-      };
-
-      let isWithDrawalUser = false; //탈퇴여부 체크
-      const response = await getUser(DataForLocal.userId);
-      if (response.data == '' || response.data.content[0].image == '') {
-        await postUserData({
-          userId: DataForLocal.userId,
-          email: DataForLocal.email,
-          providerType: PROVIDER_TYPE.GOOGLE,
-        }).catch(function (err) {
-          if (err.toString().indexOf('422') != -1) {
-            alert('탈퇴한 유저');
-            isWithDrawalUser = true;
-          }
-        });
-        //탈퇴한 유저인지 post요청 후 422에러 나면 홈으로 라우팅
-        this.$store.commit('setUser', DataForLocal);
-        //store저장
-        const userResponse = await getUser(DataForLocal.userId);
-        console.log('userResponse in DefaultPage', userResponse);
-        //post보내서 들어가있는 userId로 userSeq조회한다.
-        this.$store.state.auth.userSeq = userResponse.data.content[0].userSeq;
-        this.$store.state.auth.providerType = PROVIDER_TYPE.GOOGLE;
-        //userSeq를 미리 store에 저장해둔다.
-
-        if (isWithDrawalUser == true) {
-          //탈퇴유저라면
-          this.$router.push({
-            name: 'home',
-          });
-          //홈으로 이동 및 로그아웃(연결 끊어서 새로운 계정으로 로그인하도록 함)
-          const authInst = window.gapi.auth2.getAuthInstance();
-          authInst.signOut();
-        } else {
-          this.$store.commit('setUser', DataForLocal);
-          this.$router.push({
-            name: 'signup-form',
-          });
-          this.$store.commit('login');
-        }
-      } else {
-        const dataForStore = response.data.content[0];
-        this.$store.commit('setUser', dataForStore);
-
+      const response = await getUser(this.$store.state.auth.userId);
+      console.log(response);
+      if (response == '') {
+        console.log('none');
+        // NO CONTENT
+        this.$router.push({ name: 'signup-form' });
+      } else if (response.content[0].userType == 'NORMAL') {
+        //이미 가입한 회원인 경우
+        this.$store.commit('login');
         this.$router.push({
           name: 'home',
         });
-        this.$store.commit('login');
+      } else if (response.content[0].userType == 'REJECT') {
+        //탈퇴한 적이 있는 회원인 경우
+        alert('한번 탈퇴한 회원은 다시 가입하실 수 없습니다.');
       }
     },
     onFailure(error) {
-      console.log('123', error);
+      console.log(error);
     },
   },
 };

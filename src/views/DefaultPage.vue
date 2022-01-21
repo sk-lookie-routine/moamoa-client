@@ -27,14 +27,13 @@
 </template>
 
 <script>
-import { PROVIDER_TYPE } from '@/utils/constValue.js';
 import { saveAccessTokenToCookie } from '@/utils/cookies.js';
-import { getUser } from '@/api/user.js';
-import { postUserData } from '@/api/auth.js';
+// import { getUserByUserSeq } from '@/api/user.js';
 import {
   getKakaoToken,
   getKakaoUserInfo,
 } from '@/components/views/auth/login.js';
+import { getUser } from '@/api/user';
 export default {
   created() {
     if (this.$route.query.code) {
@@ -52,72 +51,35 @@ export default {
         this.$router.replace('/login');
         return;
       }
-      await this.$store.commit('setToken', data); //store에 토큰저장
+      this.$store.commit('setToken', data); //store에 토큰저장
       saveAccessTokenToCookie(data.access_token); //cookie에 토큰저장
       window.Kakao.Auth.setAccessToken(data.access_token);
       await this.setUserInfo();
     },
     async setUserInfo() {
+      this.$store.state.auth.providerType = 'KAKAO';
       const res = await getKakaoUserInfo();
-      const DataForLocal = {
-        email: res.kakao_account.email,
-        userId: res.id.toString(),
-        providerType: PROVIDER_TYPE.KAKAO,
-      };
-
-      let isWithDrawalUser = false; //탈퇴여부 체크
-      const response = await getUser(DataForLocal.userId);
-      if (response.data == '' || response.data.content[0].image == '') {
-        //DB에 저장되어있지 않은 유저라면.
-        await postUserData({
-          userId: DataForLocal.userId,
-          email: DataForLocal.email,
-          providerType: PROVIDER_TYPE.KAKAO,
-        }).catch(function (err) {
-          if (err.toString().indexOf('422') != -1) {
-            alert('탈퇴한 유저');
-            isWithDrawalUser = true;
-          }
-        });
-        //탈퇴한 유저인지 post요청 후 422에러 나면 홈으로 라우팅
-        this.$store.commit('setUser', DataForLocal);
-        const userResponse = await getUser(DataForLocal.userId);
-        console.log('userResponse in DefaultPage', userResponse);
-        //post보내서 들어가있는 userId로 userSeq조회한다.
-        this.$store.state.auth.userSeq = userResponse.data.content[0].userSeq;
-        this.$store.state.auth.providerType = PROVIDER_TYPE.KAKAO;
-        //userSeq를 미리 store에 저장해둔다.
-
-        if (isWithDrawalUser == true) {
-          this.$router.push({
-            name: 'home',
-          });
-          //홈으로 이동 및 로그아웃(연결 끊어서 새로운 계정으로 로그인하도록 함)
-          window.Kakao.API.request({
-            url: '/v1/user/unlink',
-            success: function (response) {
-              console.log(response);
-            },
-            fail: function (error) {
-              console.log(error);
-            },
-          });
-        } else {
-          this.$store.commit('setUser', DataForLocal);
-          console.log('default에서 저장된 store', this.$store.state.auth);
-          this.$router.push({
-            name: 'signup-form',
-          });
-          this.$store.commit('login');
-        }
-      } else {
-        const dataForStore = response.data.content[0];
-        this.$store.commit('setUser', dataForStore);
-
+      this.$store.state.auth.email = res.kakao_account.email;
+      this.$store.state.auth.userId = res.id;
+      //kakao 계정 이메일,아이디 우선 store에 넣어뒀음
+      const userResponse = getUser(res.id);
+      console.log(userResponse);
+      if (userResponse == '') {
+        this.$store.commit('login');
+        // NO CONTENT
+        this.$router.push({ name: 'signup-form' });
+      } else if (userResponse.data.content[0].userType == 'NORMAL') {
+        //이미 가입한 회원인 경우
+        this.$store.commit('login');
+        this.$store.state.auth.userType = 'NORMAL';
+        this.$store.state.auth.userSeq = userResponse.data.content[0].userseq;
         this.$router.push({
           name: 'home',
         });
-        this.$store.commit('login');
+      } else if (userResponse.data.content[0].userType == 'REJECT') {
+        //탈퇴한 적이 있는 회원인 경우
+        alert('한번 탈퇴한 회원은 다시 가입하실 수 없습니다.');
+        this.$store.commit('initUser');
       }
     },
   },

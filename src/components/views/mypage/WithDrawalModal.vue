@@ -51,7 +51,7 @@ export default {
   methods: {
     onClickWithdrawal() {
       this.isClicked = true;
-      deleteUser(this.$store.state.auth.userSeq);
+      deleteUser();
     },
     onClickCancel() {
       this.$store.state.account.withdrawal = false;

@@ -21,24 +21,24 @@
         <p>로그아웃</p>
         <div class="box--underline"></div>
       </div>
-      <div
-        class="withdrawal"
-        @click="this.$store.state.account.withdrawal = true"
-      >
+      <div class="withdrawal" @click="isClicked = true">
         <p>회원 탈퇴</p>
         <div class="box--underline"></div>
       </div>
     </div>
   </div>
-  <with-drawal-modal
-    v-if="this.$store.state.account.withdrawal"
-  ></with-drawal-modal>
+  <with-drawal-modal v-if="isClicked"></with-drawal-modal>
 </template>
 
 <script>
 import WithDrawalModal from '@/components/views/mypage/WithDrawalModal.vue';
 export default {
   components: { WithDrawalModal },
+  data() {
+    return {
+      isClicked: false,
+    };
+  },
   methods: {
     logout() {
       this.$store.commit('logout');

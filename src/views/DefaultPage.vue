@@ -62,17 +62,18 @@ export default {
       this.$store.state.auth.email = res.kakao_account.email;
       this.$store.state.auth.userId = res.id;
       //kakao 계정 이메일,아이디 우선 store에 넣어뒀음
-      const userResponse = getUser(res.id);
-      console.log(userResponse);
-      if (userResponse == '') {
+      const userResponse = await getUser(this.$store.state.auth.userId);
+      console.log('res', userResponse);
+      if (userResponse.data == '') {
         this.$store.commit('login');
         // NO CONTENT
         this.$router.push({ name: 'signup-form' });
       } else if (userResponse.data.content[0].userType == 'NORMAL') {
         //이미 가입한 회원인 경우
         this.$store.commit('login');
-        this.$store.state.auth.userType = 'NORMAL';
-        this.$store.state.auth.userSeq = userResponse.data.content[0].userseq;
+        this.$store.commit('setUser', userResponse.data.content[0]);
+        console.log('스토어 상태', this.$store.state.auth);
+        // this.$store.state.auth.userSeq = userResponse.data.content[0].userseq;
         this.$router.push({
           name: 'home',
         });

@@ -93,13 +93,10 @@
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
 import AuthModal from './AuthModal.vue';
-import { searchUserByName, getUser } from '@/api/user.js';
+import { searchUserByName } from '@/api/user.js';
 import { postUserData } from '@/api/auth.js';
 export default {
   components: { TheFooter, AuthModal },
-  created() {
-    this.fetchUserSeq();
-  },
   data() {
     return {
       nickname: '',
@@ -142,15 +139,13 @@ export default {
         userId: this.$store.state.auth.userId,
         image: this.imgName,
         userInfo: this.desc,
-        userSeq: this.$store.state.auth.userSeq,
-        userType: this.$store.state.auth.userType,
+        userType: 'NORMAL',
       };
-      this.$store.commit('setUser', myUser);
-      //store에 유저정보 저장
-      console.log('저장된 store 값', this.$store.state.auth);
 
       const res = await postUserData(myUser);
-      console.log('update반환값', res);
+      console.log('post return data', res);
+      this.$store.commit('setUser', res.data);
+      console.log('store data', this.$store.state.auth);
     },
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
@@ -174,21 +169,6 @@ export default {
         }
       });
       this.getImageSubstr();
-      const myUser = {
-        email: this.$store.state.auth.email,
-        username: this.nickname,
-        userId: this.$store.state.auth.userId,
-        image: this.imgName,
-        userInfo: this.desc,
-        userSeq: this.$store.state.auth.userSeq,
-      };
-      this.$store.commit('setUser', myUser);
-      //store에 유저정보 저장
-      console.log('저장된 store 값', this.$store.state.auth);
-    },
-    async fetchUserSeq() {
-      const res = await getUser(this.$store.state.auth.userId);
-      this.$store.state.auth.userSeq = res.data.content[0].userSeq;
     },
   },
 };

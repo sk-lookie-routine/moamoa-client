@@ -1,5 +1,5 @@
 <template>
-  <div class="modal">
+  <div class="modal" v-if="!isCancled">
     <div class="modal-bg"></div>
     <div class="modal-box">
       <div class="select-withdrawal" v-if="!isClicked">
@@ -37,7 +37,7 @@
       </div>
     </div>
   </div>
-  <my-page-account-manage></my-page-account-manage>
+  <my-page-account-manage v-if="isCancled"></my-page-account-manage>
 </template>
 
 <script>
@@ -46,22 +46,44 @@ export default {
   data() {
     return {
       isClicked: false,
+      isCancled: false,
     };
   },
   methods: {
-    onClickWithdrawal() {
+    async onClickWithdrawal() {
       this.isClicked = true;
-      deleteUser();
+      const data = {
+        userId: this.$store.state.auth.userId,
+        username: this.$store.state.auth.username,
+        image: this.$store.state.auth.image,
+        email: this.$store.state.auth.email,
+        userInfo: this.$store.state.auth.userInfo,
+        userSeq: this.$store.state.auth.userSeq,
+        userType: this.$store.state.auth.userType,
+      };
+      await deleteUser(data);
     },
     onClickCancel() {
-      this.$store.state.account.withdrawal = false;
+      this.isCancled = true;
     },
-
     onClickConfirm() {
       //회원탈퇴, state 초기화 및 홈으로 이동
+      if (this.$store.state.auth.providerType == 'KAKAO') {
+        window.Kakao.API.request({
+          url: '/v1/user/unlink',
+          success: function (response) {
+            console.log(response);
+          },
+          fail: function (error) {
+            console.log(error);
+          },
+        });
+      } else if (this.$store.state.auth.providerType == 'GOOGLE') {
+        const authInst = window.gapi.auth2.getAuthInstance();
+        authInst.signOut();
+      }
       this.$store.commit('initUser');
       this.$store.commit('logout');
-      this.$store.state.account.withdrawal = false;
       this.$router.push('/home');
     },
   },

@@ -9,10 +9,10 @@
         >
       </div>
       <ul class="card-grid-list card-list-gap">
-        <li v-for="post in posts" :key="post.studySeq">
+        <li v-for="post in posts" :key="post.postSeq">
           <base-card
-            @click="showPostPage(post.studySeq)"
-            :id="post.studySeq"
+            @click="showPostPage(post.postSeq)"
+            :id="post.postSeq"
             :imgSrc="post.image"
             :title="post.title"
             :startDate="post.startDate"
@@ -32,8 +32,8 @@
 <script>
 import TheBanner from '@/components/views/home/TheBanner.vue';
 import StudyGuideJumbotron from '@/components/views/home/StudyGuideJumbotron.vue';
-import { fetchPostsByStudyType } from '@/api/posts.js';
-import { STUDY_TYPE } from '@/utils/constValue';
+import { fetchPostsByType } from '@/api/post.js';
+import { POST_TYPE } from '@/utils/constValue';
 
 export default {
   components: {
@@ -50,7 +50,7 @@ export default {
       return array.length > 6 ? array.slice(0, 6) : array;
     },
     async fetchData() {
-      const response = await fetchPostsByStudyType(STUDY_TYPE.READY);
+      const response = await fetchPostsByType(POST_TYPE.READY);
       this.posts = this.sliceArray(response.data.content);
     },
     showPostPage(postId) {
@@ -64,7 +64,6 @@ export default {
   },
   created() {
     this.fetchData();
-    console.log('userSeq', this.$store.state.auth.userSeq);
   },
 };
 </script>

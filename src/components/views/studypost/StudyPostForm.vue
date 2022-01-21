@@ -20,6 +20,7 @@
         v-model="post.deadLine"
         :enableTimePicker="false"
         :autoApply="true"
+        :minDate="new Date()"
         placeholder="날짜를 선택하세요."
         @update:modelValue="formatDeadlineDate"
       ></date-picker>
@@ -35,6 +36,7 @@
         :enableTimePicker="false"
         :range="true"
         :autoApply="true"
+        :minDate="new Date()"
         placeholder="날짜를 선택하세요."
         @update:modelValue="formatRangeDate"
       ></date-picker>
@@ -367,7 +369,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .input-container {
   display: flex;
   align-items: center;

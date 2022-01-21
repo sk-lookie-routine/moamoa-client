@@ -220,23 +220,23 @@
 </template>
 
 <script>
-import { fetchPostById, updatePost } from '@/api/posts.js';
+import { fetchPostById, updatePost } from '@/api/post.js';
 import {
   fetchReply,
   createReply,
   updateReply,
   deleteReply,
 } from '@/api/reply.js';
-import { fetchJoinByStudySeq, updateJoin } from '@/api/join.js';
+import { fetchJoinByPostSeq, updateJoin } from '@/api/join.js';
 import { getUserByUserSeq } from '@/api/user.js';
-import { STUDY_TYPE, JOIN_TYPE } from '@/utils/constValue';
+import { POST_TYPE, JOIN_TYPE } from '@/utils/constValue';
 import NoReply from '@/components/views/studypost/NoReply.vue';
 
 export default {
   components: { NoReply },
   data() {
     return {
-      studySeq: null,
+      postSeq: null,
       user: null,
       post: null,
       replyContent: '',
@@ -283,7 +283,7 @@ export default {
       this.$router.push({
         name: 'post-write',
         params: {
-          postId: this.studySeq,
+          postId: this.postSeq,
         },
       });
     },
@@ -296,7 +296,7 @@ export default {
     async closeApplicaption() {
       const post = {
         ...this.post,
-        studyType: STUDY_TYPE.PROGRESS,
+        studyType: POST_TYPE.PROGRESS,
       };
       await updatePost(post);
       this.setBaseButton();
@@ -322,10 +322,7 @@ export default {
       }
     },
     setBaseButton() {
-      if (
-        this.post.studyType == STUDY_TYPE.PROGRESS ||
-        this.post.studyType == STUDY_TYPE.COMPLETE
-      ) {
+      if (this.post.studyType == POST_TYPE.COMPLETE) {
         this.baseButton.text = '마감된 스터디';
         this.baseButton.disable = true;
         this.applyList.forEach(item => {
@@ -385,7 +382,7 @@ export default {
             this.showDialog = true;
           }
         } else {
-          this.showApplyPage(this.studySeq);
+          this.showApplyPage(this.postSeq);
         }
       }
     },
@@ -402,7 +399,7 @@ export default {
     },
     async setApply(joinType, joinSeq, userSeq, comment) {
       const join = {
-        studySeq: this.studySeq,
+        postSeq: this.postSeq,
         joinSeq,
         userSeq,
         joinType,
@@ -410,19 +407,19 @@ export default {
       };
       await updateJoin(join);
       this.setDialog(joinType);
-      await this.fetchApplyData(this.post.studySeq);
+      await this.fetchApplyData(this.post.postSeq);
     },
     async submitReply() {
       console.log(this.$store.state.auth.userSeq);
       const reply = {
         userSeq: this.$store.state.auth.userSeq,
-        studySeq: this.studySeq,
+        postSeq: this.postSeq,
         content: this.replyContent,
       };
       console.log(reply);
       await createReply(reply);
       this.replyContent = '';
-      this.fetchReply(this.post.studySeq);
+      this.fetchReply(this.post.postSeq);
     },
     async modifyReply(replySeq, content) {
       const reply = {
@@ -430,14 +427,14 @@ export default {
         content,
       };
       await updateReply(reply);
-      this.fetchReply(this.post.studySeq);
+      this.fetchReply(this.post.postSeq);
     },
     async removeReply(replySeq) {
       await deleteReply(replySeq);
-      this.fetchReply(this.post.studySeq);
+      this.fetchReply(this.post.postSeq);
     },
     async fetchApplyData() {
-      const res = await fetchJoinByStudySeq(this.post.studySeq);
+      const res = await fetchJoinByPostSeq(this.post.postSeq);
       const list =
         res.data.content == undefined
           ? []
@@ -454,8 +451,8 @@ export default {
             );
       this.applyList = list;
     },
-    async fetchReply(studySeq) {
-      const res = await fetchReply(studySeq);
+    async fetchReply(postSeq) {
+      const res = await fetchReply(postSeq);
       const list = await Promise.all(
         res.data.content.map(async item => {
           const res = await getUserByUserSeq(item.userSeq);
@@ -470,12 +467,12 @@ export default {
       this.replyList = list;
     },
     async fetchData() {
-      const postResponse = await fetchPostById(this.studySeq);
+      const postResponse = await fetchPostById(this.postSeq);
       this.post = postResponse.data.content[0];
       const userResponse = await getUserByUserSeq(this.post.userSeq);
       this.user = userResponse.data.content[0];
-      this.fetchReply(this.post.studySeq);
-      await this.fetchApplyData(this.post.studySeq);
+      this.fetchReply(this.post.postSeq);
+      await this.fetchApplyData(this.post.postSeq);
       this.setBaseButton();
     },
     async deletePost() {},
@@ -488,7 +485,7 @@ export default {
     },
   },
   created() {
-    this.studySeq = this.$route.params.postId;
+    this.postSeq = this.$route.params.postId;
     this.fetchData();
   },
 };

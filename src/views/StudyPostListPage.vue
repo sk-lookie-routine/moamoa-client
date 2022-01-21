@@ -9,15 +9,15 @@
         firstTab="모집중인 스터디"
         secondTab="모집 완료된 스터디"
         @firstTabClicked="fetchPostList('READY')"
-        @SecondTabClicked="fetchPostList('PROGRESS,COMPLETE')"
+        @SecondTabClicked="fetchPostList('COMPLETE')"
       ></base-tab>
       <button @click="createBtnClick" class="create-study-btn">개설하기</button>
     </div>
     <ul class="postlist card-column-list card-list-gap">
-      <li v-for="post in postList" :key="post.studySeq">
+      <li v-for="post in postList" :key="post.postSeq">
         <base-card
-          @click="showPostPage(post.studySeq)"
-          :id="post.studySeq"
+          @click="showPostPage(post.postSeq)"
+          :id="post.postSeq"
           :imgSrc="post.image"
           :title="post.title"
           :startDate="post.startDate"
@@ -45,8 +45,8 @@ import SearchBar from '@/components/views/studypostlist/SearchBar.vue';
 import NoResult from '@/components/views/studypostlist/NoResult.vue';
 import PaginationButton from '@/components/views/studypostlist/PaginationButton.vue';
 import CreateStudyJumbotron from '@/components/views/studypostlist/CreateStudyJumbotron.vue';
-import { fetchPostsByKeywordAndStudyType } from '@/api/posts.js';
-import { STUDY_TYPE } from '@/utils/constValue';
+import { fetchPostsByKeywordAndType } from '@/api/post.js';
+import { POST_TYPE } from '@/utils/constValue';
 
 export default {
   components: { SearchBar, NoResult, PaginationButton, CreateStudyJumbotron },
@@ -55,7 +55,7 @@ export default {
       postList: [],
       pageNum: 0,
       showMoreBtn: true,
-      selectedType: 'READY',
+      selectedType: POST_TYPE.READY,
       searchKeyword: '',
       showNoResult: false,
     };
@@ -83,18 +83,20 @@ export default {
         },
       });
     },
-    async fetchPostList(studyType) {
+    async fetchPostList(postType) {
       this.showNoResult = false;
-      if (this.selectedType !== studyType) {
+      if (this.selectedType !== postType) {
         this.postList = [];
         this.pageNum = 0;
-        this.selectedType = studyType;
+        this.selectedType = postType;
       }
-      const response = await fetchPostsByKeywordAndStudyType(
+
+      const response = await fetchPostsByKeywordAndType(
         this.searchKeyword,
         this.pageNum,
-        studyType,
+        postType,
       );
+
       if (this.pageNum < response.data.totalPages) {
         response.data.content.map(item => this.postList.push(item));
         ++this.pageNum < response.data.totalPages
@@ -103,18 +105,22 @@ export default {
       } else {
         this.showMoreBtn = false;
       }
+
+      if (this.searchKeyword != '') {
+        if (this.postList && this.postList.length > 0)
+          this.showNoResult = false;
+        else this.showNoResult = true;
+      }
     },
     async showSearchResult(value) {
       this.searchKeyword = value;
       this.postList = [];
       this.pageNum = 0;
       await this.fetchPostList(this.selectedType);
-      if (this.postList && this.postList.length > 0) this.showNoResult = false;
-      else this.showNoResult = true;
     },
   },
   created() {
-    this.fetchPostList(STUDY_TYPE.READY);
+    this.fetchPostList(POST_TYPE.READY);
   },
 };
 </script>

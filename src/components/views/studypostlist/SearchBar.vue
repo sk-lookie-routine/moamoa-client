@@ -29,8 +29,11 @@ export default {
   },
   methods: {
     searched() {
-      this.isSearched = true;
-      this.$emit('searched', this.value);
+      this.value = this.value.trim();
+      if (this.value != '') {
+        this.isSearched = true;
+        this.$emit('searched', this.value);
+      }
     },
     removeKeyword() {
       this.value = '';
@@ -70,6 +73,10 @@ form {
   font-weight: bold;
   padding: 0.9rem 1.6rem;
   margin-left: 0.5rem;
+}
+
+.keyword img {
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {

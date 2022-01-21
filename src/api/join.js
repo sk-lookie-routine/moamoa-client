@@ -16,10 +16,10 @@ function fetchJoinByUserSeq(userSeq) {
   });
 }
 
-function fetchJoinByStudySeq(studySeq) {
+function fetchJoinByPostSeq(postSeq) {
   return join.get('/', {
     params: {
-      studySeq,
+      postSeq,
     },
   });
 }
@@ -40,7 +40,7 @@ export {
   createJoin,
   updateJoin,
   fetchJoinByUserSeq,
-  fetchJoinByStudySeq,
+  fetchJoinByPostSeq,
   fetchApprovedJoinByStudySeq,
   fetchOnlyApprovedJoinByUserSeq,
 };

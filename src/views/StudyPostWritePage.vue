@@ -9,6 +9,14 @@
 import StudyPostForm from '@/components/views/studypost/StudyPostForm.vue';
 export default {
   components: { StudyPostForm },
+  created() {
+    if (!this.$store.state.auth.isLogin) {
+      this.$router.push({
+        name: 'login',
+      });
+      return;
+    }
+  },
 };
 </script>
 

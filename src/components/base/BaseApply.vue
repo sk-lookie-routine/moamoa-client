@@ -73,6 +73,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
 }
 
 .meta-info-container {
@@ -80,7 +81,6 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
 .profile-img {

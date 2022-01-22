@@ -1,4 +1,37 @@
 <template>
+  <base-dialog :showDialog="showDialog" @closed="showDialog = false">
+    <template #header>{{ dialog.header }}</template>
+    <template #default>{{ dialog.content }}</template>
+    <template #actions v-if="dialog.btnType == 'close'">
+      <base-dialog-button size="small" color="gray" @click="showDialog = false"
+        >취소</base-dialog-button
+      >
+      <base-dialog-button size="small" @click="closeRoom">
+        종료
+      </base-dialog-button>
+    </template>
+    <template #actions v-else-if="dialog.btnType == 'resign'">
+      <base-dialog-button size="small" color="gray" @click="showDialog = false"
+        >취소</base-dialog-button
+      >
+      <base-dialog-button size="small" @click="resignMate"
+        >탈퇴</base-dialog-button
+      >
+    </template>
+    <template #actions v-else-if="'closeConfirm'">
+      <base-dialog-button
+        @click="
+          this.$router.push({
+            name: 'rooms',
+          })
+        "
+        >확인</base-dialog-button
+      >
+    </template>
+    <template #actions v-else>
+      <base-dialog-button @click="showDialog = false">확인</base-dialog-button>
+    </template>
+  </base-dialog>
   <div>
     <div v-if="room" class="room main-container">
       <div
@@ -20,7 +53,9 @@
             <div class="menu-item--gray" @click="editRoom">내용 편집</div>
           </div>
           <div class="menu-item">
-            <div class="menu-item--red" @click="closeRoom">스터디 종료</div>
+            <div class="menu-item--red" @click="clickedCloseRoom">
+              스터디 종료
+            </div>
           </div>
         </div>
       </div>
@@ -28,7 +63,11 @@
         <div class="room-content">
           <h2>스터디 기간</h2>
           <div class="box--gray-background">
-            <p>{{ room.startDate }}~{{ room.endDate }}</p>
+            <p>
+              {{ room.startDate.replaceAll('-', '.') }}~{{
+                room.endDate.replaceAll('-', '.')
+              }}
+            </p>
           </div>
         </div>
         <div class="room-content">
@@ -108,13 +147,14 @@
           :showMoreMenu="canShowMoreMenu"
           @profileClicked="onClickUserProfile(user.userSeq)"
         ></study-mate>
-        <li v-for="mate in studyMateList" :key="mate.joinSeq">
+        <li v-for="mate in studyMateList" :key="mate.mateSeq">
           <study-mate
-            :id="mate.joinSeq"
+            :id="mate.mateSeq"
             :imgSrc="mate.image"
             :nickname="mate.username"
             :showMoreMenu="canShowMoreMenu"
             @profileClicked="onClickUserProfile(mate.userSeq)"
+            @resign="onClickedResignMate(mate.mateSeq)"
           ></study-mate>
         </li>
       </ul>
@@ -124,11 +164,11 @@
 </template>
 
 <script>
-import { fetchPostById, updatePost } from '@/api/posts.js';
+import { fetchRoomByStudySeq, updateRoom } from '@/api/room.js';
 import { getUserByUserSeq } from '@/api/user.js';
-import { fetchApprovedJoinByStudySeq } from '@/api/join.js';
+import { fetchProgressMateByStudySeq, updateMate } from '@/api/mate.js';
 import StudyMate from '@/components/views/studyroom/StudyMate.vue';
-import { STUDY_TYPE } from '@/utils/constValue';
+import { MATE_TYPE, STUDY_TYPE } from '@/utils/constValue';
 
 export default {
   components: {
@@ -141,10 +181,20 @@ export default {
       room: null,
       showMenu: false,
       studyMateList: [],
+      showDialog: false,
+      dialog: {
+        header: null,
+        content: '',
+        btnType: 'default',
+      },
+      resignMateSeq: null,
     };
   },
   computed: {
     canShowMoreBtn() {
+      if (this.room.studyType == STUDY_TYPE.COMPLETE) {
+        return false;
+      }
       if (
         this.$store.state.auth.userSeq &&
         this.user.userSeq == this.$store.state.auth.userSeq
@@ -153,6 +203,9 @@ export default {
       else return false;
     },
     canShowMoreMenu() {
+      if (this.room.studyType == STUDY_TYPE.COMPLETE) {
+        return false;
+      }
       if (this.user.userSeq == this.$store.state.auth.userSeq) return true;
       else return false;
     },
@@ -164,17 +217,45 @@ export default {
         params: { userSeq },
       });
     },
+    onClickedResignMate(mateSeq) {
+      this.resignMateSeq = mateSeq;
+      this.dialog.header = '잠깐!!';
+      this.dialog.content =
+        '정당한 탈퇴 사유가 있으신가요? 스터디 메이트가 합의한 경우에만 탈퇴가 가능합니다.';
+      this.dialog.btnType = 'resign';
+      this.showDialog = true;
+    },
+    async resignMate() {
+      const mate = {
+        mateSeq: this.resignMateSeq,
+        mateType: MATE_TYPE.REJECT,
+      };
+      await updateMate(mate);
+      this.resignMateSeq = null;
+      await this.fetchMateData();
+      this.dialog.header = '';
+      this.dialog.content = '해당 스터디메이트가 탈퇴되었습니다.';
+      this.dialog.btnType = 'default';
+      this.showDialog = true;
+    },
+    clickedCloseRoom() {
+      this.dialog.header = '잠깐!!';
+      this.dialog.content =
+        '한 번 종료한 스터디는 재시작 할 수 없습니다. 스터디를 종료할까요?';
+      this.dialog.btnType = 'close';
+      this.showDialog = true;
+    },
     async closeRoom() {
-      console.log(this.room);
       const room = {
         ...this.room,
         studyType: STUDY_TYPE.COMPLETE,
       };
-      console.log(room);
-      await updatePost(room);
-      this.$router.push({
-        name: 'rooms',
-      });
+      await updateRoom(room);
+      this.dialog.header = '';
+      this.dialog.content =
+        '스터디가 종료되었습니다. [스터디룸-완료된 스터디]에서 확인할 수 있어요.';
+      this.dialog.btnType = 'closeConfirm';
+      this.showDialog = true;
     },
     editRoom() {
       this.$router.push({
@@ -187,14 +268,10 @@ export default {
     mouseLeave() {
       this.showMenu = false;
     },
-    async fetchData() {
-      const roomResponse = await fetchPostById(this.studySeq);
-      this.room = roomResponse.data.content[0];
-      const userResponse = await getUserByUserSeq(this.room.userSeq);
-      this.user = userResponse.data.content[0];
-      const joinResponse = await fetchApprovedJoinByStudySeq(this.studySeq);
+    async fetchMateData() {
+      const mateResponse = await fetchProgressMateByStudySeq(this.studySeq);
       const list = await Promise.all(
-        joinResponse.data.content.map(async item => {
+        mateResponse.data.content.map(async item => {
           const res = await getUserByUserSeq(item.userSeq);
           const mate = {
             ...item,
@@ -205,8 +282,13 @@ export default {
         }),
       );
       this.studyMateList = list;
-      console.log(this.user);
-      console.log(this.studyMateList);
+    },
+    async fetchData() {
+      const roomResponse = await fetchRoomByStudySeq(this.studySeq);
+      this.room = roomResponse.data.content[0];
+      const userResponse = await getUserByUserSeq(this.room.userSeq);
+      this.user = userResponse.data.content[0];
+      await this.fetchMateData();
     },
   },
   created() {
@@ -381,13 +463,19 @@ hr {
     gap: 2rem;
   }
 
+  .tags-container {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
   .tags {
     gap: 0.6rem;
   }
 
   .tag-icon {
     font-size: 2.2rem;
-    margin: 0 1rem 0 1.7rem;
+    margin: 0 0 0 1.7rem;
   }
 
   hr {

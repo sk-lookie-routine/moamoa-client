@@ -1,9 +1,9 @@
 import { reply } from './index';
 
-function fetchReply(studySeq) {
+function fetchReply(postSeq) {
   return reply.get('/', {
     params: {
-      studySeq,
+      postSeq,
     },
   });
 }

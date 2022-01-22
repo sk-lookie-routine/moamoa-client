@@ -1,11 +1,16 @@
 <template>
-  <div class="card" @mouseover="onMouseOver" @mouseleave="onMouseleave">
+  <div
+    class="card"
+    :class="{ 'card--small': isSmall }"
+    @mouseover="onMouseOver"
+    @mouseleave="onMouseleave"
+  >
     <base-badge
       class="card__badge"
       v-if="joinType"
       :joinType="joinType"
     ></base-badge>
-    <div class="card__thumbnail">
+    <div class="card__thumbnail" :class="{ 'card__thumbnail--smail': isSmall }">
       <!-- "@/assets/img/profile/profile_sc_p.svg" -->
       <img :src="imgUrl" />
     </div>
@@ -18,7 +23,7 @@
         </div>
       </div>
       <div class="card__period">{{ startDate }} ~ {{ endDate }}</div>
-      <div class="card__people">
+      <div v-if="!isSmall" class="card__people">
         <img class="person-icon" src="@/assets/img//icon_person.svg" />
         <div class="card__people-count">
           {{ peopleRegisterCount }}/{{ peopleTotalCount }}
@@ -58,11 +63,9 @@ export default {
     },
     peopleRegisterCount: {
       type: Number,
-      required: true,
     },
     peopleTotalCount: {
       type: Number,
-      required: true,
     },
     hashTags: {
       type: Array,
@@ -75,6 +78,10 @@ export default {
     joinType: {
       type: String,
       default: null,
+    },
+    isSmall: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -99,6 +106,11 @@ export default {
   justify-content: space-between;
 }
 
+.card--small {
+  height: 15.6rem;
+  padding: 2.8rem;
+}
+
 .card:hover {
   cursor: pointer;
 }
@@ -121,6 +133,17 @@ export default {
   height: 10.8rem;
 }
 
+.card__thumbnail--smail {
+  width: 16%;
+  min-width: 15rem;
+  margin-right: 2rem;
+}
+
+.card__thumbnail--smail img {
+  width: 10rem;
+  height: 10rem;
+}
+
 .card__contents {
   width: 100%;
   display: flex;
@@ -137,6 +160,7 @@ export default {
 
 .card__title {
   font-size: 1.8rem;
+  line-height: 122%;
   font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;

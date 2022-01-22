@@ -17,4 +17,5 @@ export const user = createWithAuth(`/api/user`);
 export const post = create(`/api/post/`);
 export const room = create(`/api/study/`);
 export const join = create(`/api/join/`);
+export const mate = create(`/api/mate/`);
 export const reply = create(`/api/reply/`);

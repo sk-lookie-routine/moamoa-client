@@ -75,7 +75,7 @@ export default {
       content: '',
       validate: {
         isValidate: true,
-        text: '텍스트',
+        text: '유효성 검사',
       },
       showDialog: false,
       agreeWithCautions: false,
@@ -134,7 +134,7 @@ export default {
     },
     async submitForm() {
       const join = {
-        studySeq: this.$route.params.postId,
+        postSeq: this.$route.params.postId,
         userSeq: this.$store.state.auth.userSeq,
         comment: this.content,
         joinType: JOIN_TYPE.WAIT,

@@ -15,7 +15,7 @@ export default {};
   flex-direction: column;
   align-items: center;
   gap: 2.25rem;
-  padding-top: 2.4rem;
+  padding-top: 11rem;
 }
 
 .text {
@@ -28,7 +28,7 @@ export default {};
 
 @media (max-width: 768px) {
   .container {
-    padding-top: 2rem;
+    padding-top: 8.6rem;
   }
 
   .text {

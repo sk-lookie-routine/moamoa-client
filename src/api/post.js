@@ -49,7 +49,7 @@ function fetchPostsByKeywordAndType(search, page, postTypeList) {
   }
 }
 
-function fetchPostById(postSeq) {
+function fetchPostByPostSeq(postSeq) {
   return post.get('/', {
     params: {
       postSeq,
@@ -68,6 +68,10 @@ export {
   fetchPosts,
   fetchPostsByType,
   fetchPostsByKeywordAndType,
+<<<<<<< HEAD
   fetchPostById,
   getStudyByUserSeq,
+=======
+  fetchPostByPostSeq,
+>>>>>>> d1c81ab467efa360fd16a5f31620e09b12aaedbb
 };

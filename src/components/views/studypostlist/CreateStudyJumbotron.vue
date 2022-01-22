@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div class="jumbotron-text">마음에 드는 스터디룸을 찾지 못했다면?</div>
     <div class="jumbotron-text">
+      마음에 드는 스터디룸을 찾지 못했다면?<br />
       <span class="jumbotron-text--em">스터디장</span>이 되어보세요!
     </div>
     <base-button @click="movePage">스터디 개설하기</base-button>
@@ -32,12 +32,10 @@ export default {
   padding-top: 12rem;
 }
 
-.jumbotron-text:first-child {
-  margin-bottom: 1.7rem;
-}
-
-.jumbotron-text:nth-child(2) {
-  margin-bottom: 4rem;
+.jumbotron-text {
+  text-align: center;
+  line-height: 220%;
+  margin-bottom: 3rem;
 }
 
 @media (max-width: 768px) {
@@ -45,12 +43,9 @@ export default {
     padding-top: 10rem;
   }
 
-  .jumbotron-text:first-child {
-    margin-bottom: 1rem;
-  }
-
-  .jumbotron-text:nth-child(2) {
-    margin-bottom: 2.9rem;
+  .jumbotron-text {
+    line-height: 210%;
+    margin-bottom: 2rem;
   }
 }
 </style>

@@ -47,5 +47,13 @@ export default {
   .container {
     padding-top: 7rem;
   }
+
+  .moa-character-img {
+    margin-bottom: 1.3rem;
+  }
+
+  .jumbotron-text {
+    margin-bottom: 2.2rem;
+  }
 }
 </style>

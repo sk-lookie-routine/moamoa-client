@@ -20,6 +20,7 @@
             :peopleRegisterCount="1"
             :peopleTotalCount="post.memberCount"
             :hashTags="post.hashTags"
+            :isSmall="true"
           ></base-card>
         </li>
       </ul>

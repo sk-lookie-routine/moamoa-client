@@ -36,7 +36,7 @@
     <div v-if="post" class="post">
       <div class="post-header">
         <div class="box--underline bottom-padding">
-          <h1>{{ post.title }}</h1>
+          <h1 class="post-header__title">{{ post.title }}</h1>
         </div>
         <div class="post-info-and-btn-container">
           <div class="post-info">
@@ -196,7 +196,7 @@
             class="user__profile-img"
             @click="onClickUserProfile(this.$store.state.auth.userSeq)"
           />
-          <div class="user__nickname">
+          <div class="d">
             {{ this.$store.state.auth.username }}
           </div>
         </div>
@@ -229,6 +229,7 @@
             :showMoreMenu="canShowMoreMenuInReply(reply.userSeq)"
             @register="modifyReply"
             @delete="removeReply(reply.replySeq)"
+            @profileClicked="onClickUserProfile(reply.userSeq)"
           ></base-reply>
         </li>
       </ul>
@@ -555,6 +556,10 @@ export default {
   margin-bottom: 12.8rem;
 }
 
+.post-header__title {
+  line-height: 120%;
+}
+
 .post-info-and-btn-container {
   display: flex;
   justify-content: space-between;
@@ -577,6 +582,7 @@ export default {
   width: 3.7rem;
   height: 3.7rem;
   margin-right: 0.8rem;
+  cursor: pointer;
 }
 
 .writer__nickname {
@@ -706,9 +712,10 @@ export default {
   width: 4.4rem;
   height: 4.4rem;
   margin-right: 1rem;
+  cursor: pointer;
 }
 
-.user__nickname {
+.d {
   font-size: 1.4rem;
   font-weight: bold;
 }
@@ -763,6 +770,23 @@ textarea {
     font-size: 1.2rem;
   }
 
+  .post__btns-container button {
+    font-size: 1.2rem;
+  }
+
+  .post-apply {
+    padding-bottom: 3.4rem;
+    margin-bottom: 4.6rem;
+  }
+
+  .apply-list {
+    margin-top: 2.9rem;
+  }
+
+  .apply-list li:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
   .post-contents {
     padding-bottom: 4.6rem;
   }
@@ -783,26 +807,27 @@ textarea {
     margin-bottom: 2rem;
   }
 
+  .tags-container {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
   .tags {
     gap: 0.6rem;
   }
 
   .tag-icon {
     font-size: 2.2rem;
-    margin: 0 1rem 0 1.7rem;
+    margin: 0 0 0 1.7rem;
   }
 
   .post-comments h2 {
-    margin: 4.8rem 0 3.6rem 0;
+    margin: 4.6rem 0 2.4rem 0;
   }
 
   .comment-register-container {
-    padding-bottom: 5.2rem;
-    margin-bottom: 1.6rem;
-  }
-
-  textarea {
-    padding: 2.4rem 1.6rem;
+    padding-bottom: 3rem;
   }
 
   .comment-register__register-btn {

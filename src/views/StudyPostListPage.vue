@@ -35,7 +35,7 @@
       ></pagination-button>
     </div>
     <no-result v-if="showNoResult">검색 결과가 없어요</no-result>
-    <create-study-jumbotron></create-study-jumbotron>
+    <create-study-jumbotron v-if="!showNoResult"></create-study-jumbotron>
   </div>
   <the-footer></the-footer>
 </template>
@@ -70,12 +70,6 @@ export default {
       });
     },
     createBtnClick() {
-      if (!this.$store.state.auth.isLogin) {
-        this.$router.push({
-          name: 'login',
-        });
-        return;
-      }
       this.$router.push({
         name: 'post-write',
         params: {

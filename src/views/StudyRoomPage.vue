@@ -49,16 +49,13 @@
           <div></div>
         </button>
         <div v-if="showMenu" class="menu">
-          <div v-if="room.studyType == 'PROGRESS'" class="menu-item">
+          <div class="menu-item">
             <div class="menu-item--gray" @click="editRoom">내용 편집</div>
           </div>
-          <div v-if="room.studyType == 'PROGRESS'" class="menu-item">
+          <div class="menu-item">
             <div class="menu-item--red" @click="clickedCloseRoom">
               스터디 종료
             </div>
-          </div>
-          <div v-if="room.studyType == 'COMPLETE'" class="menu-item">
-            <div class="menu-item--red">삭제</div>
           </div>
         </div>
       </div>
@@ -195,6 +192,9 @@ export default {
   },
   computed: {
     canShowMoreBtn() {
+      if (this.room.studyType == STUDY_TYPE.COMPLETE) {
+        return false;
+      }
       if (
         this.$store.state.auth.userSeq &&
         this.user.userSeq == this.$store.state.auth.userSeq
@@ -463,13 +463,19 @@ hr {
     gap: 2rem;
   }
 
+  .tags-container {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
   .tags {
     gap: 0.6rem;
   }
 
   .tag-icon {
     font-size: 2.2rem;
-    margin: 0 1rem 0 1.7rem;
+    margin: 0 0 0 1.7rem;
   }
 
   hr {

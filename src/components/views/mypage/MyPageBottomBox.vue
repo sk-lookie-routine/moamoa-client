@@ -78,7 +78,7 @@
 import TheFooter from '@/components/common/TheFooter.vue';
 import MyPageProfile from '@/components/views/mypage/MyPageProfile.vue';
 import AuthLoginPage from '@/views/AuthLoginPage.vue';
-import { fetchPostByUserSeq, fetchPostById } from '@/api/post.js';
+import { fetchPostByUserSeq, fetchPostByPostSeq } from '@/api/post.js';
 import { fetchJoinByUserSeq } from '@/api/join.js';
 
 export default {
@@ -114,7 +114,7 @@ export default {
         this.applicatedStudy = [];
         for (let i = 0; i < res.data.content.length; i++) {
           let postSeq = res.data.content[i].postSeq;
-          let applicatedPost = await fetchPostById(postSeq);
+          let applicatedPost = await fetchPostByPostSeq(postSeq);
           this.applicatedStudy.push({
             card: applicatedPost.data.content[0],
             joinType: res.data.content[0].joinType,

@@ -57,7 +57,7 @@ function fetchPostByPostSeq(postSeq) {
   });
 }
 
-function getStudyByUserSeq(userSeq) {
+function fetchPostByUserSeq(userSeq) {
   return post.get(`?userSeq=${userSeq}`);
 } //마이페이지 프로필에 있는 스터디 개수 가져오기 위함
 
@@ -69,5 +69,5 @@ export {
   fetchPostsByType,
   fetchPostsByKeywordAndType,
   fetchPostByPostSeq,
-  getStudyByUserSeq,
+  fetchPostByUserSeq,
 };

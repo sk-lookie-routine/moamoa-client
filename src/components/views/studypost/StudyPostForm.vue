@@ -130,6 +130,7 @@
           placeholder="태그를 입력하세요."
           v-model="tagInput"
           @keydown.enter.prevent="addTag"
+          maxlength="15"
         />
       </div>
     </div>
@@ -140,7 +141,7 @@
 </template>
 
 <script>
-import { createPost, fetchPostById, updatePost } from '@/api/posts.js';
+import { createPost, fetchPostByPostSeq, updatePost } from '@/api/post.js';
 
 export default {
   data() {
@@ -155,13 +156,10 @@ export default {
         deadLine: null,
         startDate: null,
         endDate: null,
-        studyType: 'READY',
+        postType: 'READY',
         userSeq: this.$store.state.auth.userSeq,
         hashTags: [],
         memberCount: 1,
-        linkStudy: null,
-        linkNotion: null,
-        linkChat: null,
       },
       errorMessages: {
         default: 'default',
@@ -353,7 +351,7 @@ export default {
       this.post.comment = e.target.value;
     },
     async fetchData() {
-      const postResponse = await fetchPostById(this.$route.params.postId);
+      const postResponse = await fetchPostByPostSeq(this.$route.params.postId);
       this.post = postResponse.data.content[0];
       this.rangeDate = [
         new Date(this.post.startDate),

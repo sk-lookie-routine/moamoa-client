@@ -2,12 +2,18 @@
   <div class="container noselect">
     <img src="@/assets/img/img_error_not_found.svg" />
     <h3>페이지를 찾을 수 없습니다.</h3>
-    <div class="link">이전 페이지로 돌아가기</div>
+    <div class="link" @click="goBack">이전 페이지로 돌아가기</div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -34,5 +40,6 @@ h3 {
   font-size: 1.4rem;
   text-decoration-line: underline;
   color: var(--gray02);
+  cursor: pointer;
 }
 </style>

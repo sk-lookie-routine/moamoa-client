@@ -86,12 +86,18 @@ form {
 
   form {
     padding: 1.4rem 1.1rem;
+    height: 4.4rem;
   }
 
   .search-icon {
     width: 1.6rem;
     height: 1.6rem;
     margin-right: 0.5rem;
+  }
+
+  .keyword {
+    font-size: 1.2rem;
+    padding: 0.9rem 1.6rem;
   }
 }
 </style>

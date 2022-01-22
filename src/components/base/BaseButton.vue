@@ -81,5 +81,10 @@ button:disabled {
     width: 28.8rem;
     padding: 1.6rem 0;
   }
+
+  .btn--small {
+    width: 14.8rem;
+    padding: 1.2rem 0;
+  }
 }
 </style>

@@ -24,7 +24,9 @@
       <div class="menu-item">
         <div class="menu-item--gray" @click="showProfile">프로필 보기</div>
       </div>
-      <div class="menu-item"><div class="menu-item--red">스터디 탈퇴</div></div>
+      <div class="menu-item">
+        <div class="menu-item--red" @click="resignMate">스터디 탈퇴</div>
+      </div>
     </div>
   </div>
 </template>
@@ -67,6 +69,9 @@ export default {
     },
     showProfile() {
       this.$emit('profileClicked');
+    },
+    resignMate() {
+      this.$emit('resign');
     },
   },
 };

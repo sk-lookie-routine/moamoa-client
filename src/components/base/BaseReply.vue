@@ -8,6 +8,7 @@
       :src="imgUrl"
       alt="댓글 사용자 프로필 이미지"
       class="comment-writer__profile-img"
+      @click="profileClicked"
     />
     <div class="comment-writer__content-container">
       <div class="comment__meta-info">
@@ -121,6 +122,9 @@ export default {
     changeReplyContent(e) {
       this.replyContent = e.target.value;
     },
+    profileClicked() {
+      this.$emit('profileClicked');
+    },
     registerReply() {
       this.$emit('register', this.id, this.replyContent);
       this.showModify = false;
@@ -153,6 +157,7 @@ export default {
 .comment-writer__profile-img {
   width: 4.4rem;
   height: 4.4rem;
+  cursor: pointer;
 }
 
 .comment-writer__content-container {
@@ -189,7 +194,8 @@ export default {
 
 .comment-modify__content {
   padding: 1.1rem 1.7rem;
-  line-height: 150%;
+  font-size: 1.4rem;
+  line-height: 170%;
   margin-bottom: 1.5rem;
 }
 
@@ -262,6 +268,7 @@ export default {
   font-size: 1.2rem;
   text-align: center;
   padding: 0.4rem 0;
+  cursor: pointer;
 }
 
 .menu-item--gray {
@@ -284,5 +291,27 @@ export default {
 }
 
 @media (max-width: 768px) {
+  .comment-modify__content {
+    margin-bottom: 1.2rem;
+  }
+
+  .comment-modify__btns {
+    gap: 1rem;
+  }
+
+  .comment-modify__btn {
+    padding: 1rem 2rem;
+    font-size: 1.4rem;
+  }
+
+  .more-btn {
+    gap: 0.2rem;
+    padding: 0.3rem 0.8rem;
+  }
+
+  .menu {
+    right: 1.7rem;
+    top: 2.4rem;
+  }
 }
 </style>

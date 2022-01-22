@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { fetchPostsInStudyRoom } from '@/api/posts.js';
+import { fetchPostsByTypeAndUserSeq } from '@/api/room.js';
 import { STUDY_TYPE } from '@/utils/constValue';
 import NoStudyRoom from '@/components/views/studyroom/NoStudyRoom.vue';
 
@@ -59,10 +59,9 @@ export default {
       });
     },
     async fetchRoomList(studyType) {
-      console.log('데이터 받아온다');
-      const response = await fetchPostsInStudyRoom(
-        this.$store.state.auth.userSeq,
+      const response = await fetchPostsByTypeAndUserSeq(
         studyType,
+        this.$store.state.auth.userSeq,
       );
       this.roomList = response.data.content;
       this.selectedTab = studyType;

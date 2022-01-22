@@ -2,13 +2,31 @@
   <base-dialog :showDialog="showDialog" @closed="showDialog = false">
     <template #header>{{ dialog.header }}</template>
     <template #default>{{ dialog.content }}</template>
-    <template #actions v-if="true">
+    <template #actions v-if="dialog.btnType == 'close'">
       <base-dialog-button size="small" color="gray" @click="showDialog = false"
         >취소</base-dialog-button
       >
       <base-dialog-button size="small" @click="closeApplicaption">
         마감
       </base-dialog-button>
+    </template>
+    <template #actions v-else-if="dialog.btnType == 'delete'">
+      <base-dialog-button size="small" color="gray" @click="showDialog = false"
+        >취소</base-dialog-button
+      >
+      <base-dialog-button size="small" @click="removePost">
+        삭제
+      </base-dialog-button>
+    </template>
+    <template #actions v-else-if="dialog.btnType == 'deleteConfirm'">
+      <base-dialog-button
+        @click="
+          this.$router.push({
+            name: 'posts',
+          })
+        "
+        >확인</base-dialog-button
+      >
     </template>
     <template #actions v-else>
       <base-dialog-button @click="showDialog = false">확인</base-dialog-button>
@@ -43,7 +61,7 @@
             >
               <button @click="editPost">편집</button>
               <div></div>
-              <button>삭제</button>
+              <button @click="setDialogWithDelete">삭제</button>
             </div>
           </div>
           <base-button
@@ -176,6 +194,7 @@
             "
             alt="댓글 등록 프로필 이미지"
             class="user__profile-img"
+            @click="onClickUserProfile(this.$store.state.auth.userSeq)"
           />
           <div class="user__nickname">
             {{ this.$store.state.auth.username }}
@@ -220,7 +239,8 @@
 </template>
 
 <script>
-import { fetchPostById, updatePost } from '@/api/post.js';
+import { fetchPostByPostSeq, updatePost, deletePost } from '@/api/post.js';
+import { createRoom } from '@/api/room.js';
 import {
   fetchReply,
   createReply,
@@ -253,6 +273,7 @@ export default {
       dialog: {
         header: null,
         content: '',
+        btnType: 'default',
       },
     };
   },
@@ -279,14 +300,6 @@ export default {
     },
   },
   methods: {
-    editPost() {
-      this.$router.push({
-        name: 'post-write',
-        params: {
-          postId: this.postSeq,
-        },
-      });
-    },
     onClickUserProfile(userSeq) {
       this.$router.push({
         name: 'mypage',
@@ -296,10 +309,12 @@ export default {
     async closeApplicaption() {
       const post = {
         ...this.post,
-        studyType: POST_TYPE.PROGRESS,
+        postType: POST_TYPE.COMPLETE,
       };
       await updatePost(post);
+      await createRoom(this.postSeq);
       this.setBaseButton();
+      this.showDialog = false;
     },
     showApplyPage(postId) {
       this.$router.push({
@@ -310,19 +325,51 @@ export default {
         query: { title: this.post.title },
       });
     },
-    setDialog(joinType) {
+    editPost() {
+      this.$router.push({
+        name: 'post-write',
+        params: {
+          postId: this.postSeq,
+        },
+      });
+    },
+    async removePost() {
+      await deletePost(this.postSeq);
+      this.dialog.header = '';
+      this.dialog.content = '삭제되었습니다.';
+      this.dialog.btnType = 'deleteConfirm';
+      this.showDialog = true;
+    },
+    setDialogWithDelete() {
+      if (this.appliedApprovedMemberCount > 0) {
+        this.dialog.header = '';
+        this.dialog.content =
+          '이미 승인 완료된 인원이 있습니다. 게시물을 삭제할 수 없습니다.';
+        this.dialog.btnType = 'default';
+        this.showDialog = true;
+      } else {
+        this.dialog.header = '잠깐!!';
+        this.dialog.content =
+          '삭제된 게시물은 복구할 수 없습니다. 정말 게시글을 삭제할까요?';
+        this.dialog.btnType = 'delete';
+        this.showDialog = true;
+      }
+    },
+    setDialogWithJoin(joinType) {
       if (joinType == JOIN_TYPE.APPROVED) {
         this.dialog.header = '';
         this.dialog.content = '승인하였습니다.';
+        this.dialog.btnType = 'default';
         this.showDialog = true;
       } else if (joinType == JOIN_TYPE.REFUSED) {
         this.dialog.header = '';
         this.dialog.content = '거절하였습니다.';
+        this.dialog.btnType = 'default';
         this.showDialog = true;
       }
     },
     setBaseButton() {
-      if (this.post.studyType == POST_TYPE.COMPLETE) {
+      if (this.post.postType == POST_TYPE.COMPLETE) {
         this.baseButton.text = '마감된 스터디';
         this.baseButton.disable = true;
         this.applyList.forEach(item => {
@@ -379,6 +426,7 @@ export default {
             this.dialog.header = '잠깐!!';
             this.dialog.content =
               '마감한 스터디는 재모집할 수 없어요. 스터디를 마감하시겠어요?';
+            this.dialog.btnType = 'close';
             this.showDialog = true;
           }
         } else {
@@ -397,17 +445,22 @@ export default {
         return true;
       else return false;
     },
-    async setApply(joinType, joinSeq, userSeq, comment) {
-      const join = {
-        postSeq: this.postSeq,
-        joinSeq,
-        userSeq,
-        joinType,
-        comment,
-      };
-      await updateJoin(join);
-      this.setDialog(joinType);
-      await this.fetchApplyData(this.post.postSeq);
+
+    //댓글 CRUD
+    async fetchReply(postSeq) {
+      const res = await fetchReply(postSeq);
+      const list = await Promise.all(
+        res.data.content.map(async item => {
+          const res = await getUserByUserSeq(item.userSeq);
+          const reply = {
+            ...item,
+            image: res.data.content[0].image,
+            username: res.data.content[0].username,
+          };
+          return reply;
+        }),
+      );
+      this.replyList = list;
     },
     async submitReply() {
       console.log(this.$store.state.auth.userSeq);
@@ -416,10 +469,9 @@ export default {
         postSeq: this.postSeq,
         content: this.replyContent,
       };
-      console.log(reply);
       await createReply(reply);
       this.replyContent = '';
-      this.fetchReply(this.post.postSeq);
+      await this.fetchReply(this.post.postSeq);
     },
     async modifyReply(replySeq, content) {
       const reply = {
@@ -427,11 +479,33 @@ export default {
         content,
       };
       await updateReply(reply);
-      this.fetchReply(this.post.postSeq);
+      await this.fetchReply(this.post.postSeq);
     },
     async removeReply(replySeq) {
       await deleteReply(replySeq);
-      this.fetchReply(this.post.postSeq);
+      await this.fetchReply(this.post.postSeq);
+    },
+    async setApply(joinType, joinSeq, userSeq, comment) {
+      if (
+        joinType == JOIN_TYPE.APPROVED &&
+        this.appliedApprovedMemberCount >= this.post.memberCount
+      ) {
+        this.dialog.header = '';
+        this.dialog.content = '더 이상 승인할 수 없습니다.';
+        this.dialog.btnType = 'default';
+        this.showDialog = true;
+      } else {
+        const join = {
+          postSeq: this.postSeq,
+          joinSeq,
+          userSeq,
+          joinType,
+          comment,
+        };
+        await updateJoin(join);
+        this.setDialogWithJoin(joinType);
+        await this.fetchApplyData(this.post.postSeq);
+      }
     },
     async fetchApplyData() {
       const res = await fetchJoinByPostSeq(this.post.postSeq);
@@ -451,23 +525,8 @@ export default {
             );
       this.applyList = list;
     },
-    async fetchReply(postSeq) {
-      const res = await fetchReply(postSeq);
-      const list = await Promise.all(
-        res.data.content.map(async item => {
-          const res = await getUserByUserSeq(item.userSeq);
-          const reply = {
-            ...item,
-            image: res.data.content[0].image,
-            username: res.data.content[0].username,
-          };
-          return reply;
-        }),
-      );
-      this.replyList = list;
-    },
     async fetchData() {
-      const postResponse = await fetchPostById(this.postSeq);
+      const postResponse = await fetchPostByPostSeq(this.postSeq);
       this.post = postResponse.data.content[0];
       const userResponse = await getUserByUserSeq(this.post.userSeq);
       this.user = userResponse.data.content[0];
@@ -475,7 +534,7 @@ export default {
       await this.fetchApplyData(this.post.postSeq);
       this.setBaseButton();
     },
-    async deletePost() {},
+
     formatDate(dateString) {
       const date = new Date(dateString);
       const year = date.getFullYear();

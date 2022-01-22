@@ -8,7 +8,7 @@
           <button class="all-btn">전체보기</button></router-link
         >
       </div>
-      <ul class="card-grid-list card-list-gap">
+      <ul v-if="posts" class="card-grid-list card-list-gap">
         <li v-for="post in posts" :key="post.postSeq">
           <base-card
             @click="showPostPage(post.postSeq)"

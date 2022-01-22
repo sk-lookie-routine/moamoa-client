@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import { fetchPostById, updatePost } from '@/api/posts.js';
+import { fetchRoomByStudySeq, updateRoom } from '@/api/room.js';
 
 export default {
   data() {
@@ -283,14 +283,14 @@ export default {
     },
     async submitForm() {
       try {
-        await updatePost(this.room);
+        await updateRoom(this.room);
         this.showPage(this.studySeq);
       } catch (e) {
         console.error(e);
       }
     },
     async fetchData() {
-      const roomResponse = await fetchPostById(this.studySeq);
+      const roomResponse = await fetchRoomByStudySeq(this.studySeq);
       this.room = roomResponse.data.content[0];
       this.rangeDate = [
         new Date(this.room.startDate),

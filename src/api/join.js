@@ -23,6 +23,7 @@ function fetchJoinByPostSeq(postSeq) {
     },
   });
 }
+
 function fetchOnlyApprovedJoinByUserSeq(userSeq) {
   return join.get(`?userSeq=${userSeq}&joinType=APPROVED`);
 }

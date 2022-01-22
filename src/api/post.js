@@ -68,10 +68,6 @@ export {
   fetchPosts,
   fetchPostsByType,
   fetchPostsByKeywordAndType,
-<<<<<<< HEAD
-  fetchPostById,
-  getStudyByUserSeq,
-=======
   fetchPostByPostSeq,
->>>>>>> d1c81ab467efa360fd16a5f31620e09b12aaedbb
+  getStudyByUserSeq,
 };

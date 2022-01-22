@@ -78,7 +78,7 @@
 import TheFooter from '@/components/common/TheFooter.vue';
 import MyPageProfile from '@/components/views/mypage/MyPageProfile.vue';
 import AuthLoginPage from '@/views/AuthLoginPage.vue';
-import { getStudyByUserSeq, fetchPostById } from '@/api/post.js';
+import { fetchPostByUserSeq, fetchPostById } from '@/api/post.js';
 import { fetchJoinByUserSeq } from '@/api/join.js';
 
 export default {
@@ -126,7 +126,7 @@ export default {
     },
     async openStudyList() {
       this.textOfEachTab = '개설한';
-      const response = await getStudyByUserSeq(this.$store.state.auth.userSeq);
+      const response = await fetchPostByUserSeq(this.$store.state.auth.userSeq);
       this.openStudy = response.data.content;
       console.log('studyList:', this.openStudy);
     },

@@ -32,7 +32,7 @@
 
 <script>
 import { getUserByUserSeq } from '@/api/user.js';
-import { getStudyByUserSeq } from '@/api/post.js';
+import { fetchPostByUserSeq } from '@/api/post.js';
 export default {
   data() {
     return {
@@ -55,7 +55,7 @@ export default {
       console.log(this.user);
       //유저 정보 저장
 
-      const studyResponse = await getStudyByUserSeq(this.userSeq);
+      const studyResponse = await fetchPostByUserSeq(this.userSeq);
       console.log('study', studyResponse);
       if (studyResponse.data == '') {
         //data 없으면 0개

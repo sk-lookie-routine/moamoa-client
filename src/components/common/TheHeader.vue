@@ -41,7 +41,16 @@
       </div>
 
       <button class="mypage-btn" @click="menuToggled">
-        <a @click="showUserPage(this.$store.state.auth.userSeq)">마이페이지</a>
+        <a
+          @click="showUserPage(this.$store.state.auth.userSeq)"
+          v-if="this.$store.state.auth.isLogin"
+          >마이페이지</a
+        >
+        <a
+          @click="this.$router.push({ name: 'signup' })"
+          v-if="!this.$store.state.auth.isLogin"
+          >회원가입</a
+        >
       </button>
     </div>
   </header>
@@ -61,8 +70,7 @@ export default {
   },
   methods: {
     showUserPage(userSeq) {
-      console.log(userSeq);
-      if (userSeq == null) {
+      if (userSeq == '') {
         this.$router.push({
           name: 'login',
         });

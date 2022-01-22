@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-form">
+  <div class="auth-form main-container">
     <div class="auth-text">소셜 계정으로 간편 로그인</div>
     <div class="box--underline"></div>
     <div class="login-buttons">

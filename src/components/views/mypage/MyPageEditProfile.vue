@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="main-container container">
     <div class="mypage-title">
       <div class="mypage-title-text">프로필 편집</div>
     </div>
@@ -199,7 +199,6 @@ export default {
 }
 .container {
   height: 70rem;
-  margin: 0 7%;
   margin-bottom: 1.6rem;
 }
 .box--underline {
@@ -253,7 +252,7 @@ input:focus {
   color: var(--black);
 }
 .nickname-box p {
-  width: 6rem;
+  width: 8rem;
   align-items: center;
   display: flex;
 }
@@ -292,7 +291,7 @@ input:focus {
   color: var(--black);
   border: none;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
 }
 .edit-btn {
   justify-content: flex-end;
@@ -322,15 +321,19 @@ button {
   margin-top: 18.3rem;
 }
 .check-idOverlap {
+  display: flex;
+  justify-content: center;
   padding: 0.6rem;
   font-size: 1.2rem;
   margin: 0;
-  position: absolute;
-  right: 10%;
-  width: 6.3rem;
-  height: 2.6rem;
+  width: max-content;
   background: #757575;
   color: white;
+}
+.nickname-box button {
+  width: 8rem;
+  height: 2.8rem;
+  text-align: center;
 }
 .check-nickname {
   position: absolute;
@@ -351,8 +354,6 @@ button {
   .container {
     display: flex;
     flex-direction: column;
-    margin: 0 1.6rem;
-    height: 67.8rem;
   }
   .signup-form {
     margin: 0 1.6rem;
@@ -392,10 +393,14 @@ button {
     bottom: 3.4rem;
   }
   .nickname-box p {
-    width: 5rem;
+    width: 8rem;
+    display: flex;
   }
   .account-box p {
     width: 7rem;
+  }
+  .nickname-box button {
+    font-size: 1rem;
   }
   .nickname-box p,
   .account-box p {

@@ -28,21 +28,19 @@
       </div>
     </div>
   </div>
-  <div class="divider"></div>
 </template>
 
 <script>
 import { getUserByUserSeq } from '@/api/user.js';
-import { getCompletedStudy } from '@/api/posts.js';
-import { fetchOnlyApprovedJoinByUserSeq } from '@/api/join.js';
+import { getStudyByUserSeq } from '@/api/post.js';
 export default {
   data() {
     return {
       handleEditButton: true,
-      participatingStudy: null,
+      participatingStudy: 0,
+      completedStudy: 0,
       user: null,
       userSeq: null,
-      completedStudy: null,
     };
   },
   methods: {
@@ -56,23 +54,23 @@ export default {
       this.user = userResponse.data.content[0];
       console.log(this.user);
       //유저 정보 저장
-      const joinResponse = await fetchOnlyApprovedJoinByUserSeq(
-        this.$store.state.auth.userSeq,
-      );
-      if (joinResponse.data == '') {
-        this.participatingStudy = 0;
-      } else {
-        this.participatingStudy = joinResponse.data.content.length;
-      }
-      //조인 정보 저장
-      const studyResponse = await getCompletedStudy(
-        this.$store.state.auth.userSeq,
-      );
+
+      const studyResponse = await getStudyByUserSeq(this.userSeq);
+      console.log('study', studyResponse);
       if (studyResponse.data == '') {
+        //data 없으면 0개
+        this.participatingStudy = 0;
         this.completedStudy = 0;
       } else {
-        this.completedStudy = studyResponse.data.content[0];
-        console.log('스터디', this.completedStudy);
+        const contents = studyResponse.data.content;
+        console.log('contents', contents);
+        for (let i = 0; i < contents.length; i++) {
+          if (contents[i].postType == 'READY') {
+            this.participatingStudy += 1;
+          } else if (contents[i].postType == 'COMPLETE') {
+            this.completedStudy += 1;
+          }
+        }
       }
 
       if (this.userSeq == this.$store.state.auth.userSeq) {
@@ -92,7 +90,9 @@ export default {
 
 <style scoped>
 .container {
-  margin: 0 5%;
+  max-width: 100%;
+  padding: 0 5%;
+  margin: 0 auto;
 }
 .mypage-title {
   display: flex;
@@ -161,8 +161,10 @@ export default {
   color: var(--gray01);
 }
 .profile-study-info {
-  /* display: flex; */
-  font-family: Spoqa Han Sans Neo;
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
   font-size: 1.4rem;
   line-height: 1.7rem;
   color: var(--gray01);
@@ -171,13 +173,10 @@ export default {
 .profile-study-info span {
   color: var(--orange-dark);
 }
-.divider {
-  border-bottom: 1rem solid #eff0f3;
+.profile-study-completed {
+  padding-right: 2rem;
 }
 @media (max-width: 320px) {
-  .container {
-    margin: 0 1.6rem;
-  }
   .mypage-title-text {
     font-size: 2rem;
   }

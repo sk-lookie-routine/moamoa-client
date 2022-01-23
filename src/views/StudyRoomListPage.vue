@@ -15,15 +15,14 @@
     >
       <li v-for="room in roomList" :key="room.studySeq">
         <base-card
-          @click="showPostPage(room.studySeq)"
+          @click="showStudyPage(room.studySeq)"
           :id="room.studySeq"
           :imgSrc="room.image"
           :title="room.title"
           :startDate="room.startDate"
           :endDate="room.endDate"
-          :peopleRegisterCount="1"
-          :peopleTotalCount="room.memberCount"
           :hashTags="room.hashTags"
+          :showCount="false"
         ></base-card>
       </li>
     </ul>
@@ -50,7 +49,7 @@ export default {
     };
   },
   methods: {
-    showPostPage(roomId) {
+    showStudyPage(roomId) {
       this.$router.push({
         name: 'room',
         params: {

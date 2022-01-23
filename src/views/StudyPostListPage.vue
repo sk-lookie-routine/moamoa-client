@@ -22,7 +22,7 @@
           :title="post.title"
           :startDate="post.startDate"
           :endDate="post.endDate"
-          :peopleRegisterCount="1"
+          :peopleRegisterCount="post.registerCount"
           :peopleTotalCount="post.memberCount"
           :hashTags="post.hashTags"
         ></base-card>
@@ -43,13 +43,13 @@
 <script>
 import SearchBar from '@/components/views/studypostlist/SearchBar.vue';
 import NoResult from '@/components/views/studypostlist/NoResult.vue';
-import PaginationButton from '@/components/views/studypostlist/PaginationButton.vue';
 import CreateStudyJumbotron from '@/components/views/studypostlist/CreateStudyJumbotron.vue';
 import { fetchPostsByKeywordAndType } from '@/api/post.js';
-import { POST_TYPE } from '@/utils/constValue';
+import { fetchJoinByPostSeq } from '@/api/join.js';
+import { POST_TYPE, JOIN_TYPE } from '@/utils/constValue';
 
 export default {
-  components: { SearchBar, NoResult, PaginationButton, CreateStudyJumbotron },
+  components: { SearchBar, NoResult, CreateStudyJumbotron },
   data() {
     return {
       postList: [],
@@ -72,9 +72,6 @@ export default {
     createBtnClick() {
       this.$router.push({
         name: 'post-write',
-        params: {
-          postId: 'new',
-        },
       });
     },
     async fetchPostList(postType) {
@@ -91,8 +88,28 @@ export default {
         postType,
       );
 
+      const list =
+        response.data.content == undefined
+          ? []
+          : await Promise.all(
+              response.data.content.map(async item => {
+                const res = await fetchJoinByPostSeq(item.postSeq);
+                let count = 0;
+                if (!(res.status == 204 || res.data.content == undefined)) {
+                  res.data.content.forEach(item => {
+                    if (item.joinType === JOIN_TYPE.APPROVED) count++;
+                  });
+                }
+                const post = {
+                  ...item,
+                  registerCount: count,
+                };
+                return post;
+              }),
+            );
+
       if (this.pageNum < response.data.totalPages) {
-        response.data.content.map(item => this.postList.push(item));
+        list.map(item => this.postList.push(item));
         ++this.pageNum < response.data.totalPages
           ? (this.showMoreBtn = true)
           : (this.showMoreBtn = false);

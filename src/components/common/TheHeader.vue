@@ -62,8 +62,8 @@ export default {
     return {
       links: [
         { name: '홈', linkTo: '/home' },
-        { name: '스터디목록', linkTo: '/posts' },
-        { name: '스터디룸', linkTo: '/rooms' },
+        { name: '스터디목록', linkTo: '/post' },
+        { name: '스터디룸', linkTo: '/room' },
       ],
       isMenuClicked: false,
     };

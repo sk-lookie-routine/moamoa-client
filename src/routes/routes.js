@@ -24,16 +24,6 @@ export default [
     component: () => import('@/views/AuthLoginPage.vue'),
   },
   {
-    path: '/posts',
-    name: 'posts',
-    component: () => import('@/views/StudyPostListPage.vue'),
-  },
-  {
-    path: '/rooms',
-    name: 'rooms',
-    component: () => import('@/views/StudyRoomListPage.vue'),
-  },
-  {
     path: '/mypage/:userSeq',
     name: 'mypage',
     component: () => import('@/components/views/mypage/MyPageBottomBox.vue'),
@@ -49,29 +39,39 @@ export default [
     component: () => import('@/views/MyPageAccountManage.vue'),
   },
   {
-    path: '/posts/:postId',
-    name: 'post',
-    component: () => import('@/views/StudyPostPage.vue'),
+    path: '/post',
+    name: 'posts',
+    component: () => import('@/views/StudyPostListPage.vue'),
   },
   {
-    path: '/post-write/:postId',
+    path: '/post/write',
     name: 'post-write',
     component: () => import('@/views/StudyPostWritePage.vue'),
   },
   {
-    path: '/rooms/:roomId',
-    name: 'room',
-    component: () => import('@/views/StudyRoomPage.vue'),
+    path: '/post/apply',
+    name: 'apply',
+    component: () => import('@/views/StudyApplyPage.vue'),
   },
   {
-    path: '/room-write/:roomId',
+    path: '/post/:postId',
+    name: 'post',
+    component: () => import('@/views/StudyPostPage.vue'),
+  },
+  {
+    path: '/room',
+    name: 'rooms',
+    component: () => import('@/views/StudyRoomListPage.vue'),
+  },
+  {
+    path: '/room/write',
     name: 'room-write',
     component: () => import('@/views/StudyRoomWritePage.vue'),
   },
   {
-    path: '/apply/:postId',
-    name: 'apply',
-    component: () => import('@/views/StudyApplyPage.vue'),
+    path: '/room/:roomId',
+    name: 'room',
+    component: () => import('@/views/StudyRoomPage.vue'),
   },
   {
     path: '/:notFound(.*)',

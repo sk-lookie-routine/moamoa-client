@@ -4,7 +4,7 @@
     <div class="main-container">
       <div class="tabs-and-btn-container">
         <div class="mid-title">모집중인 스터디</div>
-        <router-link to="/posts">
+        <router-link to="/post">
           <button class="all-btn">전체보기</button></router-link
         >
       </div>
@@ -17,10 +17,9 @@
             :title="post.title"
             :startDate="post.startDate"
             :endDate="post.endDate"
-            :peopleRegisterCount="1"
-            :peopleTotalCount="post.memberCount"
             :hashTags="post.hashTags"
             :isSmall="true"
+            :showCount="false"
           ></base-card>
         </li>
       </ul>

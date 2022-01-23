@@ -88,4 +88,30 @@ li a {
   color: var(--orange-dark);
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  ul {
+    margin: 2rem 0 1.9rem 1.2rem;
+  }
+
+  li {
+    font-size: 1.2rem;
+    line-height: 183%;
+  }
+
+  li:before {
+    width: 0.35rem;
+    height: 0.35rem;
+    margin: 0 1rem 0.35rem 0;
+  }
+
+  .checkbox-container img {
+    margin-left: 0.6rem;
+  }
+
+  .checkbox-container label {
+    font-size: 1.4rem;
+    line-height: 186%;
+  }
+}
 </style>

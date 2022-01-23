@@ -15,9 +15,11 @@
         <div class="comment-writer__nickname">{{ nickname }}</div>
         <div class="comment__commented-date">{{ date }}</div>
       </div>
-      <div v-if="!showModify" class="comment__content">
-        {{ content }}
-      </div>
+      <div
+        v-if="!showModify"
+        class="comment__content"
+        v-html="content.replaceAll('\n', '<br />')"
+      ></div>
       <div v-else class="comment-modify">
         <textarea
           class="comment-modify__content"

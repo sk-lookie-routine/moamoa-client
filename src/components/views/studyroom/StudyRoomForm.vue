@@ -111,21 +111,23 @@
       <label for="tag">태그</label>
       <div class="tags">
         <span class="tag-icon">#</span>
-        <base-tag
-          v-for="(tag, index) in room.hashTags"
-          :key="index"
-          :canRemove="true"
-          @delete="removeTag(index)"
-          >{{ tag }}
-        </base-tag>
-        <input
-          v-if="!isTagLengthLongEnough"
-          type="text"
-          name="tag"
-          placeholder="태그를 입력하세요."
-          v-model="tagInput"
-          @keydown.enter.prevent="addTag"
-        />
+        <div class="tag-input-container">
+          <base-tag
+            v-for="(tag, index) in room.hashTags"
+            :key="index"
+            :canRemove="true"
+            @delete="removeTag(index)"
+            >{{ tag }}
+          </base-tag>
+          <input
+            v-if="!isTagLengthLongEnough"
+            type="text"
+            name="tag"
+            placeholder="태그를 입력하세요."
+            v-model="tagInput"
+            @keydown.enter.prevent="addTag"
+          />
+        </div>
       </div>
     </div>
     <div class="btn-container">
@@ -334,17 +336,13 @@ export default {
     },
   },
   created() {
-    this.studySeq = this.$route.params.roomId;
+    this.studySeq = this.$route.query.studySeq;
     this.fetchData();
   },
 };
 </script>
 
 <style scoped>
-form {
-  margin-top: 19.2rem;
-}
-
 .input-container {
   display: flex;
   align-items: center;
@@ -407,7 +405,6 @@ form {
 
 .link-input input {
   font-size: 1.6rem;
-  color: var(--blue);
 }
 
 .btn-container {
@@ -441,11 +438,16 @@ form {
 
 .tags {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   padding: 1.1rem 1.6rem;
   border: 0.1rem solid var(--gray02);
   border-radius: 1rem;
+  gap: 1rem;
+}
+
+.tag-input-container {
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
@@ -463,5 +465,84 @@ form {
 
 .invisible {
   visibility: hidden;
+}
+
+@media (max-width: 768px) {
+  .input-container label {
+    margin-right: 0;
+  }
+
+  .title-input input {
+    font-size: 2rem;
+  }
+
+  .label-and-counting {
+    gap: 0.6rem;
+  }
+
+  .counting {
+    font-size: 1.2rem;
+  }
+
+  .input-container {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.6rem;
+  }
+
+  .title-input {
+    margin-bottom: 2.4rem;
+  }
+
+  .link-input {
+    margin-top: 0.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .link-input div {
+    margin-top: 3rem;
+  }
+
+  ..link-input div:first-child {
+    margin-top: 0;
+  }
+
+  .link-input label:not([for='link']) {
+    font-size: 1.4rem;
+  }
+
+  .link-input input {
+    font-size: 1.4rem;
+  }
+
+  .btn-container {
+    margin: 3rem 0 12rem 0;
+    gap: 0.5rem;
+  }
+
+  .btn-container button {
+    padding: 0.9rem 1rem;
+    font-size: 1.4rem;
+  }
+
+  .tag-container {
+    margin-top: 2.8rem;
+  }
+
+  .tags {
+    padding: 1rem 1.6rem;
+    gap: 1rem 0.6rem;
+  }
+
+  .tag-icon {
+    font-size: 2.2rem;
+    margin-right: 1rem;
+  }
+
+  .tags input {
+    font-size: 1.4rem;
+  }
 }
 </style>

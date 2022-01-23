@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="card__period">{{ startDate }} ~ {{ endDate }}</div>
-      <div v-if="!isSmall" class="card__people">
+      <div v-if="showCount" class="card__people">
         <img class="person-icon" src="@/assets/img//icon_person.svg" />
         <div class="card__people-count">
           {{ peopleRegisterCount }}/{{ peopleTotalCount }}
@@ -63,9 +63,11 @@ export default {
     },
     peopleRegisterCount: {
       type: Number,
+      default: null,
     },
     peopleTotalCount: {
       type: Number,
+      default: null,
     },
     hashTags: {
       type: Array,
@@ -82,6 +84,10 @@ export default {
     isSmall: {
       type: Boolean,
       default: false,
+    },
+    showCount: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -117,6 +123,8 @@ export default {
 
 .card__badge {
   position: absolute;
+  top: 1.4rem;
+  left: 2.6rem;
 }
 
 .card__thumbnail {

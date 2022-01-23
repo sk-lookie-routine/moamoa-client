@@ -6,6 +6,7 @@
           :src="imgUrl"
           class="profile-img"
           alt="스터디 신청자 프로필 이미지"
+          @click="profileClicked"
         />
         <div class="nickname">{{ nickname }}</div>
       </div>
@@ -21,7 +22,10 @@
         <button class="accept-btn" @click="acceptBtnClicked">승인</button>
       </div>
     </div>
-    <p class="content box--gray-background">{{ content }}</p>
+    <p
+      class="content box--gray-background"
+      v-html="content.replaceAll('\n', '<br />')"
+    ></p>
   </div>
 </template>
 
@@ -55,6 +59,9 @@ export default {
     };
   },
   methods: {
+    profileClicked() {
+      this.$emit('profileClicked');
+    },
     rejectBtnClicked() {
       this.$emit('reject');
     },
@@ -86,6 +93,7 @@ export default {
 .profile-img {
   width: 4.4rem;
   height: 4.4rem;
+  cursor: pointer;
 }
 
 .nickname {

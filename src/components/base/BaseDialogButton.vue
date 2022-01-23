@@ -58,4 +58,10 @@ button {
 .btn--gray {
   background: var(--gray03);
 }
+
+@media (max-width: 768px) {
+  button {
+    font-size: 1.4rem;
+  }
+}
 </style>

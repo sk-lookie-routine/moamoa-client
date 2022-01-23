@@ -1,8 +1,11 @@
 <template>
-  <base-dialog :showDialog="showDialog" @closed="showDialog = false">
-    <template #header>{{ dialog.header }}</template>
-    <template #default>{{ dialog.content }}</template>
-    <template #actions v-if="dialog.btnType == 'close'">
+  <base-dialog
+    :showDialog="showDialog"
+    @closed="showDialog = false"
+    :title="dialog.title"
+    :content="dialog.content"
+  >
+    <template v-if="dialog.btnType == 'close'">
       <base-dialog-button size="small" color="gray" @click="showDialog = false"
         >취소</base-dialog-button
       >
@@ -10,7 +13,7 @@
         마감
       </base-dialog-button>
     </template>
-    <template #actions v-else-if="dialog.btnType == 'delete'">
+    <template v-else-if="dialog.btnType == 'delete'">
       <base-dialog-button size="small" color="gray" @click="showDialog = false"
         >취소</base-dialog-button
       >
@@ -18,7 +21,7 @@
         삭제
       </base-dialog-button>
     </template>
-    <template #actions v-else-if="dialog.btnType == 'deleteConfirm'">
+    <template v-else-if="dialog.btnType == 'deleteConfirm'">
       <base-dialog-button
         @click="
           this.$router.push({
@@ -28,7 +31,7 @@
         >확인</base-dialog-button
       >
     </template>
-    <template #actions v-else>
+    <template v-else>
       <base-dialog-button @click="showDialog = false">확인</base-dialog-button>
     </template>
   </base-dialog>
@@ -111,6 +114,7 @@
                   apply.comment,
                 )
               "
+              @profileClicked="onClickUserProfile(apply.userSeq)"
             ></base-apply>
           </li>
         </ul>
@@ -147,25 +151,19 @@
           <h2>스터디 목표 & 소개</h2>
           <div class="box--gray-background">
             <p class="p-text--red">{{ post.goal }}</p>
-            <p>
-              {{ post.info }}
-            </p>
+            <p v-html="post.info.replaceAll('\n', '<br />')"></p>
           </div>
         </div>
         <div class="post-content">
           <h2>스터디 진행 방식</h2>
           <div class="box--gray-background">
-            <p>
-              {{ post.how }}
-            </p>
+            <p v-html="post.how.replaceAll('\n', '<br />')"></p>
           </div>
         </div>
         <div class="post-content">
           <h2>신청자에게 한마디!</h2>
           <div class="box--gray-background">
-            <p>
-              {{ post.comment }}
-            </p>
+            <p v-html="post.comment.replaceAll('\n', '<br />')"></p>
           </div>
         </div>
         <div v-if="post.hashTags.length > 0" class="post-content">
@@ -272,7 +270,7 @@ export default {
       },
       showDialog: false,
       dialog: {
-        header: null,
+        title: null,
         content: '',
         btnType: 'default',
       },
@@ -308,62 +306,63 @@ export default {
       });
     },
     async closeApplicaption() {
-      const post = {
+      this.post = {
         ...this.post,
         postType: POST_TYPE.COMPLETE,
       };
-      await updatePost(post);
-      await createRoom(this.postSeq);
-      this.setBaseButton();
+      await updatePost(this.post);
       this.showDialog = false;
+      this.setBaseButton();
+      await createRoom(this.postSeq);
     },
-    showApplyPage(postId) {
+    showApplyPage() {
       this.$router.push({
         name: 'apply',
-        params: {
-          postId,
+        query: {
+          title: this.post.title,
+          postSeq: this.post.postSeq,
+          userSeq: this.$store.state.auth.userSeq,
         },
-        query: { title: this.post.title },
       });
     },
     editPost() {
       this.$router.push({
         name: 'post-write',
-        params: {
-          postId: this.postSeq,
+        query: {
+          postSeq: this.postSeq,
         },
       });
     },
     async removePost() {
       await deletePost(this.postSeq);
-      this.dialog.header = '';
+      this.dialog.title = '';
       this.dialog.content = '삭제되었습니다.';
       this.dialog.btnType = 'deleteConfirm';
       this.showDialog = true;
     },
     setDialogWithDelete() {
       if (this.appliedApprovedMemberCount > 0) {
-        this.dialog.header = '';
+        this.dialog.title = '';
         this.dialog.content =
-          '이미 승인 완료된 인원이 있습니다. 게시물을 삭제할 수 없습니다.';
+          '이미 승인 완료된 인원이 있습니다.<br/>게시물을 삭제할 수 없습니다.';
         this.dialog.btnType = 'default';
         this.showDialog = true;
       } else {
-        this.dialog.header = '잠깐!!';
+        this.dialog.title = '잠깐!!';
         this.dialog.content =
-          '삭제된 게시물은 복구할 수 없습니다. 정말 게시글을 삭제할까요?';
+          '삭제된 게시물은 복구할 수 없습니다.<br/>정말 게시글을 삭제할까요?';
         this.dialog.btnType = 'delete';
         this.showDialog = true;
       }
     },
     setDialogWithJoin(joinType) {
       if (joinType == JOIN_TYPE.APPROVED) {
-        this.dialog.header = '';
+        this.dialog.title = '';
         this.dialog.content = '승인하였습니다.';
         this.dialog.btnType = 'default';
         this.showDialog = true;
       } else if (joinType == JOIN_TYPE.REFUSED) {
-        this.dialog.header = '';
+        this.dialog.title = '';
         this.dialog.content = '거절하였습니다.';
         this.dialog.btnType = 'default';
         this.showDialog = true;
@@ -420,18 +419,19 @@ export default {
       } else {
         if (this.user.userSeq == this.$store.state.auth.userSeq) {
           if (this.applyList.length <= 0) {
-            this.dialog.header = '';
+            this.dialog.title = '';
             this.dialog.content = '신청한 사람이 없을 때는 마감할 수 없어요!';
+            this.dialog.btnType = 'default';
             this.showDialog = true;
           } else {
-            this.dialog.header = '잠깐!!';
+            this.dialog.title = '잠깐!!';
             this.dialog.content =
-              '마감한 스터디는 재모집할 수 없어요. 스터디를 마감하시겠어요?';
+              '마감한 스터디는 재모집할 수 없어요.<br/>스터디를 마감하시겠어요?';
             this.dialog.btnType = 'close';
             this.showDialog = true;
           }
         } else {
-          this.showApplyPage(this.postSeq);
+          this.showApplyPage();
         }
       }
     },
@@ -491,7 +491,7 @@ export default {
         joinType == JOIN_TYPE.APPROVED &&
         this.appliedApprovedMemberCount >= this.post.memberCount
       ) {
-        this.dialog.header = '';
+        this.dialog.title = '';
         this.dialog.content = '더 이상 승인할 수 없습니다.';
         this.dialog.btnType = 'default';
         this.showDialog = true;
@@ -672,8 +672,7 @@ export default {
 
 .tags-container {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
 }
 
@@ -688,7 +687,7 @@ export default {
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.4rem 1rem;
 }
 
 .post-comments h2 {
@@ -808,13 +807,11 @@ textarea {
   }
 
   .tags-container {
-    flex-wrap: nowrap;
-    align-items: flex-start;
     gap: 1rem;
   }
 
   .tags {
-    gap: 0.6rem;
+    gap: 1rem 0.6rem;
   }
 
   .tag-icon {

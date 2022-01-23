@@ -6,13 +6,11 @@
         <img @click="closeBtnClick" src="@/assets/img/icon_close.svg" />
       </button>
       <header>
-        <h3>
-          <slot name="header"></slot>
-        </h3>
+        <h3>{{ title }}</h3>
       </header>
       <main>
-        <section class="dialog__content"><slot></slot></section>
-        <section class="dialog__actions"><slot name="actions"></slot></section>
+        <section class="dialog__content" v-html="content"></section>
+        <section class="dialog__actions"><slot></slot></section>
       </main>
     </div>
   </div>
@@ -25,6 +23,15 @@ export default {
       type: Boolean,
       required: true,
       default: true,
+    },
+    title: {
+      type: String,
+      default: '',
+    },
+    content: {
+      type: String,
+      required: true,
+      default: '',
     },
   },
   methods: {
@@ -113,15 +120,19 @@ main {
     padding: 1.5rem 1.6rem;
   }
 
+  .close-btn {
+    top: 1.6rem;
+    right: 1.6rem;
+  }
+
   header h3 {
-    color: var(--orange-dark);
-    text-align: center;
     margin: 1rem 0 1rem 0;
   }
 
   .dialog__content {
     font-size: 1.4rem;
     line-height: 143%;
+    word-break: keep-all;
   }
 }
 </style>

@@ -10,9 +10,11 @@ function updateRoom(roomData) {
   return room.put('/', roomData);
 }
 
-function fetchPostsByTypeAndUserSeq(studyTypeList, userSeq) {
+function fetchRoomsByTypeAndUserSeq(page, studyTypeList, userSeq) {
   return room.get('/', {
     params: {
+      size: 4,
+      page,
       studyTypeList,
       userSeq,
     },
@@ -30,6 +32,6 @@ function fetchRoomByStudySeq(studySeq) {
 export {
   createRoom,
   updateRoom,
-  fetchPostsByTypeAndUserSeq,
+  fetchRoomsByTypeAndUserSeq,
   fetchRoomByStudySeq,
 };

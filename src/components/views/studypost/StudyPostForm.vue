@@ -10,7 +10,10 @@
         @input="changeTitleContent"
       />
     </div>
-    <div class="error-text" :class="{ invisible: isTitleValidate }">
+    <div
+      class="error-text"
+      :class="{ invisible: !hasChanged.title || isTitleValidate }"
+    >
       {{ titleValidationText }}
     </div>
     <div class="input-container box--underline bottom-padding">
@@ -25,7 +28,10 @@
         @update:modelValue="formatDeadlineDate"
       ></date-picker>
     </div>
-    <div class="error-text" :class="{ invisible: isDeadLineValidate }">
+    <div
+      class="error-text"
+      :class="{ invisible: !hasChanged.deadLine || isDeadLineValidate }"
+    >
       {{ deadLineValidationText }}
     </div>
     <div class="input-container box--underline bottom-padding">
@@ -41,20 +47,19 @@
         @update:modelValue="formatRangeDate"
       ></date-picker>
     </div>
-    <div class="error-text" :class="{ invisible: rangeDate }">
+    <div
+      class="error-text"
+      :class="{ invisible: !hasChanged.rangeDate || rangeDate }"
+    >
       필수 입력 항목입니다.
     </div>
     <div class="input-container box--underline bottom-padding select-container">
       <label for="count">모집 인원:</label>
-      <select v-model="post.memberCount" name="count">
-        <option
-          v-for="optionValue in memberCountOptions"
-          v-bind:value="optionValue"
-          :key="optionValue"
-        >
-          {{ optionValue }}명
-        </option>
-      </select>
+      <input-option
+        :options="memberCountOptions"
+        :default="post.memberCount"
+        @input="setCountValue"
+      ></input-option>
     </div>
     <div class="input-container box--underline bottom-padding">
       <label for="goal">스터디 목표:</label>
@@ -67,7 +72,10 @@
         @input="changeGoalContent"
       />
     </div>
-    <div class="error-text" :class="{ invisible: isGoalValidate }">
+    <div
+      class="error-text"
+      :class="{ invisible: !hasChanged.goal || isGoalValidate }"
+    >
       {{ goalValidationText }}
     </div>
     <div class="textarea-container">
@@ -82,7 +90,10 @@
         rows="12"
         @input="changeInfoContent"
       ></textarea>
-      <div class="error-text" :class="{ invisible: isInfoValidate }">
+      <div
+        class="error-text"
+        :class="{ invisible: !hasChanged.info || isInfoValidate }"
+      >
         {{ infoValidationText }}
       </div>
     </div>
@@ -95,7 +106,10 @@
         rows="7"
         @input="changeHowContent"
       ></textarea>
-      <div class="error-text" :class="{ invisible: isHowValidate }">
+      <div
+        class="error-text"
+        :class="{ invisible: !hasChanged.how || isHowValidate }"
+      >
         {{ howValidationText }}
       </div>
     </div>
@@ -108,7 +122,10 @@
         rows="7"
         @input="changeCommentContent"
       ></textarea>
-      <div class="error-text" :class="{ invisible: isCommentValidate }">
+      <div
+        class="error-text"
+        :class="{ invisible: !hasChanged.comment || isCommentValidate }"
+      >
         {{ commentValidationText }}
       </div>
     </div>
@@ -137,17 +154,22 @@
       </div>
     </div>
     <div class="btn-container">
-      <base-button :disabled="isSubmitBtnDisabled">모집글 등록하기</base-button>
+      <base-button :disabled="isSubmitBtnDisabled">{{
+        postSeq ? '모집글 수정하기' : '모집글 등록하기'
+      }}</base-button>
     </div>
   </form>
 </template>
 
 <script>
 import { createPost, fetchPostByPostSeq, updatePost } from '@/api/post.js';
+import InputOption from '@/components/views/studypost/InputOption.vue';
 
 export default {
+  components: { InputOption },
   data() {
     return {
+      postSeq: null,
       post: {
         title: '',
         info: '',
@@ -176,6 +198,15 @@ export default {
       memberCountOptions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       tagInput: '',
       isTagLengthLongEnough: false,
+      hasChanged: {
+        title: false,
+        info: false,
+        goal: false,
+        how: false,
+        comment: false,
+        deadLine: false,
+        rangeDate: false,
+      },
     };
   },
   computed: {
@@ -318,28 +349,36 @@ export default {
     },
   },
   methods: {
-    showPage() {
-      this.$router.push({
-        name: 'posts',
-      });
-    },
     async submitForm() {
       try {
-        if (!this.$route.query.postSeq) {
+        if (!this.postSeq) {
           await createPost(this.post);
+          this.$router.push({
+            name: 'posts',
+          });
         } else {
           await updatePost(this.post);
+          this.$router.push({
+            name: 'post',
+            params: {
+              postId: this.postSeq,
+            },
+          });
         }
-        this.showPage();
       } catch (e) {
         console.error(e);
       }
     },
+    setCountValue(value) {
+      this.post.memberCount = value;
+    },
     formatDeadlineDate() {
+      this.hasChanged.deadLine = true;
       if (this.post.deadLine)
         this.post.deadLine = this.formatDate(this.post.deadLine);
     },
     formatRangeDate() {
+      this.hasChanged.rangeDate = true;
       if (this.rangeDate) {
         this.post.startDate = this.formatDate(this.rangeDate[0]);
         this.post.endDate = this.formatDate(this.rangeDate[1]);
@@ -363,22 +402,27 @@ export default {
       return year + '-' + month + '-' + day;
     },
     changeTitleContent(e) {
+      this.hasChanged.title = true;
       this.post.title = e.target.value;
     },
     changeGoalContent(e) {
+      this.hasChanged.goal = true;
       this.post.goal = e.target.value;
     },
     changeInfoContent(e) {
+      this.hasChanged.info = true;
       this.post.info = e.target.value;
     },
     changeHowContent(e) {
+      this.hasChanged.how = true;
       this.post.how = e.target.value;
     },
     changeCommentContent(e) {
+      this.hasChanged.comment = true;
       this.post.comment = e.target.value;
     },
     async fetchData() {
-      const postResponse = await fetchPostByPostSeq(this.$route.query.postSeq);
+      const postResponse = await fetchPostByPostSeq(this.postSeq);
       this.post = postResponse.data.content[0];
       this.rangeDate = [
         new Date(this.post.startDate),
@@ -387,7 +431,8 @@ export default {
     },
   },
   async created() {
-    if (this.$route.query.postSeq) {
+    this.postSeq = this.$route.query.postSeq;
+    if (this.postSeq) {
       await this.fetchData();
     }
   },
@@ -407,29 +452,6 @@ export default {
 .title-input input {
   font-size: 2.2rem;
   font-weight: bold;
-}
-
-select[name='count'] {
-  width: 15rem;
-  padding: 0.25rem 0 0.25rem 0.5rem;
-  border-radius: 0.4rem;
-  outline: none;
-  border: 0.15rem solid var(--gray02);
-  font-size: 1.4rem;
-  font-family: Noto Sans KR;
-  font-weight: bold;
-  color: var(--black);
-}
-
-select[name='count']:focus {
-  outline: 0.17rem solid var(--black);
-}
-
-select[name='count'] option {
-  color: var(--black);
-  padding: 4rem 0.5rem;
-  font-size: 1.4rem;
-  font-family: Noto Sans KR;
 }
 
 .label-and-counting {
@@ -515,14 +537,6 @@ select[name='count'] option {
 
   .title-input input {
     font-size: 2rem;
-  }
-
-  select[name='count'] {
-    font-size: 1.2rem;
-  }
-
-  select[name='count'] option {
-    font-size: 1.2rem;
   }
 
   .label-and-counting {

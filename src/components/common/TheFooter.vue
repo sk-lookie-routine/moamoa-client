@@ -60,7 +60,7 @@ footer {
 }
 
 .footer-main-container {
-  max-width: 1216px;
+  max-width: 1440px;
   width: 96%;
   margin: 0 auto;
 }
@@ -75,6 +75,9 @@ footer {
 .footer__nav {
   font-size: 1.6rem;
   font-family: 'Noto Sans KR', sans-serif;
+}
+.footer__nav {
+  margin-right: 22.4rem;
 }
 .footer__explain {
   font-size: 1.6rem;
@@ -105,7 +108,7 @@ footer {
 
 .logo-text {
   font-family: Krona One;
-  color: var(--black);
+  color: var(--gray01);
 }
 
 .footer__explain {
@@ -155,14 +158,15 @@ footer {
   /* width: 100%; */
 }
 
-@media (max-width: 900px) {
+@media (max-width: 320px) {
   footer {
     margin-top: 17rem;
   }
-
+  .footer-main-container {
+    padding: 0 2.4rem;
+  }
   .footer-container {
     width: 100%;
-    padding: 0;
   }
 
   .footer-container,
@@ -180,16 +184,23 @@ footer {
   }
 
   .footer__explain {
-    font-size: 1.4rem;
+    font-size: 1.15rem;
     width: fit-content;
     height: 5.1rem;
     line-height: 2.4rem;
+  }
+  .footer__email,
+  .footer__nav {
+    font-size: 1.2rem;
+  }
+  .footer__nav {
+    margin: 0;
   }
   .box--underline {
     margin: 7rem 0rem 1.5rem 0rem;
   }
   .footer__rights {
-    margin: 0 2.4rem;
+    font-size: 1.2rem;
   }
 }
 </style>

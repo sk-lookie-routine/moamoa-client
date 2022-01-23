@@ -1,7 +1,6 @@
 <template>
   <div v-if="this.$store.state.auth.isLogin">
     <div class="default-container">
-      <my-page-profile></my-page-profile>
       <div class="bottom-box" v-if="showBottomBox">
         <div class="divider"></div>
         <base-tab
@@ -34,6 +33,12 @@
               ></base-card>
             </li>
           </ul>
+          <div class="button-container">
+            <pagination-button
+              v-if="showMoreBtn_app && textOfEachTab == '신청한'"
+              @showMore="applicatedStudyList()"
+            ></pagination-button>
+          </div>
           <ul class="my-studyList" v-if="textOfEachTab == '개설한'">
             <li v-for="card in openStudy" :key="card.postSeq">
               <base-card
@@ -50,6 +55,12 @@
               </base-card>
             </li>
           </ul>
+          <div class="button-container">
+            <pagination-button
+              v-if="showMoreBtn && textOfEachTab == '개설한'"
+              @showMore="openStudyList()"
+            ></pagination-button>
+          </div>
         </div>
         <div class="nothing-apply" v-else>
           <div class="nothing-apply-text">
@@ -76,13 +87,13 @@
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
-import MyPageProfile from '@/components/views/mypage/MyPageProfile.vue';
 import AuthLoginPage from '@/views/AuthLoginPage.vue';
 import { fetchPostByUserSeq, fetchPostByPostSeq } from '@/api/post.js';
 import { fetchJoinByUserSeq } from '@/api/join.js';
+import PaginationButton from '@/components/views/studypostlist/PaginationButton.vue';
 
 export default {
-  components: { TheFooter, MyPageProfile, AuthLoginPage },
+  components: { TheFooter, AuthLoginPage, PaginationButton },
   created() {
     this.userSeq = this.$route.params.userSeq;
     //라우팅 파라미터로 넘겨받은 userSeq 저장
@@ -96,9 +107,12 @@ export default {
   },
   data() {
     return {
-      applicatedStudy: null,
-      openStudy: null,
-      index: 0,
+      applicatedStudy: [],
+      openStudy: [],
+      index: 0, //to handle post list(for openStudy)
+      showMoreBtn: true, //to handle post list(for openStudy)
+      index_app: 0,
+      showMoreBtn_app: true,
       textOfEachTab: '신청한',
       userSeq: null,
       showBottomBox: null,
@@ -109,16 +123,27 @@ export default {
       this.textOfEachTab = '신청한';
       // api/post에 userSeq로 접근
       const res = await fetchJoinByUserSeq(this.$store.state.auth.userSeq);
+      console.log(res.data.content);
       if (res.data != '') {
-        console.log('신청한 스터디 response', res);
-        this.applicatedStudy = [];
-        for (let i = 0; i < res.data.content.length; i++) {
-          let postSeq = res.data.content[i].postSeq;
+        const size = res.data.totalElements;
+        while (this.index_app < size) {
+          //다 보여줬으면 변수 토글
+          if (this.index_app == size - 1) {
+            this.showMoreBtn_app = false;
+          }
+          let postSeq = res.data.content[this.index_app].postSeq;
           let applicatedPost = await fetchPostByPostSeq(postSeq);
+
           this.applicatedStudy.push({
             card: applicatedPost.data.content[0],
-            joinType: res.data.content[0].joinType,
+            joinType: res.data.content[this.index_app].joinType,
           });
+          //4개씩 나눠서 배열에 삽입
+          if (this.index_app % 4 == 3 && this.index_app != 0) {
+            this.index_app++;
+            break;
+          }
+          this.index_app++;
         }
       } else {
         this.applicatedStudy = null;
@@ -127,8 +152,20 @@ export default {
     async openStudyList() {
       this.textOfEachTab = '개설한';
       const response = await fetchPostByUserSeq(this.$store.state.auth.userSeq);
-      this.openStudy = response.data.content;
-      console.log('studyList:', this.openStudy);
+      // this.openStudy = response.data.content;
+
+      const size = response.data.totalElements;
+      while (this.index < size) {
+        if (this.index == size - 1) {
+          this.showMoreBtn = false;
+        }
+        this.openStudy.push(response.data.content[this.index]);
+        if (this.index % 4 == 3 && this.index != 0) {
+          this.index++;
+          break;
+        }
+        this.index++;
+      }
     },
     showPostPage(postId) {
       this.$router.push({
@@ -144,7 +181,6 @@ export default {
 
 <style scoped>
 .default-container {
-  padding-top: 19.2rem;
   max-width: 100%;
   margin: 0 auto;
 }
@@ -180,6 +216,11 @@ export default {
 }
 .divider {
   border-bottom: 1rem solid #eff0f3;
+}
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 @media (max-width: 320px) {
   .default-container {

@@ -47,4 +47,12 @@ export default {
   background: var(--gray03);
   border-radius: 0.7rem;
 }
+@media (max-width: 320px) {
+  .container {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 30px;
+    overflow: hidden;
+  }
+}
 </style>

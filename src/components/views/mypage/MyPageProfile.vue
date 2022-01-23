@@ -52,22 +52,23 @@ export default {
     async fetchData() {
       const userResponse = await getUserByUserSeq(this.userSeq);
       this.user = userResponse.data.content[0];
-      console.log(this.user);
+      // console.log(this.user);
       //유저 정보 저장
 
       const studyResponse = await fetchPostByUserSeq(this.userSeq);
-      console.log('study', studyResponse);
+      // console.log('study', studyResponse);
       if (studyResponse.data == '') {
         //data 없으면 0개
         this.participatingStudy = 0;
         this.completedStudy = 0;
       } else {
         const contents = studyResponse.data.content;
-        console.log('contents', contents);
+        // console.log('contents', contents);
         for (let i = 0; i < contents.length; i++) {
           if (contents[i].postType == 'READY') {
             this.participatingStudy += 1;
           } else if (contents[i].postType == 'COMPLETE') {
+            console.log('완료된 스터디', contents[i]);
             this.completedStudy += 1;
           }
         }
@@ -93,6 +94,7 @@ export default {
   max-width: 100%;
   padding: 0 5%;
   margin: 0 auto;
+  padding-top: 19.2rem;
 }
 .mypage-title {
   display: flex;
@@ -177,6 +179,10 @@ export default {
   padding-right: 2rem;
 }
 @media (max-width: 320px) {
+  .container {
+    padding-top: 9.5rem;
+    max-width: 96%;
+  }
   .mypage-title-text {
     font-size: 2rem;
   }
@@ -199,6 +205,7 @@ export default {
   }
   .profile-study-info {
     margin-top: 1.5rem;
+    font-size: 1.2rem;
   }
 }
 </style>

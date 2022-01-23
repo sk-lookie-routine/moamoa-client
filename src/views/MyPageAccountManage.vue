@@ -65,7 +65,7 @@ export default {
 .manage-box {
   margin-top: 6.8rem;
 }
-.manage-box p:not(.account-email):hover {
+.manage-box p:hover:not(.account-email) {
   cursor: pointer;
 }
 .account-email p,

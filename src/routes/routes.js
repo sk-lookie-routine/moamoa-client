@@ -36,7 +36,7 @@ export default [
   {
     path: '/mypage/:userSeq',
     name: 'mypage',
-    component: () => import('@/components/views/mypage/MyPageBottomBox.vue'),
+    component: () => import('@/views/MyPage.vue'),
   },
   {
     path: '/edit',

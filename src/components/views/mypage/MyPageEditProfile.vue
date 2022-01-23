@@ -97,7 +97,7 @@ export default {
       nickname: this.$store.state.auth.username,
       desc: this.$store.state.auth.userInfo,
       account: this.$store.state.auth.email,
-      isNicknameDuplicated: true,
+      isNicknameDuplicated: false,
       isClickedDuplicatedButton: false,
       randomProfile: {
         name: require(`@/assets/img/profile/${this.$store.state.auth.image}.svg`),

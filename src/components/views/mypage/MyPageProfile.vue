@@ -91,8 +91,7 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 100%;
-  padding: 0 5%;
+  max-width: 1200px;
   margin: 0 auto;
   padding-top: 19.2rem;
 }
@@ -178,10 +177,10 @@ export default {
 .profile-study-completed {
   padding-right: 2rem;
 }
-@media (max-width: 320px) {
+@media (max-width: 768px) {
   .container {
     padding-top: 9.5rem;
-    max-width: 96%;
+    max-width: 34.3rem;
   }
   .mypage-title-text {
     font-size: 2rem;
@@ -195,6 +194,7 @@ export default {
   }
   .profile-box {
     padding-top: 4.1rem;
+    padding-bottom: 5.4rem;
   }
   .profile-nickname {
     font-size: 1.8rem;

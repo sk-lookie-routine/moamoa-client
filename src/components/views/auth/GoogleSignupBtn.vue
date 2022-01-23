@@ -91,7 +91,7 @@ a {
 .google-login-btn img {
   padding-left: 1.5rem;
 }
-@media (max-width: 320px) {
+@media (max-width: 768px) {
   .google-login-btn {
     margin-bottom: 15.1rem;
     width: 25.2rem;

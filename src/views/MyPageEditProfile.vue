@@ -1,12 +1,11 @@
 <template>
-  <div class="main-container container">
+  <div class="container">
     <div class="mypage-title">
       <div class="mypage-title-text">프로필 편집</div>
     </div>
     <div class="box--underline"></div>
     <div class="profile-img">
       <img :src="randomProfile.name" />
-      <div class="text">랜덤 변경</div>
       <button @click="randomImage" class="randomBtn">
         <img src="@/assets/img/btn_random.svg" />
       </button>
@@ -30,22 +29,19 @@
     </div>
     <div class="check">
       <div
-        class="check-nickname-duplicated"
+        class="duplicated"
         v-if="isNicknameDuplicated && nickname.length > 0"
       >
         {{ text }}
       </div>
-      <div
-        class="check-nickname"
-        v-if="!isNicknameDuplicated && nickname.length > 0"
-      >
+      <div class="good" v-if="!isNicknameDuplicated && nickname.length > 0">
         {{ text }}
       </div>
       <div class="check-nickname-duplicated" v-if="nickname == ''">
         최소 2자 이상 입력하세요.
       </div>
       <div
-        class="check-nickname"
+        class="good"
         v-if="nickname.search(/\s/) != -1 || special_pattern.test(nickname)"
       >
         공백이나 특수문자 입력은 불가능합니다.
@@ -90,13 +86,22 @@ import TheFooter from '@/components/common/TheFooter.vue';
 import { searchUserByName, updateUserData } from '@/api/user.js';
 export default {
   components: { TheFooter },
+  created() {
+    this.nickname = this.$store.state.auth.username;
+    this.desc = this.$store.state.auth.userInfo;
+    this.account = this.$store.state.auth.email;
+
+    if (!this.$store.state.auth.isLogin) {
+      this.$route.push({ name: 'login' });
+    }
+  },
   data() {
     return {
       text: '',
       special_pattern: /[`~!@#$%^&*|"';:/?]/gi,
-      nickname: this.$store.state.auth.username,
-      desc: this.$store.state.auth.userInfo,
-      account: this.$store.state.auth.email,
+      nickname: null,
+      desc: null,
+      account: null,
       isNicknameDuplicated: false,
       isClickedDuplicatedButton: false,
       randomProfile: {
@@ -151,7 +156,7 @@ export default {
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
       this.randomProfile = this.imgList[randomNumber];
-      //랜덤 프로필 받아와서
+      // 프로필 받아와서
       this.image = this.imgList[randomNumber].name.substr(5, 12);
       //image에 넣어줌 -> image는 이미지 소스만 받는역할
       //randomProfile -> template에서 출력하기 위한 변수
@@ -159,7 +164,7 @@ export default {
     async handleEdit() {
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {
         if (this.isNicknameDuplicated == true) {
-          alert('이미 사용중인 닉네임입니다.');
+          this.text = '이미 사용중인 닉네임입니다.';
           return;
         }
         const updateData = {
@@ -186,6 +191,10 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
 .mypage-title {
   margin-top: 19.2rem;
   display: flex;
@@ -196,10 +205,6 @@ export default {
   font-size: 2.2rem;
   line-height: 26px;
   color: var(--black);
-}
-.container {
-  height: 70rem;
-  margin-bottom: 1.6rem;
 }
 .box--underline {
   margin-top: 1rem;
@@ -217,15 +222,6 @@ export default {
   padding: 0;
   width: 14.4rem;
   height: 14.4rem;
-}
-.text {
-  width: 4.7rem;
-  height: 1.4rem;
-  font-size: 1.2rem;
-  line-height: 1.4rem;
-  color: var(--orange);
-  position: absolute;
-  right: 0;
 }
 .randomBtn {
   position: absolute;
@@ -269,16 +265,18 @@ input:focus {
   display: flex;
 }
 .account-box {
-  display: flex;
+  position: relative;
   justify-content: space-between;
+  max-height: 3.2rem;
 }
 .account-text {
   display: flex;
 }
-.account button {
+.account-box button {
   background: none;
-  margin: 0 5% 0 0;
-  padding: 0;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 .account button img {
   width: 3.2rem;
@@ -297,11 +295,13 @@ input:focus {
   justify-content: flex-end;
   display: flex;
   align-items: center;
+  box-shadow: none;
   margin-bottom: 18.3rem;
 }
 button {
   margin-top: 10rem;
   border: none;
+  box-shadow: none;
 }
 .cancel {
   background-color: var(--gray03);
@@ -335,14 +335,14 @@ button {
   height: 2.8rem;
   text-align: center;
 }
-.check-nickname {
+.good {
   position: absolute;
   text-align: end;
   padding-top: 1rem;
   font-size: 1.4rem;
   color: var(--green);
 }
-.check-nickname-duplicated {
+.duplicated {
   position: absolute;
   text-align: end;
   padding-top: 1rem;
@@ -350,13 +350,19 @@ button {
   color: var(--orange-dark);
 }
 
-@media (max-width: 320px) {
+@media (max-width: 768px) {
   .container {
+    max-width: 34.3rem;
     display: flex;
     flex-direction: column;
+    margin: 0 1.6rem;
+    margin: 0 auto;
   }
   .signup-form {
     margin: 0 1.6rem;
+  }
+  .mypage-title {
+    margin-top: 9.5rem;
   }
   .mypage-title-text {
     font-size: 2rem;
@@ -364,12 +370,6 @@ button {
   .profile-img .randomBtn {
     position: absolute;
     left: 5rem;
-  }
-  .randomBtn {
-    margin-top: 5rem;
-  }
-  .text {
-    right: 2rem;
   }
   .profile-img .randomBtn img {
     width: 2.4rem;
@@ -388,26 +388,12 @@ button {
     margin-top: 1.6rem;
     font-size: 1.4rem;
   }
-  .account button {
-    right: 2rem;
-    bottom: 3.4rem;
-  }
-  .nickname-box p {
-    width: 8rem;
-    display: flex;
-  }
-  .account-box p {
-    width: 7rem;
-  }
   .nickname-box button {
     font-size: 1rem;
   }
   .nickname-box p,
   .account-box p {
-    font-size: 1.2rem;
-  }
-  .account button {
-    width: 5rem;
+    font-size: 1.4rem;
   }
   .account button img {
     width: 1.6rem;
@@ -433,11 +419,25 @@ button {
     margin: 5rem 4.4rem 0 4.4rem;
     font-size: 1.6rem;
   }
+  .randomBtn {
+    margin: 0;
+    padding: 0;
+  }
   .start-btn {
     margin: 0;
   }
   .box--underline {
     margin: 1rem 0;
+  }
+  .cancel {
+    width: 4.6em;
+    height: 3.8rem;
+    font-size: 1.4rem;
+  }
+  .edit-done {
+    width: 7.5rem;
+    height: 3.8rem;
+    font-size: 1.4rem;
   }
 }
 </style>

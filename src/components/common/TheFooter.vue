@@ -158,7 +158,7 @@ footer {
   /* width: 100%; */
 }
 
-@media (max-width: 320px) {
+@media (max-width: 768px) {
   footer {
     margin-top: 17rem;
   }

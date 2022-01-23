@@ -14,7 +14,7 @@
         </div>
         <div class="profile-info">
           <div class="nickname">
-            닉네임 :
+            <p>닉네임 :</p>
             <input
               type="text"
               v-model="nickname"
@@ -175,6 +175,10 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
 .check-nickname {
   position: absolute;
   text-align: end;
@@ -252,6 +256,9 @@ input:focus {
   line-height: 2.6rem;
   color: var(--black);
 }
+.nickname p {
+  font-size: 1.8rem;
+}
 .check {
   display: flex;
   justify-content: flex-end;
@@ -287,7 +294,7 @@ button {
   cursor: no-drop;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 768px) {
   .check-nickname {
     position: absolute;
     text-align: end;
@@ -297,7 +304,7 @@ button {
   .container {
     display: flex;
     flex-direction: column;
-    width: 32rem;
+    max-width: 34.3rem;
     margin: 0 auto;
     height: 67.8rem;
   }

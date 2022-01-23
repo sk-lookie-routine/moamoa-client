@@ -31,7 +31,7 @@ export default [
   {
     path: '/edit',
     name: 'edit',
-    component: () => import('@/components/views/mypage/MyPageEditProfile.vue'),
+    component: () => import('@/views/MyPageEditProfile.vue'),
   },
   {
     path: '/account-manage',

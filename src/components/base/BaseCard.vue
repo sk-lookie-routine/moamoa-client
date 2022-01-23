@@ -253,10 +253,8 @@ export default {
   .card__contents {
     gap: 1.3rem;
   }
-}
-@media (max-width: 320px) {
   .card__badge {
-    top: 3rem;
+    top: 2.3rem;
     left: 3rem;
   }
 }

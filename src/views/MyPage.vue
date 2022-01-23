@@ -1,6 +1,7 @@
 <template>
   <router-view :key="$route.fullPath"
     ><my-page-profile></my-page-profile>
+    <div class="divider"></div>
     <my-page-bottom-box></my-page-bottom-box
   ></router-view>
 </template>
@@ -13,4 +14,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.divider {
+  border-bottom: 1rem solid #eff0f3;
+}
+</style>

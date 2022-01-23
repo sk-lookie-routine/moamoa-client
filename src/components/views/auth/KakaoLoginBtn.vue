@@ -48,7 +48,7 @@ a {
 .kakao-login-btn img {
   padding-left: 2rem;
 }
-@media (max-width: 320px) {
+@media (max-width: 768px) {
   a {
     font-size: 1.2rem;
   }

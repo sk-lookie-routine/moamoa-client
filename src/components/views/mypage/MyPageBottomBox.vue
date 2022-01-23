@@ -2,7 +2,6 @@
   <div v-if="this.$store.state.auth.isLogin">
     <div class="default-container">
       <div class="bottom-box" v-if="showBottomBox">
-        <div class="divider"></div>
         <base-tab
           class="base--tab"
           firstTab="신청한 스터디"
@@ -18,18 +17,18 @@
           "
         >
           <ul class="my-studyList" v-if="textOfEachTab == '신청한'">
-            <li v-for="card in applicatedStudy" :key="card.card.postSeq">
+            <li v-for="post in applicatedStudy" :key="post.card.postSeq">
               <base-card
                 @click="showPostPage(card.card.postSeq)"
-                :id="card.card.postSeq"
-                :imgSrc="card.card.image"
-                :title="card.card.title"
-                :startDate="card.card.startDate"
-                :endDate="card.card.endDate"
-                :peopleRegisterCount="1"
-                :peopleTotalCount="card.card.memberCount"
-                :hashTags="card.card.hashTags"
-                :joinType="card.joinType"
+                :id="post.card.postSeq"
+                :imgSrc="post.card.image"
+                :title="post.card.title"
+                :startDate="post.card.startDate"
+                :endDate="post.card.endDate"
+                :peopleRegisterCount="post.registerCount"
+                :peopleTotalCount="post.card.memberCount"
+                :hashTags="post.card.hashTags"
+                :joinType="post.joinType"
               ></base-card>
             </li>
           </ul>
@@ -40,17 +39,17 @@
             ></base-pagination-button>
           </div>
           <ul class="my-studyList" v-if="textOfEachTab == '개설한'">
-            <li v-for="card in openStudy" :key="card.postSeq">
+            <li v-for="post in openStudy" :key="post.card.postSeq">
               <base-card
-                @click="showPostPage(card.postSeq)"
-                :id="card.postSeq"
-                :imgSrc="card.image"
-                :title="card.title"
-                :startDate="card.startDate"
-                :endDate="card.endDate"
-                :peopleRegisterCount="1"
-                :peopleTotalCount="card.memberCount"
-                :hashTags="card.hashTags"
+                @click="showPostPage(post.card.postSeq)"
+                :id="post.card.postSeq"
+                :imgSrc="post.card.image"
+                :title="post.card.title"
+                :startDate="post.card.startDate"
+                :endDate="post.card.endDate"
+                :peopleRegisterCount="post.registerCount"
+                :peopleTotalCount="post.card.memberCount"
+                :hashTags="post.card.hashTags"
               >
               </base-card>
             </li>
@@ -82,17 +81,15 @@
     </div>
     <the-footer></the-footer>
   </div>
-  <auth-login-page v-else></auth-login-page>
 </template>
 
 <script>
 import TheFooter from '@/components/common/TheFooter.vue';
-import AuthLoginPage from '@/views/AuthLoginPage.vue';
 import { fetchPostByUserSeq, fetchPostByPostSeq } from '@/api/post.js';
-import { fetchJoinByUserSeq } from '@/api/join.js';
+import { fetchJoinByUserSeq, fetchJoinByPostSeq } from '@/api/join.js';
 
 export default {
-  components: { TheFooter, AuthLoginPage },
+  components: { TheFooter },
   created() {
     this.userSeq = this.$route.params.userSeq;
     //라우팅 파라미터로 넘겨받은 userSeq 저장
@@ -132,10 +129,18 @@ export default {
           }
           let postSeq = res.data.content[this.index_app].postSeq;
           let applicatedPost = await fetchPostByPostSeq(postSeq);
+          let registerAccount = await fetchJoinByPostSeq(postSeq);
+          let count = 0;
+          for (let i = 0; i < registerAccount.data.content.length; i++) {
+            if (registerAccount.data.content[i].joinType == 'APPROVED') {
+              count++;
+            }
+          }
 
           this.applicatedStudy.push({
             card: applicatedPost.data.content[0],
             joinType: res.data.content[this.index_app].joinType,
+            registerCount: count,
           });
           //4개씩 나눠서 배열에 삽입
           if (this.index_app % 4 == 3 && this.index_app != 0) {
@@ -158,7 +163,18 @@ export default {
         if (this.index == size - 1) {
           this.showMoreBtn = false;
         }
-        this.openStudy.push(response.data.content[this.index]);
+        let postSeq = response.data.content[this.index].postSeq;
+        let registerAccount = await fetchJoinByPostSeq(postSeq);
+        let count = 0;
+        for (let i = 0; i < registerAccount.data.content.length; i++) {
+          if (registerAccount.data.content[i].joinType == 'APPROVED') {
+            count++;
+          }
+        }
+        this.openStudy.push({
+          card: response.data.content[this.index],
+          registerCount: count,
+        });
         if (this.index % 4 == 3 && this.index != 0) {
           this.index++;
           break;
@@ -180,7 +196,7 @@ export default {
 
 <style scoped>
 .default-container {
-  max-width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
 }
 .base--tab {
@@ -213,18 +229,14 @@ export default {
 .my-studyList li {
   margin-top: 3rem;
 }
-.divider {
-  border-bottom: 1rem solid #eff0f3;
-}
 .button-container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-@media (max-width: 320px) {
+@media (max-width: 768px) {
   .default-container {
-    padding-top: 9.5rem;
-    max-width: 100%;
+    max-width: 34.3rem;
   }
   .nothing-apply {
     margin: 0 auto;

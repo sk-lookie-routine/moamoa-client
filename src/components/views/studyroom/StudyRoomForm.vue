@@ -505,7 +505,7 @@ export default {
     margin-top: 3rem;
   }
 
-  ..link-input div:first-child {
+  .link-input div:first-child {
     margin-top: 0;
   }
 

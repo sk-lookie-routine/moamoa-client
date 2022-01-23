@@ -1,8 +1,11 @@
 <template>
-  <base-dialog :showDialog="showDialog" @closed="showDialog = false">
-    <template #header>{{ dialog.header }}</template>
-    <template #default>{{ dialog.content }}</template>
-    <template #actions v-if="dialog.btnType == 'close'">
+  <base-dialog
+    :showDialog="showDialog"
+    @closed="showDialog = false"
+    :title="dialog.title"
+    :content="dialog.content"
+  >
+    <template v-if="dialog.btnType == 'close'">
       <base-dialog-button size="small" color="gray" @click="showDialog = false"
         >취소</base-dialog-button
       >
@@ -10,7 +13,7 @@
         종료
       </base-dialog-button>
     </template>
-    <template #actions v-else-if="dialog.btnType == 'resign'">
+    <template v-else-if="dialog.btnType == 'resign'">
       <base-dialog-button size="small" color="gray" @click="showDialog = false"
         >취소</base-dialog-button
       >
@@ -18,17 +21,7 @@
         >탈퇴</base-dialog-button
       >
     </template>
-    <template #actions v-else-if="'closeConfirm'">
-      <base-dialog-button
-        @click="
-          this.$router.push({
-            name: 'rooms',
-          })
-        "
-        >확인</base-dialog-button
-      >
-    </template>
-    <template #actions v-else>
+    <template v-else>
       <base-dialog-button @click="showDialog = false">확인</base-dialog-button>
     </template>
   </base-dialog>
@@ -74,17 +67,13 @@
           <h2>스터디 목표 & 소개</h2>
           <div class="box--gray-background">
             <p class="p-text--red">{{ room.goal }}</p>
-            <p>
-              {{ room.info }}
-            </p>
+            <p v-html="room.info.replaceAll('\n', '<br />')"></p>
           </div>
         </div>
         <div class="room-content">
           <h2>스터디 진행 방식</h2>
           <div class="box--gray-background">
-            <p>
-              {{ room.how }}
-            </p>
+            <p v-html="room.how.replaceAll('\n', '<br />')"></p>
           </div>
         </div>
         <div class="room-content">
@@ -147,16 +136,18 @@
           :showMoreMenu="canShowMoreMenu"
           @profileClicked="onClickUserProfile(user.userSeq)"
         ></study-mate>
-        <li v-for="mate in studyMateList" :key="mate.mateSeq">
-          <study-mate
-            :id="mate.mateSeq"
-            :imgSrc="mate.image"
-            :nickname="mate.username"
-            :showMoreMenu="canShowMoreMenu"
-            @profileClicked="onClickUserProfile(mate.userSeq)"
-            @resign="onClickedResignMate(mate.mateSeq)"
-          ></study-mate>
-        </li>
+        <ul v-if="studyMateList != []">
+          <li v-for="mate in studyMateList" :key="mate.mateSeq">
+            <study-mate
+              :id="mate.mateSeq"
+              :imgSrc="mate.image"
+              :nickname="mate.username"
+              :showMoreMenu="canShowMoreMenu"
+              @profileClicked="onClickUserProfile(mate.userSeq)"
+              @resign="onClickedResignMate(mate.mateSeq)"
+            ></study-mate>
+          </li>
+        </ul>
       </ul>
     </div>
     <the-footer></the-footer>
@@ -183,7 +174,7 @@ export default {
       studyMateList: [],
       showDialog: false,
       dialog: {
-        header: null,
+        title: null,
         content: '',
         btnType: 'default',
       },
@@ -219,9 +210,9 @@ export default {
     },
     onClickedResignMate(mateSeq) {
       this.resignMateSeq = mateSeq;
-      this.dialog.header = '잠깐!!';
+      this.dialog.title = '잠깐!!';
       this.dialog.content =
-        '정당한 탈퇴 사유가 있으신가요? 스터디 메이트가 합의한 경우에만 탈퇴가 가능합니다.';
+        '정당한 탈퇴 사유가 있으신가요?<br/>스터디 메이트가 합의한 경우에만 탈퇴가 가능합니다.';
       this.dialog.btnType = 'resign';
       this.showDialog = true;
     },
@@ -232,16 +223,16 @@ export default {
       };
       await updateMate(mate);
       this.resignMateSeq = null;
-      await this.fetchMateData();
-      this.dialog.header = '';
-      this.dialog.content = '해당 스터디메이트가 탈퇴되었습니다.';
+      this.dialog.title = '';
+      this.dialog.content = '해당 스터디메이트가<br/>탈퇴되었습니다.';
       this.dialog.btnType = 'default';
       this.showDialog = true;
+      await this.fetchMateData();
     },
     clickedCloseRoom() {
-      this.dialog.header = '잠깐!!';
+      this.dialog.title = '잠깐!!';
       this.dialog.content =
-        '한 번 종료한 스터디는 재시작 할 수 없습니다. 스터디를 종료할까요?';
+        '한 번 종료한 스터디는 재시작 할 수 없습니다.<br/>스터디를 종료할까요?';
       this.dialog.btnType = 'close';
       this.showDialog = true;
     },
@@ -251,17 +242,18 @@ export default {
         studyType: STUDY_TYPE.COMPLETE,
       };
       await updateRoom(room);
-      this.dialog.header = '';
+      this.dialog.title = '';
       this.dialog.content =
-        '스터디가 종료되었습니다. [스터디룸-완료된 스터디]에서 확인할 수 있어요.';
-      this.dialog.btnType = 'closeConfirm';
+        '스터디가 종료되었습니다.<br/>[스터디룸-완료된 스터디]에서 확인할 수 있어요.';
+      this.dialog.btnType = 'default';
       this.showDialog = true;
+      await this.fetchData();
     },
     editRoom() {
       this.$router.push({
         name: 'room-write',
-        params: {
-          roomId: this.studySeq,
+        query: {
+          studySeq: this.studySeq,
         },
       });
     },
@@ -354,6 +346,7 @@ export default {
   font-size: 1.2rem;
   text-align: center;
   padding: 0.4rem 0;
+  cursor: pointer;
 }
 
 .menu-item--gray {
@@ -403,8 +396,7 @@ a {
 
 .tags-container {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
 }
 
@@ -419,7 +411,7 @@ a {
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.4rem 1rem;
 }
 
 hr {
@@ -436,6 +428,7 @@ hr {
 
 @media (max-width: 768px) {
   .room-header {
+    margin-top: 9.5rem;
     margin-bottom: 7.7rem;
   }
 
@@ -464,13 +457,11 @@ hr {
   }
 
   .tags-container {
-    flex-wrap: nowrap;
-    align-items: flex-start;
     gap: 1rem;
   }
 
   .tags {
-    gap: 0.6rem;
+    gap: 1rem 0.6rem;
   }
 
   .tag-icon {

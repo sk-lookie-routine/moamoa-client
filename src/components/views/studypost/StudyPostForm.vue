@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="submitForm">
-    <div class="input-container box--underline bottom-padding">
+    <div class="title-input input-container box--underline bottom-padding">
       <input
         v-model="post.title"
         type="text"
@@ -25,8 +25,8 @@
         @update:modelValue="formatDeadlineDate"
       ></date-picker>
     </div>
-    <div class="error-text" :class="{ invisible: post.deadLine }">
-      필수 입력 항목입니다.
+    <div class="error-text" :class="{ invisible: isDeadLineValidate }">
+      {{ deadLineValidationText }}
     </div>
     <div class="input-container box--underline bottom-padding">
       <label for="period">스터디 기간 :</label>
@@ -116,22 +116,24 @@
       <label for="tag">태그</label>
       <div class="tags">
         <span class="tag-icon">#</span>
-        <base-tag
-          v-for="(tag, index) in post.hashTags"
-          :key="index"
-          :canRemove="true"
-          @delete="removeTag(index)"
-          >{{ tag }}
-        </base-tag>
-        <input
-          v-if="!isTagLengthLongEnough"
-          type="text"
-          name="tag"
-          placeholder="태그를 입력하세요."
-          v-model="tagInput"
-          @keydown.enter.prevent="addTag"
-          maxlength="15"
-        />
+        <div class="tag-input-container">
+          <base-tag
+            v-for="(tag, index) in post.hashTags"
+            :key="index"
+            :canRemove="true"
+            @delete="removeTag(index)"
+            >{{ tag }}
+          </base-tag>
+          <input
+            v-if="!isTagLengthLongEnough"
+            type="text"
+            name="tag"
+            placeholder="태그를 입력하세요."
+            v-model="tagInput"
+            @keydown.enter.prevent="addTag"
+            maxlength="15"
+          />
+        </div>
       </div>
     </div>
     <div class="btn-container">
@@ -168,6 +170,7 @@ export default {
         wordCountOver15: '최대 15자 가능합니다.',
         wordCountOver30: '30자 이내로 입력해주세요.',
         wordCountOver300: '300자 이내로 입력해주세요.',
+        deadlineAfterStudy: '마감 일자는 스터디 시작 일자 전이어야 합니다.',
       },
       rangeDate: null,
       memberCountOptions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -179,7 +182,7 @@ export default {
     isSubmitBtnDisabled() {
       if (
         this.isTitleValidate &&
-        this.post.deadLine &&
+        this.isDeadLineValidate &&
         this.post.startDate &&
         this.post.endDate &&
         this.isGoalValidate &&
@@ -204,6 +207,30 @@ export default {
         return this.errorMessages.noValue;
       } else if (this.post.title.length > 15) {
         return this.errorMessages.wordCountOver15;
+      }
+      return this.errorMessages.default;
+    },
+    isDeadLineValidate() {
+      if (!this.post.deadLine) {
+        return false;
+      } else {
+        if (this.post.startDate) {
+          if (new Date(this.post.startDate) <= new Date(this.post.deadLine)) {
+            return false;
+          }
+        }
+      }
+      return true;
+    },
+    deadLineValidationText() {
+      if (!this.post.deadLine) {
+        return this.errorMessages.noValue;
+      } else {
+        if (this.post.startDate) {
+          if (new Date(this.post.startDate) <= new Date(this.post.deadLine)) {
+            return this.errorMessages.deadlineAfterStudy;
+          }
+        }
       }
       return this.errorMessages.default;
     },
@@ -298,7 +325,7 @@ export default {
     },
     async submitForm() {
       try {
-        if (this.$route.params.postId == 'new') {
+        if (!this.$route.query.postSeq) {
           await createPost(this.post);
         } else {
           await updatePost(this.post);
@@ -351,7 +378,7 @@ export default {
       this.post.comment = e.target.value;
     },
     async fetchData() {
-      const postResponse = await fetchPostByPostSeq(this.$route.params.postId);
+      const postResponse = await fetchPostByPostSeq(this.$route.query.postSeq);
       this.post = postResponse.data.content[0];
       this.rangeDate = [
         new Date(this.post.startDate),
@@ -360,7 +387,7 @@ export default {
     },
   },
   async created() {
-    if (this.$route.params.postId != 'new') {
+    if (this.$route.query.postSeq) {
       await this.fetchData();
     }
   },
@@ -377,7 +404,7 @@ export default {
   margin-right: 0.8rem;
 }
 
-.input-container:first-child input {
+.title-input input {
   font-size: 2.2rem;
   font-weight: bold;
 }
@@ -452,11 +479,16 @@ select[name='count'] option {
 
 .tags {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   padding: 1.1rem 1.6rem;
   border: 0.1rem solid var(--gray02);
   border-radius: 1rem;
+  gap: 1rem;
+}
+
+.tag-input-container {
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
@@ -474,5 +506,64 @@ select[name='count'] option {
 
 .invisible {
   visibility: hidden;
+}
+
+@media (max-width: 768px) {
+  .input-container label {
+    margin-right: 0;
+  }
+
+  .title-input input {
+    font-size: 2rem;
+  }
+
+  select[name='count'] {
+    font-size: 1.2rem;
+  }
+
+  select[name='count'] option {
+    font-size: 1.2rem;
+  }
+
+  .label-and-counting {
+    gap: 0.6rem;
+  }
+
+  .counting {
+    font-size: 1.2rem;
+  }
+
+  .input-container {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.6rem;
+  }
+
+  .input-container:nth-child(3) {
+    margin-top: 2.4rem;
+  }
+
+  .select-container {
+    margin-bottom: 3.1rem;
+  }
+
+  .btn-container {
+    margin: 4rem 0 18rem 0;
+  }
+
+  .tags {
+    gap: 1rem 0.6rem;
+  }
+
+  .tag-icon {
+    font-size: 2.2rem;
+    margin-right: 1rem;
+  }
+
+  .tags input {
+    font-size: 1.4rem;
+  }
 }
 </style>

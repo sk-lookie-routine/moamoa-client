@@ -146,6 +146,7 @@ export default {
   font-size: 1.2rem;
   text-align: center;
   padding: 0.4rem 0;
+  cursor: pointer;
 }
 
 .menu-item--gray {

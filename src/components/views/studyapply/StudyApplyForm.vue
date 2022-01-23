@@ -1,17 +1,20 @@
 <template>
   <div>
-    <base-dialog :showDialog="showDialog" @closed="showDialog = false">
-      <template #header> {{ dialog.header }} </template>
-      <template #default> {{ dialog.content }}</template>
-      <template #actions v-if="!agreeWithCautions">
+    <base-dialog
+      :showDialog="showDialog"
+      @closed="showDialog = false"
+      :title="dialog.title"
+      :content="dialog.content"
+    >
+      <template v-if="!agreeWithCautions">
         <base-dialog-button @click="showDialog = false">
           확인
         </base-dialog-button>
       </template>
-      <template #actions v-else-if="finishApply">
+      <template v-else-if="finishApply">
         <base-dialog-button @click="showPage">확인</base-dialog-button>
       </template>
-      <template #actions v-else>
+      <template v-else>
         <base-dialog-button
           size="small"
           color="gray"
@@ -81,7 +84,7 @@ export default {
       agreeWithCautions: false,
       finishApply: false,
       dialog: {
-        header: null,
+        title: null,
         content: '',
       },
     };
@@ -98,7 +101,7 @@ export default {
       this.$router.push({
         name: 'post',
         params: {
-          postId: this.$route.params.postId,
+          postId: this.$route.query.postSeq,
         },
       });
     },
@@ -121,29 +124,28 @@ export default {
       this.agreeWithCautions = value;
     },
     handleBtnCllcked() {
-      console.log(this.agreeWithCautions);
       if (!this.agreeWithCautions) {
-        this.dialog.header = '';
+        this.dialog.title = '';
         this.dialog.content = '신청 주의사항에 동의해 주세요.';
         this.showDialog = true;
       } else {
-        this.dialog.header = '잠깐!!';
-        this.dialog.content = `스터디 모집 마감 이후에는 취소할 수 없어요.신청하시겠어요?`;
+        this.dialog.title = '잠깐!!';
+        this.dialog.content = `스터디 모집 마감 이후에는 취소할 수 없어요.<br/>신청하시겠어요?`;
         this.showDialog = true;
       }
     },
     async submitForm() {
       const join = {
-        postSeq: this.$route.params.postId,
+        postSeq: this.$route.query.postSeq,
         userSeq: this.$store.state.auth.userSeq,
         comment: this.content,
         joinType: JOIN_TYPE.WAIT,
       };
       await createJoin(join);
       this.finishApply = true;
-      this.dialog.header = '';
+      this.dialog.title = '';
       this.dialog.content =
-        '신청 완료되었습니다. 승인/거부는 [마이페이지]에서 확인할 수 있어요.';
+        '신청 완료되었습니다.<br/>승인/거부는 [마이페이지]에서 확인할 수 있어요.';
       this.showDialog = true;
     },
   },
@@ -179,5 +181,20 @@ textarea {
 
 .invisible {
   visibility: hidden;
+}
+
+@media (max-width: 768px) {
+  header {
+    margin-bottom: 4.4rem;
+  }
+
+  .error-text {
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .cautions-container {
+    margin-bottom: 5.6rem;
+  }
 }
 </style>

@@ -15,9 +15,6 @@ export default {
     movePage() {
       this.$router.push({
         name: 'post-write',
-        params: {
-          postId: 'new',
-        },
       });
     },
   },

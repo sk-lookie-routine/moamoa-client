@@ -34,10 +34,10 @@
             </li>
           </ul>
           <div class="button-container">
-            <pagination-button
+            <base-pagination-button
               v-if="showMoreBtn_app && textOfEachTab == '신청한'"
               @showMore="applicatedStudyList()"
-            ></pagination-button>
+            ></base-pagination-button>
           </div>
           <ul class="my-studyList" v-if="textOfEachTab == '개설한'">
             <li v-for="card in openStudy" :key="card.postSeq">
@@ -56,10 +56,10 @@
             </li>
           </ul>
           <div class="button-container">
-            <pagination-button
+            <base-pagination-button
               v-if="showMoreBtn && textOfEachTab == '개설한'"
               @showMore="openStudyList()"
-            ></pagination-button>
+            ></base-pagination-button>
           </div>
         </div>
         <div class="nothing-apply" v-else>
@@ -90,10 +90,9 @@ import TheFooter from '@/components/common/TheFooter.vue';
 import AuthLoginPage from '@/views/AuthLoginPage.vue';
 import { fetchPostByUserSeq, fetchPostByPostSeq } from '@/api/post.js';
 import { fetchJoinByUserSeq } from '@/api/join.js';
-import PaginationButton from '@/components/views/studypostlist/PaginationButton.vue';
 
 export default {
-  components: { TheFooter, AuthLoginPage, PaginationButton },
+  components: { TheFooter, AuthLoginPage },
   created() {
     this.userSeq = this.$route.params.userSeq;
     //라우팅 파라미터로 넘겨받은 userSeq 저장

@@ -29,10 +29,10 @@
       </li>
     </ul>
     <div class="button-container">
-      <pagination-button
+      <base-pagination-button
         v-if="showMoreBtn && postList && postList.length > 0"
         @showMore="fetchPostList(selectedType)"
-      ></pagination-button>
+      ></base-pagination-button>
     </div>
     <no-result v-if="showNoResult">검색 결과가 없어요</no-result>
     <create-study-jumbotron v-if="!showNoResult"></create-study-jumbotron>

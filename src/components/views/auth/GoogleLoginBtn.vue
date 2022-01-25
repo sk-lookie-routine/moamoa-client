@@ -34,8 +34,8 @@ export default {
       this.$store.state.auth.userId = googleUser.getBasicProfile().getId();
 
       const userResponse = await getUser(this.$store.state.auth.userId);
-      console.log('res', userResponse);
-      if (userResponse.data == undefined) {
+      console.log('res', userResponse.data == '');
+      if (userResponse.data == '') {
         this.$store.commit('login');
         // NO CONTENT
         this.$router.push({ name: 'signup-form' });

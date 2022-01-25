@@ -167,6 +167,7 @@ footer {
   }
   .footer-container {
     width: 100%;
+    max-width: 34.3rem;
   }
 
   .footer-container,
@@ -184,14 +185,14 @@ footer {
   }
 
   .footer__explain {
-    font-size: 1.15rem;
+    font-size: 1.4rem;
     width: fit-content;
     height: 5.1rem;
     line-height: 2.4rem;
   }
   .footer__email,
   .footer__nav {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
   .footer__nav {
     margin: 0;
@@ -200,7 +201,7 @@ footer {
     margin: 7rem 0rem 1.5rem 0rem;
   }
   .footer__rights {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 }
 </style>

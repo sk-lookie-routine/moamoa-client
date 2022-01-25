@@ -20,9 +20,13 @@ export default {
         });
         return;
       }
+
       //글 작성자가 아닌 경우
       const res = await fetchPostByPostSeq(this.$route.query.postSeq);
-      if (res.data.content[0].userSeq != this.$store.state.auth.userSeq) {
+      if (
+        this.$route.query.postSeq != undefined &&
+        res.data.content[0].userSeq != this.$store.state.auth.userSeq
+      ) {
         this.$router.go(-1);
         return;
       }

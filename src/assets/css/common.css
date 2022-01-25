@@ -48,6 +48,7 @@ h3 {
 p {
   font-size: 1.6rem;
   line-height: 162.5%;
+  word-break: break-all;
 }
 
 label {

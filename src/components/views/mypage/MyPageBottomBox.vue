@@ -19,7 +19,7 @@
           <ul class="my-studyList" v-if="textOfEachTab == '신청한'">
             <li v-for="post in applicatedStudy" :key="post.card.postSeq">
               <base-card
-                @click="showPostPage(card.card.postSeq)"
+                @click="showPostPage(post.card.postSeq)"
                 :id="post.card.postSeq"
                 :imgSrc="post.card.image"
                 :title="post.card.title"
@@ -35,7 +35,7 @@
           <div class="button-container">
             <base-pagination-button
               v-if="showMoreBtn_app && textOfEachTab == '신청한'"
-              @showMore="applicatedStudyList()"
+              @showMore="applicatedStudyList"
             ></base-pagination-button>
           </div>
           <ul class="my-studyList" v-if="textOfEachTab == '개설한'">
@@ -57,7 +57,7 @@
           <div class="button-container">
             <base-pagination-button
               v-if="showMoreBtn && textOfEachTab == '개설한'"
-              @showMore="openStudyList()"
+              @showMore="openStudyList"
             ></base-pagination-button>
           </div>
         </div>
@@ -79,8 +79,8 @@
         </div>
       </div>
     </div>
-    <the-footer></the-footer>
   </div>
+  <the-footer></the-footer>
 </template>
 
 <script>
@@ -119,7 +119,6 @@ export default {
       this.textOfEachTab = '신청한';
       // api/post에 userSeq로 접근
       const res = await fetchJoinByUserSeq(this.$store.state.auth.userSeq);
-      console.log(res.data.content);
       if (res.data != '') {
         const size = res.data.totalElements;
         while (this.index_app < size) {
@@ -131,10 +130,16 @@ export default {
           let applicatedPost = await fetchPostByPostSeq(postSeq);
           let registerAccount = await fetchJoinByPostSeq(postSeq);
           let count = 0;
-          for (let i = 0; i < registerAccount.data.content.length; i++) {
-            if (registerAccount.data.content[i].joinType == 'APPROVED') {
-              count++;
+          if (registerAccount.data != '') {
+            for (let i = 0; i < registerAccount.data.content.length; i++) {
+              if (registerAccount.data.content[i].joinType == 'APPROVED') {
+                count++;
+              }
             }
+          } else {
+            //신청한 스터디가 없는경우
+            this.applicatedStudy = null;
+            return;
           }
 
           this.applicatedStudy.push({
@@ -159,27 +164,36 @@ export default {
       // this.openStudy = response.data.content;
 
       const size = response.data.totalElements;
-      while (this.index < size) {
-        if (this.index == size - 1) {
-          this.showMoreBtn = false;
-        }
-        let postSeq = response.data.content[this.index].postSeq;
-        let registerAccount = await fetchJoinByPostSeq(postSeq);
-        let count = 0;
-        for (let i = 0; i < registerAccount.data.content.length; i++) {
-          if (registerAccount.data.content[i].joinType == 'APPROVED') {
-            count++;
+      if (response.data != '') {
+        while (this.index < size) {
+          if (this.index == size - 1) {
+            this.showMoreBtn = false;
           }
-        }
-        this.openStudy.push({
-          card: response.data.content[this.index],
-          registerCount: count,
-        });
-        if (this.index % 4 == 3 && this.index != 0) {
+          let postSeq = response.data.content[this.index].postSeq;
+          let registerAccount = await fetchJoinByPostSeq(postSeq);
+          let count = 0;
+          if (registerAccount.data != '') {
+            for (let i = 0; i < registerAccount.data.content.length; i++) {
+              if (registerAccount.data.content[i].joinType == 'APPROVED') {
+                count++;
+              }
+            }
+          } else {
+            this.openStudy = null;
+            return;
+          }
+          this.openStudy.push({
+            card: response.data.content[this.index],
+            registerCount: count,
+          });
+          if (this.index % 4 == 3 && this.index != 0) {
+            this.index++;
+            break;
+          }
           this.index++;
-          break;
         }
-        this.index++;
+      } else {
+        this.openStudy = null;
       }
     },
     showPostPage(postId) {

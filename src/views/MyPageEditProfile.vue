@@ -16,7 +16,7 @@
         <input
           type="text"
           v-model="nickname"
-          placeholder="{{nickname}}"
+          placeholder="닉네임을 입력해주세요."
           maxlength="8"
           class="text_ph"
           minlength="2"
@@ -28,24 +28,10 @@
       <div class="box--underline"></div>
     </div>
     <div class="check">
-      <div
-        class="duplicated"
-        v-if="isNicknameDuplicated && nickname.length > 0"
-      >
-        {{ text }}
+      <div class="check_bad" v-if="!checkValid">
+        {{ message }}
       </div>
-      <div class="good" v-if="!isNicknameDuplicated && nickname.length > 0">
-        {{ text }}
-      </div>
-      <div class="check-nickname-duplicated" v-if="nickname == ''">
-        최소 2자 이상 입력하세요.
-      </div>
-      <div
-        class="good"
-        v-if="nickname.search(/\s/) != -1 || special_pattern.test(nickname)"
-      >
-        공백이나 특수문자 입력은 불가능합니다.
-      </div>
+      <div class="check_good" v-else>{{ message }}</div>
     </div>
     <div class="account">
       <div class="account-box">
@@ -65,7 +51,7 @@
       <input
         type="text"
         v-model="desc"
-        placeholder="{{desc}}"
+        placeholder="한줄 소개를 입력해주세요."
         class="desc_ph"
         maxlength="30"
       />
@@ -97,13 +83,14 @@ export default {
   },
   data() {
     return {
-      text: '',
+      message: '',
+      checkValid: false,
       special_pattern: /[`~!@#$%^&*|"';:/?]/gi,
       nickname: null,
       desc: null,
       account: null,
       isNicknameDuplicated: false,
-      isClickedDuplicatedButton: false,
+      isClickedButton: false,
       randomProfile: {
         name: require(`@/assets/img/profile/${this.$store.state.auth.image}.svg`),
       },
@@ -140,16 +127,20 @@ export default {
       });
     },
     checkIdDuplicate() {
-      this.isClickedDuplicatedButton = true;
-      //중복 확인 버튼 눌렀다고 체크
+      this.isClickedButton = true;
       searchUserByName(this.nickname).then(response => {
-        console.log(response);
         if (typeof response.data.content === 'undefined') {
           this.isNicknameDuplicated = false;
-          this.text = '사용 가능한 닉네임입니다.';
+          this.message = '사용 가능한 닉네임입니다.';
+          this.checkValid = true;
         } else {
-          this.isNicknameDuplicated = true;
-          this.text = '이미 사용중인 닉네임입니다.';
+          if (
+            response.data.content[0].username != this.$store.state.auth.username
+          ) {
+            this.isNicknameDuplicated = true;
+            this.message = '이미 사용중인 닉네임입니다.';
+            this.checkValid = false;
+          }
         }
       });
     },
@@ -163,10 +154,15 @@ export default {
     },
     async handleEdit() {
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {
-        if (this.isNicknameDuplicated == true) {
-          this.text = '이미 사용중인 닉네임입니다.';
+        if (
+          this.nickname != this.$store.state.auth.username &&
+          !this.isClickedButton
+        ) {
+          this.checkValid = false;
+          this.message = '닉네임 변경 시 중복확인 버튼을 눌러주세요.';
           return;
         }
+        //변경된 데이터
         const updateData = {
           username: this.nickname,
           userInfo: this.desc,
@@ -180,7 +176,8 @@ export default {
         this.$store.commit('setUser', updateData);
         this.showUserPage(this.$store.state.auth.userSeq);
       } else {
-        alert('모든 빈칸을 채워주세요.');
+        this.checkValid = false;
+        this.message = '모든 빈칸을 채워주세요.';
       }
     },
     onClickAccountManage() {
@@ -335,14 +332,14 @@ button {
   height: 2.8rem;
   text-align: center;
 }
-.good {
+.check_good {
   position: absolute;
   text-align: end;
   padding-top: 1rem;
   font-size: 1.4rem;
   color: var(--green);
 }
-.duplicated {
+.check_bad {
   position: absolute;
   text-align: end;
   padding-top: 1rem;

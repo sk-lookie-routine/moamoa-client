@@ -418,7 +418,7 @@ export default {
 .btn-container button {
   padding: 0.9rem 2.7rem;
   border-radius: 1rem;
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 1.6rem;
   color: white;
@@ -452,7 +452,7 @@ export default {
 }
 
 .tag-icon {
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 2.4rem;
   margin-right: 0.3rem;

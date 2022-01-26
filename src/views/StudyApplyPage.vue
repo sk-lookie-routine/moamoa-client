@@ -22,7 +22,6 @@ export default {
         this.$route.query.postSeq,
         this.$route.query.userSeq,
       );
-      console.log(res);
       if (!(res.status == 204 || res.data.content == undefined)) {
         this.$router.go(-1);
         return;

@@ -34,7 +34,6 @@ export default {
       this.$store.state.auth.userId = googleUser.getBasicProfile().getId();
 
       const userResponse = await getUser(this.$store.state.auth.userId);
-      console.log('res', userResponse);
       if (userResponse.data == undefined) {
         this.$store.commit('login');
         // NO CONTENT
@@ -43,20 +42,18 @@ export default {
         //이미 가입한 회원인 경우
         this.$store.commit('login');
         this.$store.commit('setUser', userResponse.data.content[0]);
-        console.log('스토어 상태', this.$store.state.auth);
-        // this.$store.state.auth.userSeq = userResponse.data.content[0].userseq;
         this.$router.push({
           name: 'home',
         });
       } else if (userResponse.data.content[0].userType == 'REJECT') {
         //탈퇴한 적이 있는 회원인 경우
         alert('한번 탈퇴한 회원은 다시 가입하실 수 없습니다.');
+        const authInst = window.gapi.auth2.getAuthInstance();
+        authInst.signOut();
         this.$store.commit('initUser');
       }
     },
-    onFailure(error) {
-      console.log(error);
-    },
+    onFailure() {},
   },
 };
 </script>

@@ -61,7 +61,7 @@ export default {
   outline: none;
   border: 0.15rem solid var(--gray02);
   font-size: 1.4rem;
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   color: var(--black);
 }

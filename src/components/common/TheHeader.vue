@@ -89,23 +89,13 @@ export default {
     signout() {
       if (this.$store.state.auth.providerType == 'GOOGLE') {
         const authInst = window.gapi.auth2.getAuthInstance();
-        authInst.signOut().then(() => {
-          alert('로그아웃 되었습니다.');
-        });
+        authInst.signOut();
       } else if (this.$store.state.auth.providerType == 'KAKAO') {
         window.Kakao.API.request({
           url: '/v1/user/unlink',
-          success: function (response) {
-            console.log(response);
-            alert('로그아웃 되었습니다.');
-          },
-          fail: function (error) {
-            console.log(error);
-          },
         });
       }
       this.$store.commit('initUser');
-      console.log('state초기화', this.$store.state.auth);
       this.$store.commit('logout');
     },
   },

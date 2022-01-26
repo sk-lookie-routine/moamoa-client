@@ -35,7 +35,7 @@ export default {
 
 <style scoped>
 button {
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 1.6rem;
   color: white;

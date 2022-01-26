@@ -143,9 +143,7 @@ export default {
       };
 
       const res = await postUserData(myUser);
-      console.log('post return data', res);
       this.$store.commit('setUser', res.data);
-      console.log('store data', this.$store.state.auth);
     },
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);

@@ -114,7 +114,7 @@ export default {
 .btns-container button {
   font-weight: bold;
   font-size: 1.6rem;
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   background: transparent;
 }
 

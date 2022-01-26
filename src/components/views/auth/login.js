@@ -6,12 +6,10 @@ const kakaoHeader = {
     'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
 };
 const getKakaoToken = async (code) => {
-    console.log('loginWithKakao');
     try {
         const data = {
             grant_type: 'authorization_code',
             client_id: 'a75b5aef214abdc69ec5214ce6706d98',
-            // redirect_uri: 'http://localhost:3000',
             redirect_uri: 'https://moa-moa.kr',
             code: code,
         };
@@ -19,7 +17,7 @@ const getKakaoToken = async (code) => {
             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
             .join('&');
         const result = await axios.post('https://kauth.kakao.com/oauth/token', queryString, { headers: kakaoHeader });
-        console.log('카카오 토큰', result);
+
         return result;
     } catch (e) {
         return e;
@@ -33,11 +31,9 @@ const getKakaoUserInfo = async () => {
         success: function (response) {
             data = response;
         },
-        fail: function (error) {
-            console.log(error);
+        fail: function () {
         },
     });
-    console.log('카카오 계정 정보', data);
     return data;
 }
 

@@ -119,7 +119,7 @@ h1 {
   border-radius: 3.2rem;
   padding: 1.6rem 2.1rem 1.6rem 1.7rem;
   margin-left: -1rem;
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 1.8rem;
   color: var(--orange-dark);

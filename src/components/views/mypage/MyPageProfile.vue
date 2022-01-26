@@ -52,23 +52,19 @@ export default {
     async fetchData() {
       const userResponse = await getUserByUserSeq(this.userSeq);
       this.user = userResponse.data.content[0];
-      // console.log(this.user);
-      //유저 정보 저장
+      //유저 정보
 
       const studyResponse = await fetchPostByUserSeq(this.userSeq);
-      // console.log('study', studyResponse);
       if (studyResponse.data == '') {
         //data 없으면 0개
         this.participatingStudy = 0;
         this.completedStudy = 0;
       } else {
         const contents = studyResponse.data.content;
-        // console.log('contents', contents);
         for (let i = 0; i < contents.length; i++) {
           if (contents[i].postType == 'READY') {
             this.participatingStudy += 1;
           } else if (contents[i].postType == 'COMPLETE') {
-            console.log('완료된 스터디', contents[i]);
             this.completedStudy += 1;
           }
         }
@@ -107,7 +103,7 @@ export default {
   color: var(--black);
 }
 .mypage-edit {
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 16px;
   line-height: 23px;

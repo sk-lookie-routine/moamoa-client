@@ -31,14 +31,13 @@ export default {
 
 <style scoped>
 * {
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 .auth-form {
   max-width: 120rem;
   margin: 0 auto;
 }
 .auth-text {
-  font-family: noto-sans-cjk-kr, sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 1.8rem;
@@ -61,12 +60,10 @@ export default {
 }
 
 .auth-isMember {
-  font-family: noto-sans-cjk-kr;
   font-weight: 300;
   font-style: normal;
   display: flex;
   margin: 0 auto;
-  /* margin: 1.4rem 56.9rem 0 56.9rem; */
   align-items: center;
   font-size: 1.2rem;
   line-height: 1.7rem;
@@ -90,8 +87,6 @@ export default {
   margin: 0 auto;
   padding-top: 6.9rem;
   padding-bottom: 19.4rem;
-  /* margin: 7.6rem 48.1rem 19rem 48.1rem; */
-  font-family: noto-sans-cjk-kr, sans-serif;
   font-weight: 300;
   font-style: normal;
   font-size: 1.2rem;
@@ -122,7 +117,6 @@ export default {
   }
   .auth-etc-mobile p {
     font-size: 1.2rem;
-    font-family: noto-sans-cjk-kr;
     margin: 0 auto;
     text-align: center;
     color: var(--gray02);

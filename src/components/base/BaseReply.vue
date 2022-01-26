@@ -208,7 +208,7 @@ export default {
 }
 
 .comment-modify__btn {
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   padding: 0.8rem 2.7rem;
   font-weight: bold;
   font-size: 1.6rem;

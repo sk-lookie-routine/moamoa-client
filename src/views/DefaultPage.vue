@@ -40,14 +40,12 @@ export default {
       this.setKakaoToken();
     } else {
       this.$store.commit('logout');
-      console.log(this.$store.state.auth.isLogin);
     }
   },
   methods: {
     async setKakaoToken() {
       const { data } = await getKakaoToken(this.$route.query.code);
       if (data.error) {
-        alert('카카오톡 로그인 오류입니다.');
         this.$router.replace('/login');
         return;
       }
@@ -62,8 +60,8 @@ export default {
       this.$store.state.auth.email = res.kakao_account.email;
       this.$store.state.auth.userId = res.id;
       //kakao 계정 이메일,아이디 우선 store에 넣어뒀음
+
       const userResponse = await getUser(this.$store.state.auth.userId);
-      console.log('res', userResponse);
       if (userResponse.data == '') {
         this.$store.commit('login');
         // NO CONTENT
@@ -72,14 +70,15 @@ export default {
         //이미 가입한 회원인 경우
         this.$store.commit('login');
         this.$store.commit('setUser', userResponse.data.content[0]);
-        console.log('스토어 상태', this.$store.state.auth);
-        // this.$store.state.auth.userSeq = userResponse.data.content[0].userseq;
         this.$router.push({
           name: 'home',
         });
       } else if (userResponse.data.content[0].userType == 'REJECT') {
         //탈퇴한 적이 있는 회원인 경우
         alert('한번 탈퇴한 회원은 다시 가입하실 수 없습니다.');
+        window.Kakao.API.request({
+          url: '/v1/user/unlink',
+        });
         this.$store.commit('initUser');
       }
     },

@@ -401,7 +401,7 @@ a {
 }
 
 .tag-icon {
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 2.4rem;
   margin-left: 1.6rem;

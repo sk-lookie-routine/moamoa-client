@@ -90,7 +90,6 @@ export default {
   methods: {
     logout() {
       this.$store.commit('logout');
-      alert('로그아웃했습니다.');
       this.$router.push('/login');
     },
     async onClickWithdrawal() {
@@ -115,12 +114,6 @@ export default {
       if (this.$store.state.auth.providerType == 'KAKAO') {
         window.Kakao.API.request({
           url: '/v1/user/unlink',
-          success: function (response) {
-            console.log(response);
-          },
-          fail: function (error) {
-            console.log(error);
-          },
         });
       } else if (this.$store.state.auth.providerType == 'GOOGLE') {
         const authInst = window.gapi.auth2.getAuthInstance();

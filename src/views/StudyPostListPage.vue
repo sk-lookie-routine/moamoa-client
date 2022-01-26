@@ -149,7 +149,7 @@ export default {
 }
 
 .create-study-btn {
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 1.8rem;
   color: white;

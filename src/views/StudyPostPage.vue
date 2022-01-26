@@ -282,7 +282,6 @@ export default {
       else return false;
     },
     appliedApprovedMemberCount() {
-      console.log(this.applyList);
       const approvedMemberList = this.applyList.filter(
         item => item.joinType === JOIN_TYPE.APPROVED,
       );
@@ -464,7 +463,6 @@ export default {
       this.replyList = list;
     },
     async submitReply() {
-      console.log(this.$store.state.auth.userSeq);
       const reply = {
         userSeq: this.$store.state.auth.userSeq,
         postSeq: this.postSeq,
@@ -677,7 +675,7 @@ export default {
 }
 
 .tag-icon {
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 2.4rem;
   margin-left: 1.6rem;
@@ -731,7 +729,7 @@ textarea {
 }
 
 .comment-register__register-btn {
-  font-family: Noto Sans KR;
+  font-family: 'Noto Sans KR', sans-serif;
   padding: 1.4rem 4rem;
   font-weight: bold;
   font-size: 1.6rem;

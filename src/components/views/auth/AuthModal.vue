@@ -143,7 +143,7 @@ export default {
   color: var(--gray01);
 }
 .more-info {
-  font-family: Roboto;
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 1.2rem;
   line-height: 1.4rem;
   text-align: center;

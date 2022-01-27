@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-form">
+  <div class="main-container">
     <div class="auth-text">소셜 계정으로 간편 회원가입</div>
     <div class="box--underline"></div>
     <div class="auth-buttons">
@@ -32,10 +32,6 @@ export default {
 <style scoped>
 * {
   font-family: 'Noto Sans KR', sans-serif;
-}
-.auth-form {
-  max-width: 120rem;
-  margin: 0 auto;
 }
 .auth-text {
   font-family: 'Noto Sans KR', sans-serif;
@@ -122,10 +118,6 @@ button:hover {
   display: none;
 }
 @media (max-width: 768px) {
-  .auth-form {
-    max-width: 34.3rem;
-    height: 70.5rem;
-  }
   .box--underline {
     margin: 0 1.6rem;
     margin-top: 3.3rem;

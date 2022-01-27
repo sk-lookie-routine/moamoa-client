@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="main-container">
     <div class="title">
       <p>계정 관리</p>
       <div class="box--underline"></div>
@@ -128,8 +128,8 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  margin: 12.2rem 5% 0 5%;
+.main-container {
+  margin-top: 12.2rem;
 }
 .box--underline {
   margin-top: 1rem;
@@ -264,9 +264,6 @@ export default {
   .withdrawal p {
     font-size: 1.4rem;
     margin-top: 3rem;
-  }
-  .modal {
-    max-width: 34.3rem;
   }
   .modal-box {
     top: 50%;

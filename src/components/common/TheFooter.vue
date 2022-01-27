@@ -60,7 +60,7 @@ footer {
 }
 
 .footer-main-container {
-  max-width: 1440px;
+  max-width: 1200px;
   width: 96%;
   margin: 0 auto;
 }
@@ -75,9 +75,6 @@ footer {
 .footer__nav {
   font-size: 1.6rem;
   font-family: 'Noto Sans KR', sans-serif;
-}
-.footer__nav {
-  margin-right: 22.4rem;
 }
 .footer__explain {
   font-size: 1.6rem;
@@ -167,7 +164,7 @@ footer {
   }
   .footer-container {
     width: 100%;
-    max-width: 34.3rem;
+    max-width: 32rem;
   }
 
   .footer-container,

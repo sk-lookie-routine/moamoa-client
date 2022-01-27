@@ -32,7 +32,7 @@
 
 <script>
 import { getUserByUserSeq } from '@/api/user.js';
-import { fetchPostByUserSeq } from '@/api/post.js';
+import { fetchRoomByUserSeq } from '@/api/room.js';
 export default {
   data() {
     return {
@@ -54,17 +54,18 @@ export default {
       this.user = userResponse.data.content[0];
       //유저 정보
 
-      const studyResponse = await fetchPostByUserSeq(this.userSeq);
+      const studyResponse = await fetchRoomByUserSeq(this.userSeq);
       if (studyResponse.data == '') {
         //data 없으면 0개
         this.participatingStudy = 0;
         this.completedStudy = 0;
       } else {
         const contents = studyResponse.data.content;
+        console.log(contents);
         for (let i = 0; i < contents.length; i++) {
-          if (contents[i].postType == 'READY') {
+          if (contents[i].studyType == 'PROGRESS') {
             this.participatingStudy += 1;
-          } else if (contents[i].postType == 'COMPLETE') {
+          } else if (contents[i].studyType == 'COMPLETE') {
             this.completedStudy += 1;
           }
         }
@@ -88,10 +89,12 @@ export default {
 <style scoped>
 .container {
   max-width: 1200px;
+  width: 96%;
   margin: 0 auto;
   padding-top: 19.2rem;
 }
 .mypage-title {
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
 }
@@ -156,6 +159,9 @@ export default {
   font-size: 1.4rem;
   line-height: 1.7rem;
   color: var(--gray01);
+  background: #fbfbfb;
+  padding: 1.4rem 0;
+  border-radius: 15px;
 }
 .profile-study-info {
   display: flex;
@@ -176,7 +182,6 @@ export default {
 @media (max-width: 768px) {
   .container {
     padding-top: 9.5rem;
-    max-width: 34.3rem;
   }
   .mypage-title-text {
     font-size: 2rem;

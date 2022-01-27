@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-form">
+  <div class="main-container">
     <div class="auth-text">소셜 계정으로 간편 로그인</div>
     <div class="box--underline"></div>
     <div class="login-buttons">
@@ -33,12 +33,9 @@ export default {
 * {
   font-family: 'Noto Sans KR', sans-serif;
 }
-.auth-form {
-  max-width: 120rem;
-  margin: 0 auto;
-}
 .auth-text {
-  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
   font-style: normal;
   font-size: 1.8rem;
   line-height: 2.7rem;
@@ -50,7 +47,6 @@ export default {
   color: var(--black);
 }
 .box--underline {
-  margin: 0 47rem;
   margin-top: 3.3rem;
 }
 .login-buttons {
@@ -99,10 +95,6 @@ export default {
   display: none;
 }
 @media (max-width: 768px) {
-  .auth-form {
-    max-width: 34.3rem;
-    height: 70.5rem;
-  }
   .box--underline {
     margin: 0 1.6rem;
     margin-top: 3.3rem;

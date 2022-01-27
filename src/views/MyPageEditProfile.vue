@@ -1,29 +1,33 @@
 <template>
-  <div class="container">
+  <div class="main-container">
     <div class="mypage-title">
       <div class="mypage-title-text">프로필 편집</div>
     </div>
     <div class="box--underline"></div>
-    <div class="profile-img">
-      <img :src="randomProfile.name" />
-      <button @click="randomImage" class="randomBtn">
-        <img src="@/assets/img/btn_random.svg" />
-      </button>
+    <div class="profile">
+      <div class="profile-img">
+        <img :src="randomProfile.name" />
+        <button @click="randomImage" class="randomBtn">
+          <img src="@/assets/img/btn_random.svg" />
+        </button>
+      </div>
     </div>
     <div class="nickname">
       <div class="nickname-box">
         <p>닉네임 :</p>
-        <input
-          type="text"
-          v-model="nickname"
-          placeholder="닉네임을 입력해주세요."
-          maxlength="8"
-          class="text_ph"
-          minlength="2"
-        />
-        <button class="check-idOverlap" @click="checkIdDuplicate">
-          중복확인
-        </button>
+        <div class="nickname-inner-box">
+          <input
+            type="text"
+            v-model="nickname"
+            placeholder="닉네임을 입력해주세요."
+            maxlength="8"
+            class="text_ph"
+            minlength="2"
+          />
+          <button class="check-idOverlap" @click="checkIdDuplicate">
+            중복확인
+          </button>
+        </div>
       </div>
       <div class="box--underline"></div>
     </div>
@@ -35,14 +39,13 @@
     </div>
     <div class="account">
       <div class="account-box">
-        <div class="account-text">
-          <p>로그인 계정 :</p>
-
+        <p>로그인 계정 :</p>
+        <div class="account-inner-box">
           <div class="text_ph">{{ account }}</div>
+          <button @click="onClickAccountManage">
+            <img src="@/assets/img/icon_arrow_right.svg" />
+          </button>
         </div>
-        <button @click="onClickAccountManage">
-          <img src="@/assets/img/icon_arrow_right.svg" />
-        </button>
       </div>
       <div class="box--underline"></div>
     </div>
@@ -55,8 +58,8 @@
         class="desc_ph"
         maxlength="30"
       />
-      <div class="box--underline"></div>
     </div>
+    <div class="box--underline"></div>
     <div class="edit-btn">
       <base-button class="cancel" @click="this.$router.go(-1)"
         >취소</base-button
@@ -140,6 +143,8 @@ export default {
             this.isNicknameDuplicated = true;
             this.message = '이미 사용중인 닉네임입니다.';
             this.checkValid = false;
+          } else {
+            this.message = '';
           }
         }
       });
@@ -212,29 +217,26 @@ export default {
   line-height: 3.4rem;
   color: var(--black);
 }
+.profile {
+  margin: 4.9rem 0 6.1rem 0;
+}
 .profile-img {
-  margin-top: 4.9rem;
-  margin-bottom: 6.1rem;
   position: relative;
-  padding: 0;
-  width: 14.4rem;
-  height: 14.4rem;
 }
 .randomBtn {
   position: absolute;
-  right: 0;
   bottom: 0;
-  top: 0;
   transition: all ease 0.4s;
   background: none;
-}
-input:focus {
-  /* input 클릭 시 테두리 삭제 */
-  outline: none;
+  padding: 0;
 }
 .randomBtn:hover {
   cursor: pointer;
   transform: rotate(50deg);
+}
+input:focus {
+  /* input 클릭 시 테두리 삭제 */
+  outline: none;
 }
 .nickname,
 .description,
@@ -244,61 +246,61 @@ input:focus {
   line-height: 2.6rem;
   color: var(--black);
 }
-.nickname-box p {
-  width: 8rem;
-  align-items: center;
-  display: flex;
-}
 .nickname-box {
   display: flex;
+}
+.account-box {
+  display: flex;
+}
+.description {
+  display: flex;
+}
+.nickname-box p,
+.account-box p,
+.description p {
+  white-space: nowrap;
+  margin-right: 0.8rem;
+}
+.nickname-inner-box,
+.account-inner-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 .description,
 .account {
   margin-top: 4.8rem;
 }
-.account-box p {
-  width: 9rem;
-  align-items: center;
-  display: flex;
-}
-.account-box {
-  position: relative;
-  justify-content: space-between;
-  max-height: 3.2rem;
-}
-.account-text {
-  display: flex;
-}
 .account-box button {
+  padding: 0;
+  display: flex;
+  align-items: center;
   background: none;
-  position: absolute;
-  bottom: 0;
-  right: 0;
+  justify-content: center;
 }
 .account button img {
   width: 3.2rem;
   height: 3.2rem;
 }
-.text_ph,
+.text_ph {
+  font-weight: normal;
+  font-size: 1.6rem;
+  line-height: 2.6rem;
+  color: var(--gray02);
+  border: none;
+}
 .desc_ph {
   font-size: 1.6rem;
   line-height: 2.6rem;
   color: var(--black);
   border: none;
-  display: flex;
-  /* align-items: center; */
 }
 .edit-btn {
   justify-content: flex-end;
   display: flex;
   align-items: center;
   box-shadow: none;
-  margin-bottom: 18.3rem;
-}
-button {
-  margin-top: 10rem;
-  border: none;
-  box-shadow: none;
+  margin-top: 4.4rem;
 }
 .cancel {
   background-color: var(--gray03);
@@ -316,6 +318,11 @@ button {
 }
 .footer {
   margin-top: 18.3rem;
+}
+.check {
+  display: flex;
+  justify-content: right;
+  width: 100%;
 }
 .check-idOverlap {
   display: flex;
@@ -349,7 +356,6 @@ button {
 
 @media (max-width: 768px) {
   .container {
-    max-width: 34.3rem;
     display: flex;
     flex-direction: column;
     margin: 0 1.6rem;
@@ -364,18 +370,17 @@ button {
   .mypage-title-text {
     font-size: 2rem;
   }
-  .profile-img .randomBtn {
+  .profile {
+    margin: 4.1rem auto 1.2rem auto;
+  }
+  .randomBtn {
     position: absolute;
-    left: 5rem;
+    margin: 0 auto;
+    bottom: -0.5rem;
   }
   .profile-img .randomBtn img {
     width: 2.4rem;
     height: 2.4rem;
-  }
-  .profile-img {
-    margin: 0 auto;
-    margin-top: 4.1rem;
-    margin-bottom: 1.2rem;
   }
   .profile-img img {
     width: 7.2rem;
@@ -392,6 +397,14 @@ button {
   .account-box p {
     font-size: 1.4rem;
   }
+  .nickname-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+  .nickname-inner-box {
+    align-items: center;
+  }
   .account button img {
     width: 1.6rem;
     height: 1.6rem;
@@ -404,11 +417,24 @@ button {
   .account input {
     font-size: 1.4rem;
   }
+  .description {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+  .account-inner-box {
+    align-items: center;
+    justify-content: space-between;
+  }
+  .account-box {
+    gap: 1.6rem;
+    display: flex;
+    flex-direction: column;
+  }
   .text_ph,
   .desc_ph {
     font-size: 1.4rem;
     line-height: 2.6rem;
-    color: var(--black);
     border: none;
   }
   .base-button,
@@ -424,7 +450,7 @@ button {
     margin: 0;
   }
   .box--underline {
-    margin: 1rem 0;
+    margin: 0.5rem 0;
   }
   .cancel {
     width: 4.6em;

@@ -211,10 +211,11 @@ export default {
 <style scoped>
 .default-container {
   max-width: 1200px;
+  width: 96%;
   margin: 0 auto;
 }
 .base--tab {
-  margin: 7rem 5%;
+  margin: 7rem 0 3.6rem 0;
 }
 .nothing-apply {
   padding-top: 11rem;
@@ -238,19 +239,19 @@ export default {
   color: var(--gray00);
 }
 .my-studyList {
-  margin: 0 12%;
-}
-.my-studyList li {
-  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 }
 .button-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 2rem;
 }
 @media (max-width: 768px) {
-  .default-container {
-    max-width: 34.3rem;
+  .base--tab {
+    margin: 5.4rem 0 3rem 0;
   }
   .nothing-apply {
     margin: 0 auto;
@@ -262,10 +263,7 @@ export default {
     font-size: 1rem;
   }
   .my-studyList {
-    margin: 0 5%;
-  }
-  .my-studyList li {
-    margin-top: 2rem;
+    gap: 2rem;
   }
 }
 </style>

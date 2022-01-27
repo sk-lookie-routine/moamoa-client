@@ -29,9 +29,18 @@ function fetchRoomByStudySeq(studySeq) {
   });
 }
 
+function fetchRoomByUserSeq(userSeq) {
+  return room.get('/', {
+    params: {
+      userSeq,
+    },
+  });
+}
+
 export {
   createRoom,
   updateRoom,
   fetchRoomsByTypeAndUserSeq,
   fetchRoomByStudySeq,
+  fetchRoomByUserSeq,
 };

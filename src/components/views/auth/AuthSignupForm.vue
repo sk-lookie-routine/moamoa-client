@@ -302,7 +302,6 @@ button {
   .container {
     display: flex;
     flex-direction: column;
-    max-width: 34.3rem;
     margin: 0 auto;
     height: 67.8rem;
   }

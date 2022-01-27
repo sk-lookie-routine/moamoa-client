@@ -275,7 +275,6 @@ export default {
       else return false;
     },
     appliedApprovedMemberCount() {
-      console.log(this.applyList);
       const approvedMemberList = this.applyList.filter(
         item => item.joinType === JOIN_TYPE.APPROVED,
       );
@@ -470,7 +469,6 @@ export default {
       this.replyList = list;
     },
     async submitReply() {
-      console.log(this.$store.state.auth.userSeq);
       const reply = {
         userSeq: this.$store.state.auth.userSeq,
         postSeq: this.postSeq,

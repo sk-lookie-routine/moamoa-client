@@ -357,7 +357,6 @@ export default {
             name: 'posts',
           });
         } else {
-          console.log(this.post);
           await updatePost(this.post);
           this.$router.push({
             name: 'post',
@@ -440,7 +439,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .input-container {
   display: flex;
   align-items: center;

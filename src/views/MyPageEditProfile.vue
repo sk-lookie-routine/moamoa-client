@@ -218,6 +218,7 @@ export default {
   color: var(--black);
 }
 .profile {
+  display: flex;
   margin: 4.9rem 0 6.1rem 0;
 }
 .profile-img {
@@ -226,6 +227,7 @@ export default {
 .randomBtn {
   position: absolute;
   bottom: 0;
+  right: 0;
   transition: all ease 0.4s;
   background: none;
   padding: 0;
@@ -267,6 +269,9 @@ input:focus {
   display: flex;
   justify-content: space-between;
 }
+.nickname-inner-box input {
+  color: var(--black);
+}
 .description,
 .account {
   margin-top: 4.8rem;
@@ -299,8 +304,10 @@ input:focus {
   justify-content: flex-end;
   display: flex;
   align-items: center;
-  box-shadow: none;
   margin-top: 4.4rem;
+}
+.edit-btn button {
+  box-shadow: none;
 }
 .cancel {
   background-color: var(--gray03);
@@ -372,6 +379,7 @@ input:focus {
   }
   .profile {
     margin: 4.1rem auto 1.2rem auto;
+    justify-content: center;
   }
   .randomBtn {
     position: absolute;

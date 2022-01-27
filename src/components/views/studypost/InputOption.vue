@@ -7,11 +7,8 @@
       <div
         v-for="(option, i) of options"
         :key="i"
-        @click="
-          selected = option;
-          open = false;
-          $emit('input', option);
-        "
+        :class="{ disabled: option < disableNum }"
+        @click="clicked(option)"
       >
         {{ option }}명
       </div>
@@ -26,7 +23,7 @@ export default {
       type: Array,
       required: true,
     },
-    default: {
+    defaultValue: {
       type: Number,
       required: false,
       default: null,
@@ -39,16 +36,38 @@ export default {
   },
   data() {
     return {
-      selected: this.default
-        ? this.default
+      disableNum: 0,
+      selected: this.defaultValue
+        ? this.defaultValue
         : this.options.length > 0
         ? this.options[0]
         : null,
+      firstUpdated: false,
       open: false,
     };
   },
+  methods: {
+    clicked(value) {
+      if (!(value < this.disableNum)) {
+        this.selected = value;
+        this.open = false;
+        this.$emit('input', value);
+      }
+    },
+  },
   mounted() {
     this.$emit('input', this.selected);
+  },
+  updated() {
+    if (!this.firstUpdated) {
+      this.selected = this.defaultValue
+        ? this.defaultValue
+        : this.options.length > 0
+        ? this.options[0]
+        : null;
+      this.disableNum = this.defaultValue;
+      this.firstUpdated = true;
+    }
   },
 };
 </script>
@@ -89,7 +108,7 @@ export default {
   overflow: hidden;
   position: absolute;
   border: 0.15rem solid var(--gray02);
-  background-color: rgb(255, 255, 255);
+  background-color: white;
   left: 0;
   top: 3rem;
   z-index: 1;
@@ -105,6 +124,17 @@ export default {
 .custom-select .items div:hover {
   background-color: var(--orange-dark);
   color: white;
+}
+
+.custom-select .items .disabled {
+  background-color: var(--gray06);
+  color: var(--gray02);
+}
+
+.custom-select .items .disabled:hover {
+  background-color: var(--gray06);
+  color: var(--gray02);
+  cursor: auto;
 }
 
 .selectHide {

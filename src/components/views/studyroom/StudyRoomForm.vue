@@ -21,6 +21,7 @@
         :enableTimePicker="false"
         :range="true"
         :autoApply="true"
+        :minDate="new Date()"
         placeholder="날짜를 선택하세요."
         @update:modelValue="formatRangeDate"
       ></date-picker>

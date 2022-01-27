@@ -25,6 +25,7 @@
           :peopleRegisterCount="post.registerCount"
           :peopleTotalCount="post.memberCount"
           :hashTags="post.hashTags"
+          :hideCountWhenChanged="true"
         ></base-card>
       </li>
     </ul>

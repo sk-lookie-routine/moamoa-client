@@ -57,7 +57,7 @@
       <label for="count">모집 인원:</label>
       <input-option
         :options="memberCountOptions"
-        :default="post.memberCount"
+        :defaultValue="post.memberCount"
         @input="setCountValue"
       ></input-option>
     </div>
@@ -421,8 +421,8 @@ export default {
       this.hasChanged.comment = true;
       this.post.comment = e.target.value;
     },
-    async fetchData() {
-      const postResponse = await fetchPostByPostSeq(this.postSeq);
+    async fetchData(postSeq) {
+      const postResponse = await fetchPostByPostSeq(postSeq);
       this.post = postResponse.data.content[0];
       this.rangeDate = [
         new Date(this.post.startDate),
@@ -433,13 +433,13 @@ export default {
   async created() {
     this.postSeq = this.$route.query.postSeq;
     if (this.postSeq) {
-      await this.fetchData();
+      await this.fetchData(this.postSeq);
     }
   },
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .input-container {
   display: flex;
   align-items: center;

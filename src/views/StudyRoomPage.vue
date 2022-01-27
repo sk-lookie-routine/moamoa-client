@@ -262,17 +262,20 @@ export default {
     },
     async fetchMateData() {
       const mateResponse = await fetchProgressMateByStudySeq(this.studySeq);
-      const list = await Promise.all(
-        mateResponse.data.content.map(async item => {
-          const res = await getUserByUserSeq(item.userSeq);
-          const mate = {
-            ...item,
-            image: res.data.content[0].image,
-            username: res.data.content[0].username,
-          };
-          return mate;
-        }),
-      );
+      const list =
+        mateResponse.data.content == undefined
+          ? []
+          : await Promise.all(
+              mateResponse.data.content.map(async item => {
+                const res = await getUserByUserSeq(item.userSeq);
+                const mate = {
+                  ...item,
+                  image: res.data.content[0].image,
+                  username: res.data.content[0].username,
+                };
+                return mate;
+              }),
+            );
       this.studyMateList = list;
     },
     async fetchData() {

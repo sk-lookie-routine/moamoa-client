@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <div class="footer-main-container">
+    <div class="main-container">
       <div class="footer-container">
         <div class="footer__context">
           <div class="footer__logo">
@@ -52,17 +52,7 @@
 footer {
   background-color: var(--gray06);
   padding: 5.2rem 0 4.5rem 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  word-wrap: break-word;
   margin-top: 26rem;
-}
-
-.footer-main-container {
-  max-width: 1200px;
-  width: 96%;
-  margin: 0 auto;
 }
 
 .footer-container {
@@ -76,6 +66,11 @@ footer {
   font-size: 1.6rem;
   font-family: 'Noto Sans KR', sans-serif;
 }
+
+.footer__nav {
+  width: 49%;
+}
+
 .footer__explain {
   font-size: 1.6rem;
   font-family: 'Noto Sans KR', sans-serif;
@@ -85,7 +80,6 @@ footer {
 .footer__context {
   display: flex;
   flex-direction: column;
-  width: 30rem;
 }
 
 .footer__logo {
@@ -141,7 +135,6 @@ footer {
 }
 
 .box--underline {
-  /* width: 100%; */
   display: flex;
   color: var(--gray03);
   margin-top: 7rem;
@@ -152,19 +145,15 @@ footer {
   color: var(--gray04);
   font-size: 1.4rem;
   text-align: right;
-  /* width: 100%; */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   footer {
     margin-top: 17rem;
   }
-  .footer-main-container {
-    padding: 0 2.4rem;
-  }
+
   .footer-container {
     width: 100%;
-    max-width: 32rem;
   }
 
   .footer-container,
@@ -174,7 +163,6 @@ footer {
 
   .footer__context {
     margin-bottom: 5.2rem;
-    width: 100%;
   }
 
   .nav__title {
@@ -182,23 +170,27 @@ footer {
   }
 
   .footer__explain {
+    width: 100%;
     font-size: 1.4rem;
-    width: fit-content;
-    height: 5.1rem;
-    line-height: 2.4rem;
+    margin-bottom: 2.5rem;
   }
-  .footer__email,
+
+  .footer__email {
+    font-size: 1.4rem;
+  }
+
   .footer__nav {
     font-size: 1.4rem;
+    width: 100%;
+    gap: 3.6rem;
   }
-  .footer__nav {
-    margin: 0;
-  }
+
   .box--underline {
     margin: 7rem 0rem 1.5rem 0rem;
   }
+
   .footer__rights {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 }
 </style>

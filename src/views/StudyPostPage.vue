@@ -1,7 +1,7 @@
 <template>
   <base-dialog
     :showDialog="showDialog"
-    @closed="showDialog = false"
+    @closed="alertClosed"
     :title="dialog.title"
     :content="dialog.content"
   >
@@ -22,14 +22,7 @@
       </base-dialog-button>
     </template>
     <template v-else-if="dialog.btnType == 'deleteConfirm'">
-      <base-dialog-button
-        @click="
-          this.$router.push({
-            name: 'posts',
-          })
-        "
-        >확인</base-dialog-button
-      >
+      <base-dialog-button @click="showPostsPage">확인</base-dialog-button>
     </template>
     <template v-else>
       <base-dialog-button @click="showDialog = false">확인</base-dialog-button>
@@ -298,6 +291,14 @@ export default {
     },
   },
   methods: {
+    alertClosed() {
+      if (this.dialog.btnType == 'deleteConfirm') {
+        this.showDialog = false;
+        this.showPostsPage();
+      } else {
+        this.showDialog = false;
+      }
+    },
     onClickUserProfile(userSeq) {
       this.$router.push({
         name: 'mypage',
@@ -322,6 +323,11 @@ export default {
           postSeq: this.post.postSeq,
           userSeq: this.$store.state.auth.userSeq,
         },
+      });
+    },
+    showPostsPage() {
+      this.$router.push({
+        name: 'posts',
       });
     },
     editPost() {

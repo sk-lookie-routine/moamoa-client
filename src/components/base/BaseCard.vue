@@ -17,13 +17,16 @@
     <div class="card__contents">
       <div class="title-and-btn-container">
         <div class="card__title">{{ title }}</div>
-        <div v-if="hasMoreBtn" class="card__more-btn">
-          <img src="@/assets/img/icon_more.svg" />
-          <div class="card__delete-btn">삭제</div>
-        </div>
       </div>
-      <div class="card__period">{{ startDate }} ~ {{ endDate }}</div>
-      <div v-if="showCount" class="card__people">
+      <div class="card__period">
+        {{ startDate.replaceAll('-', '.') }} ~
+        {{ endDate.replaceAll('-', '.') }}
+      </div>
+      <div
+        v-if="showCount"
+        class="card__people"
+        :class="{ 'display-none': hideCountWhenChanged }"
+      >
         <img class="person-icon" src="@/assets/img//icon_person.svg" />
         <div class="card__people-count">
           {{ peopleRegisterCount }}/{{ peopleTotalCount }}
@@ -73,10 +76,6 @@ export default {
       type: Array,
       required: true,
     },
-    hasMoreBtn: {
-      type: Boolean,
-      default: false,
-    },
     joinType: {
       type: String,
       default: null,
@@ -89,12 +88,14 @@ export default {
       type: Boolean,
       default: true,
     },
+    hideCountWhenChanged: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      isHover: true,
       imgUrl: require('@/assets/img/profile/' + this.imgSrc + '.svg'),
-      hasHashTags: false,
     };
   },
 };
@@ -107,7 +108,7 @@ export default {
   height: 20rem;
   box-shadow: 0.1rem 0.1rem 1rem rgba(170, 170, 170, 0.25);
   border-radius: 2rem;
-  padding: 3.6rem;
+  padding: 0 3.6rem;
   display: flex;
   justify-content: space-between;
 }
@@ -242,20 +243,22 @@ export default {
 @media (max-width: 768px) {
   .card {
     height: 15.6rem;
-    padding: 3.4rem 3.6rem;
   }
 
-  .card__thumbnail,
-  .card__people {
+  .card__thumbnail {
     display: none;
   }
 
   .card__contents {
     gap: 1.3rem;
   }
+
   .card__badge {
-    top: 2.3rem;
     left: 3rem;
+  }
+
+  .display-none {
+    display: none;
   }
 }
 </style>

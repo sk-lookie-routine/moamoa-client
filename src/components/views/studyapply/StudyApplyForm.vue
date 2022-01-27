@@ -2,7 +2,7 @@
   <div>
     <base-dialog
       :showDialog="showDialog"
-      @closed="showDialog = false"
+      @closed="alertClosed"
       :title="dialog.title"
       :content="dialog.content"
     >
@@ -96,6 +96,14 @@ export default {
     },
   },
   methods: {
+    alertClosed() {
+      if (this.finishApply) {
+        this.showDialog = false;
+        this.showPage();
+      } else {
+        this.showDialog = false;
+      }
+    },
     showPage() {
       this.showDialog = false;
       this.$router.push({

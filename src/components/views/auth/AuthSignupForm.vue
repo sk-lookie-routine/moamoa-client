@@ -85,6 +85,9 @@ export default {
     if (!this.$store.state.auth.isLogin) {
       this.$router.push({ name: 'login' });
       return;
+    } else if (this.$store.state.auth.image) {
+      this.$router.go(-1);
+      return;
     }
   },
   data() {

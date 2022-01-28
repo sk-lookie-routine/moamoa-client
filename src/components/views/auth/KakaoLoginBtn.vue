@@ -11,9 +11,10 @@ export default {
   methods: {
     kakaoLogin() {
       const params = {
-        redirectUri: 'https://moa-moa.kr',
+        redirectUri: 'https://moa-moa.kr/redirect',
       };
       window.Kakao.Auth.authorize(params);
+      this.$store.commit('login');
     },
   },
 };

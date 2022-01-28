@@ -40,8 +40,15 @@ export default {
         this.$router.push({ name: 'signup-form' });
       } else if (userResponse.data.content[0].userType == 'NORMAL') {
         //이미 가입한 회원인 경우
-        this.$store.commit('login');
-        this.$store.commit('setUser', userResponse.data.content[0]);
+        const payload = userResponse.data.content[0];
+        this.$store.state.auth.isLogin = true;
+        this.$store.state.auth.userId = payload.userId;
+        this.$store.state.auth.email = payload.email;
+        this.$store.state.auth.userInfo = payload.userInfo;
+        this.$store.state.auth.userSeq = payload.userSeq;
+        this.$store.state.auth.userType = payload.userType;
+        this.$store.state.auth.username = payload.username;
+
         this.$router.push({
           name: 'home',
         });
@@ -54,7 +61,12 @@ export default {
         this.$store.commit('logout');
       }
     },
-    onFailure() {},
+    onFailure() {
+      const authInst = window.gapi.auth2.getAuthInstance();
+      authInst.signOut();
+      this.$store.commit('initUser');
+      this.$store.commit('logout');
+    },
   },
 };
 </script>

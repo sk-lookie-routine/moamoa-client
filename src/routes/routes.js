@@ -5,6 +5,10 @@ export default [
     component: () => import('@/views/DefaultPage.vue'),
   },
   {
+    path: '/redirect',
+    component: () => import('@/views/RedirectPage.vue'),
+  },
+  {
     path: '/home',
     name: 'home',
     component: () => import('@/views/HomePage.vue'),

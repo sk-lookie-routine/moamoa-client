@@ -87,6 +87,8 @@ export default {
       this.isMenuClicked = !this.isMenuClicked;
     },
     signout() {
+      this.$store.commit('initUser');
+      this.$store.commit('logout');
       if (this.$store.state.auth.providerType == 'GOOGLE') {
         const authInst = window.gapi.auth2.getAuthInstance();
         authInst.signOut();
@@ -95,8 +97,6 @@ export default {
           url: '/v1/user/unlink',
         });
       }
-      this.$store.commit('initUser');
-      this.$store.commit('logout');
     },
   },
 };

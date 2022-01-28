@@ -61,7 +61,6 @@ export default {
         this.completedStudy = 0;
       } else {
         const contents = studyResponse.data.content;
-        console.log(contents);
         for (let i = 0; i < contents.length; i++) {
           if (contents[i].studyType == 'PROGRESS') {
             this.participatingStudy += 1;

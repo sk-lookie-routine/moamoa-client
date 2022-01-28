@@ -34,7 +34,7 @@ export default {
   font-family: 'Noto Sans KR', sans-serif;
 }
 .auth-text {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Spoqa Han Sans Neo';
   font-weight: 700;
   font-style: normal;
   font-size: 1.8rem;
@@ -47,7 +47,6 @@ export default {
   color: var(--black);
 }
 .box--underline {
-  margin: 0 47rem;
   margin-top: 3.3rem;
 }
 .auth-buttons {

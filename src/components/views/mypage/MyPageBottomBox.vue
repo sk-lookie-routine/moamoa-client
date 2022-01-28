@@ -169,22 +169,10 @@ export default {
           if (this.index == size - 1) {
             this.showMoreBtn = false;
           }
-          let postSeq = response.data.content[this.index].postSeq;
-          let registerAccount = await fetchJoinByPostSeq(postSeq);
-          let count = 0;
-          if (registerAccount.data != '') {
-            for (let i = 0; i < registerAccount.data.content.length; i++) {
-              if (registerAccount.data.content[i].joinType == 'APPROVED') {
-                count++;
-              }
-            }
-          } else {
-            this.openStudy = null;
-            return;
-          }
+
           this.openStudy.push({
             card: response.data.content[this.index],
-            registerCount: count,
+            registerCount: response.data.content.length,
           });
           if (this.index % 4 == 3 && this.index != 0) {
             this.index++;

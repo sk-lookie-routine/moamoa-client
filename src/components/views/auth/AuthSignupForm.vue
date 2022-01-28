@@ -1,71 +1,55 @@
 <template>
   <div>
     <auth-modal :isClicked="isAllFilled"></auth-modal>
-    <div class="container">
+    <div class="main-container">
       <div class="signup-form">
         <div class="title">회원가입</div>
         <div class="box--underline"></div>
-        <div class="profile-img">
-          <img :src="randomProfile.name" />
-          <div class="text">랜덤 변경</div>
-          <button @click="randomImage" class="randomBtn">
-            <img src="@/assets/img/btn_random.svg" />
-          </button>
+        <div class="profile">
+          <div class="profile-img">
+            <img :src="randomProfile.name" />
+            <button @click="randomImage" class="randomBtn">
+              <img src="@/assets/img/btn_random.svg" />
+            </button>
+          </div>
         </div>
         <div class="profile-info">
           <div class="nickname">
-            <p>닉네임 :</p>
-            <input
-              type="text"
-              v-model="nickname"
-              placeholder="최대 8자"
-              class="text_ph"
-              maxlength="8"
-              minlength="2"
-            />
-            <button class="check-idOverlap" @click="checkIdDuplicate">
-              중복확인
-            </button>
-            <div class="box--underline"></div>
-            <!-- 유효성 검사 -->
-            <div class="check">
-              <div
-                class="check-nickname-duplicated"
-                v-if="isNicknameDuplicated && nickname.length > 0"
-              >
-                {{ text }}
-              </div>
-              <div
-                class="check-nickname"
-                v-if="!isNicknameDuplicated && nickname.length > 0"
-              >
-                {{ text }}
-              </div>
-              <div class="check-nickname-duplicated" v-if="nickname == ''">
-                최소 2자 이상 입력하세요.
-              </div>
-              <div
-                class="check-nickname"
-                v-if="
-                  nickname.search(/\s/) != -1 || special_pattern.test(nickname)
-                "
-              >
-                공백이나 특수문자 입력은 불가능합니다.
+            <div class="nickname-box">
+              <p>닉네임 :</p>
+              <div class="nickname-inner-box">
+                <input
+                  type="text"
+                  v-model="nickname"
+                  placeholder="닉네임을 입력해주세요."
+                  maxlength="8"
+                  class="text_ph"
+                  minlength="2"
+                />
+                <button class="check-idOverlap" @click="checkIdDuplicate">
+                  중복확인
+                </button>
               </div>
             </div>
+            <div class="box--underline"></div>
           </div>
-
+          <div class="check">
+            <div class="check_bad" v-if="!checkValid">
+              {{ message }}
+            </div>
+            <div class="check_good" v-else>{{ message }}</div>
+          </div>
           <div class="description">
-            한줄 소개 :
+            <p>한줄 소개 :</p>
             <input
               type="text"
               v-model="desc"
-              placeholder="한줄로 소개하세요."
+              placeholder="한줄 소개를 입력해주세요."
               class="desc_ph"
               maxlength="30"
             />
-            <div class="box--underline"></div>
           </div>
+          <div class="box--underline"></div>
         </div>
         <div class="start-btn">
           <base-button
@@ -73,7 +57,7 @@
             v-if="
               nickname !== '' &&
               desc !== '' &&
-              isClickedDuplicatedButton &&
+              isClickedButton &&
               !isNicknameDuplicated
             "
             @click="moveToHome"
@@ -97,15 +81,22 @@ import { searchUserByName } from '@/api/user.js';
 import { postUserData } from '@/api/auth.js';
 export default {
   components: { TheFooter, AuthModal },
+  created() {
+    if (!this.$store.state.auth.isLogin) {
+      this.$router.push({ name: 'login' });
+      return;
+    }
+  },
   data() {
     return {
+      checkValid: false,
+      message: '',
       nickname: '',
       desc: '',
       special_pattern: /[`~!@#$%^&*|"';:/?]/gi,
       isAllFilled: false,
       isNicknameDuplicated: false,
-      isClickedDuplicatedButton: false,
-      text: '',
+      isClickedButton: false,
       imgName: '',
       randomProfile: {
         name: require('@/assets/img/profile/profile_sc_o.svg'),
@@ -155,15 +146,22 @@ export default {
       //이미지 경로에서 소스만 추출
     },
     async checkIdDuplicate() {
-      this.isClickedDuplicatedButton = true;
-      //중복 확인 버튼 눌렀다고 체크
-      searchUserByName(this.nickname).then(response => {
+      this.isClickedButton = true;
+      await searchUserByName(this.nickname).then(response => {
         if (typeof response.data.content === 'undefined') {
           this.isNicknameDuplicated = false;
-          this.text = '사용 가능한 닉네임입니다.';
+          this.message = '사용 가능한 닉네임입니다.';
+          this.checkValid = true;
         } else {
-          this.isNicknameDuplicated = true;
-          this.text = '이미 사용중인 닉네임입니다.';
+          if (
+            response.data.content[0].username != this.$store.state.auth.username
+          ) {
+            this.isNicknameDuplicated = true;
+            this.message = '이미 사용중인 닉네임입니다.';
+            this.checkValid = false;
+          } else {
+            this.message = '';
+          }
         }
       });
       this.getImageSubstr();
@@ -173,10 +171,6 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
 .check-nickname {
   position: absolute;
   text-align: end;
@@ -192,20 +186,18 @@ export default {
   color: var(--orange-dark);
 }
 .check-idOverlap {
+  display: flex;
+  justify-content: center;
   padding: 0.6rem;
   font-size: 1.2rem;
   margin: 0;
-  position: absolute;
-  right: 23%;
-  width: 6.3rem;
-  height: 2.6rem;
+  width: max-content;
   background: #757575;
   color: white;
 }
 .signup-form {
   display: float;
-  height: 70rem;
-  margin: 19.2rem 12rem 0 12rem;
+  margin-top: 19.2rem;
 }
 .title {
   font-family: Spoqa Han Sans Neo;
@@ -214,13 +206,12 @@ export default {
   line-height: 3.4rem;
   color: var(--black);
 }
+.profile {
+  display: flex;
+  margin: 4.9rem 0 6.1rem 0;
+}
 .profile-img {
-  margin-top: 4.9rem;
-  margin-bottom: 6.1rem;
   position: relative;
-  padding: 0;
-  width: 14.4rem;
-  height: 14.4rem;
 }
 .text {
   width: 4.7rem;
@@ -234,10 +225,11 @@ export default {
 }
 .randomBtn {
   position: absolute;
-  right: 0;
   bottom: 0;
+  right: 0;
   transition: all ease 0.4s;
   background: none;
+  padding: 0;
 }
 input:focus {
   /* input 클릭 시 테두리 삭제 */
@@ -247,6 +239,9 @@ input:focus {
   cursor: pointer;
   transform: rotate(50deg);
 }
+.nickname-box {
+  display: flex;
+}
 .nickname {
   font-family: Spoqa Han Sans Neo;
   font-weight: bold;
@@ -254,12 +249,38 @@ input:focus {
   line-height: 2.6rem;
   color: var(--black);
 }
-.nickname p {
-  font-size: 1.8rem;
+.nickname-inner-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.nickname-box p,
+.description p {
+  white-space: nowrap;
+  margin-right: 0.8rem;
+}
+.nickname-box button {
+  width: 8rem;
+  height: 2.8rem;
+  text-align: center;
 }
 .check {
   display: flex;
   justify-content: flex-end;
+}
+.check_good {
+  position: absolute;
+  text-align: end;
+  padding-top: 1rem;
+  font-size: 1.4rem;
+  color: var(--green);
+}
+.check_bad {
+  position: absolute;
+  text-align: end;
+  padding-top: 1rem;
+  font-size: 1.4rem;
+  color: var(--orange-dark);
 }
 .description {
   font-family: Spoqa Han Sans Neo;
@@ -277,6 +298,7 @@ input:focus {
   color: var(--black);
   border: none;
 }
+
 .start-btn {
   justify-content: center;
   display: flex;
@@ -290,6 +312,9 @@ button {
 }
 .base-button-disable:hover {
   cursor: no-drop;
+}
+.box--underline {
+  margin-top: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -314,15 +339,29 @@ button {
     font-size: 2rem;
   }
   .profile-img {
-    margin: 0 auto;
-    margin-top: 4.1rem;
+    margin: 4.1rem auto auto auto;
+  }
+  .profile-img img {
+    width: 7.2rem;
+    height: 7.2rem;
+  }
+  .profile-img .randomBtn img {
+    width: 2.4rem;
+    height: 2.4rem;
   }
   .profile-info {
     margin-top: 1.6rem;
     font-size: 1.4rem;
   }
-  .nickname,
-  .nickname input,
+  .nickname-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+  .nickname-inner-box {
+    align-items: center;
+  }
+  .nickname-box input,
   .description,
   .description input {
     font-size: 1.4rem;
@@ -334,6 +373,9 @@ button {
   }
   .start-btn {
     margin: 0;
+  }
+  .box--underline {
+    margin: 0.5rem 0;
   }
 }
 </style>

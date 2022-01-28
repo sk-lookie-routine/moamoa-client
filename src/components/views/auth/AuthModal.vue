@@ -68,7 +68,8 @@ export default {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  width: 100vw;
+  max-width: 857px;
+  max-height: 654px;
 }
 .modal-bg {
   position: fixed;
@@ -157,7 +158,7 @@ export default {
 .base-btn {
   margin-bottom: 5rem;
 }
-@media (max-width: 340px) {
+@media (max-width: 768px) {
   .modal-box {
     width: 30rem;
   }

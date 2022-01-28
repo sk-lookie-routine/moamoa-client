@@ -1,6 +1,7 @@
 export default [
   {
     path: '/',
+    redirect: { name: 'home' },
     component: () => import('@/views/DefaultPage.vue'),
   },
   {

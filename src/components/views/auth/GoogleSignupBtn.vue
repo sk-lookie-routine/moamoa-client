@@ -51,6 +51,7 @@ export default {
         const authInst = window.gapi.auth2.getAuthInstance();
         authInst.signOut();
         this.$store.commit('initUser');
+        this.$store.commit('logout');
       }
     },
     onFailure() {},

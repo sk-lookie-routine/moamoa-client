@@ -42,7 +42,6 @@ export default {
         //이미 가입한 회원인 경우
         this.$store.commit('login');
         this.$store.commit('setUser', userResponse.data.content[0]);
-        // this.$store.state.auth.userSeq = userResponse.data.content[0].userseq;
         this.$router.push({
           name: 'home',
         });
@@ -52,6 +51,7 @@ export default {
         const authInst = window.gapi.auth2.getAuthInstance();
         authInst.signOut();
         this.$store.commit('initUser');
+        this.$store.commit('logout');
       }
     },
     onFailure() {},

@@ -366,7 +366,6 @@ input:focus {
     display: flex;
     flex-direction: column;
     margin: 0 1.6rem;
-    margin: 0 auto;
   }
   .signup-form {
     margin: 0 1.6rem;
@@ -393,10 +392,6 @@ input:focus {
   .profile-img img {
     width: 7.2rem;
     height: 7.2rem;
-  }
-  .profile-info {
-    margin-top: 1.6rem;
-    font-size: 1.4rem;
   }
   .nickname-box button {
     font-size: 1rem;

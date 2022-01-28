@@ -34,7 +34,7 @@ export default {
   font-family: 'Noto Sans KR', sans-serif;
 }
 .auth-text {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Spoqa Han Sans Neo';
   font-weight: bold;
   font-style: normal;
   font-size: 1.8rem;

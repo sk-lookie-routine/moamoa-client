@@ -161,7 +161,6 @@ export default {
     async openStudyList() {
       this.textOfEachTab = '개설한';
       const response = await fetchPostByUserSeq(this.$store.state.auth.userSeq);
-      // this.openStudy = response.data.content;
 
       const size = response.data.totalElements;
       if (response.data != '') {
@@ -169,10 +168,20 @@ export default {
           if (this.index == size - 1) {
             this.showMoreBtn = false;
           }
+          let postSeq = response.data.content[this.index].postSeq;
+          let registerUsers = await fetchJoinByPostSeq(postSeq);
+          let count = 0;
 
+          if (registerUsers.data != '') {
+            for (let i = 0; i < registerUsers.data.content.length; i++) {
+              if (registerUsers.data.content[i].joinType == 'APPROVED') {
+                count++;
+              }
+            }
+          }
           this.openStudy.push({
             card: response.data.content[this.index],
-            registerCount: response.data.content.length,
+            registerCount: count,
           });
           if (this.index % 4 == 3 && this.index != 0) {
             this.index++;

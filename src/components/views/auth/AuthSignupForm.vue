@@ -37,6 +37,9 @@
             <div class="check_bad" v-if="!checkValid">
               {{ message }}
             </div>
+            <div class="check_bad" v-if="nickname.find">
+              {{ message }}
+            </div>
             <div class="check_good" v-else>{{ message }}</div>
           </div>
           <div class="description">
@@ -150,6 +153,8 @@ export default {
     },
     async checkIdDuplicate() {
       this.isClickedButton = true;
+      this.nickname.replace(/\s| /gi, '');
+
       await searchUserByName(this.nickname).then(response => {
         if (typeof response.data.content === 'undefined') {
           this.isNicknameDuplicated = false;
@@ -159,6 +164,14 @@ export default {
           if (
             response.data.content[0].username != this.$store.state.auth.username
           ) {
+            if (
+              this.nickname.search(/\s/) != -1 ||
+              this.special_pattern.test(this.nickname)
+            ) {
+              this.checkValid = false;
+              this.message = '공백이나 특수문자 입력은 불가능합니다.';
+              return;
+            }
             this.isNicknameDuplicated = true;
             this.message = '이미 사용중인 닉네임입니다.';
             this.checkValid = false;

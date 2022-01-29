@@ -61,10 +61,8 @@
     </div>
     <div class="box--underline"></div>
     <div class="edit-btn">
-      <base-button class="cancel" @click="this.$router.go(-1)"
-        >취소</base-button
-      >
-      <base-button class="edit-done" @click="handleEdit">변경완료</base-button>
+      <button class="cancel" @click="this.$router.go(-1)">취소</button>
+      <button class="edit-done" @click="handleEdit">변경완료</button>
     </div>
   </div>
   <the-footer class="footer"></the-footer>
@@ -159,6 +157,14 @@ export default {
     },
     async handleEdit() {
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {
+        if (
+          this.nickname.search(/\s/) != -1 ||
+          this.special_pattern.test(this.nickname)
+        ) {
+          this.checkValid = false;
+          this.message = '공백이나 특수문자 입력은 불가능합니다.';
+          return;
+        }
         if (
           this.nickname != this.$store.state.auth.username &&
           !this.isClickedButton
@@ -308,20 +314,27 @@ input:focus {
 }
 .edit-btn button {
   box-shadow: none;
+  color: white;
 }
 .cancel {
-  background-color: var(--gray03);
+  background: var(--gray03);
   width: 8.4rem;
   height: 4.1rem;
   font-size: 1.6rem;
+  font-weight: bold;
   padding: 0;
   margin-right: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .edit-done {
+  font-weight: bold;
   width: 11.7rem;
   height: 4.1rem;
   font-size: 1.6rem;
   padding: 0;
+  background: var(--orange-dark);
 }
 .footer {
   margin-top: 18.3rem;

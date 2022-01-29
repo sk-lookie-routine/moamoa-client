@@ -41,13 +41,9 @@ export default {
       } else if (userResponse.data.content[0].userType == 'NORMAL') {
         //이미 가입한 회원인 경우
         const payload = userResponse.data.content[0];
-        this.$store.state.auth.isLogin = true;
-        this.$store.state.auth.userId = payload.userId;
-        this.$store.state.auth.email = payload.email;
-        this.$store.state.auth.userInfo = payload.userInfo;
-        this.$store.state.auth.userSeq = payload.userSeq;
-        this.$store.state.auth.userType = payload.userType;
-        this.$store.state.auth.username = payload.username;
+        this.$store.commit('login');
+        this.$store.commit('setUser', payload);
+        console.log('loginData', this.$store.state.auth);
 
         this.$router.push({
           name: 'home',

@@ -156,6 +156,7 @@ export default {
       //randomProfile -> template에서 출력하기 위한 변수
     },
     async handleEdit() {
+      this.$store.state.auth.username = this.nickname;
       if (this.nickname !== '' && this.desc !== '' && this.account !== '') {
         if (
           this.nickname.search(/\s/) != -1 ||

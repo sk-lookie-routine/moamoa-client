@@ -4,15 +4,7 @@ const PrerenderSpaPlugin = require('prerender-spa-plugin');
 const productionPlugins = [
   new PrerenderSpaPlugin({
     staticDir: path.join(__dirname, 'dist'),
-    routes: [
-      '/',
-      '/home',
-      '/signup',
-      '/login',
-      '/post',
-      '/room',
-      '/:notFound(.*)',
-    ],
+    routes: ['/', '/home', '/post', '/room'],
     server: {
       port: 8080,
     },

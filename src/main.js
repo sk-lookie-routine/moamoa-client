@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import store from '@/store/index.js';
 import router from '@/routes/index.js';
+
 import App from './App.vue';
 
 import '@/assets/css/color.css';
@@ -44,4 +45,5 @@ app.component('base-tag', BaseTag);
 window.Kakao.init('c63c08657e63a89661f53f6bbf43a349');
 app.use(router);
 app.use(store);
+
 app.mount('#app');

@@ -246,6 +246,37 @@ import NoReply from '@/components/views/studypost/NoReply.vue';
 
 export default {
   components: { NoReply },
+  metaInfo: {
+    title: this.post.title,
+    titleTemplate: '%s | moa-moa.kr',
+    htmlAttrs: {
+      lang: window.getApp.$i18n.locale,
+    },
+    meta: [
+      { charset: 'utf-8' },
+      // SEO setting
+      {
+        name: 'description',
+        content: String(this.post.info).slice(0, 320),
+        vmid: 'description',
+      },
+      { name: 'keywords', content: this.post.hashTags },
+      { name: 'author', content: this.user.username },
+      // SNS 용
+      {
+        property: 'og:title',
+        content: this.post.title,
+        template: chunk => `${chunk} | moa-moa.kr`,
+        vmid: 'og:title',
+      },
+      {
+        property: 'og:description',
+        content: String(this.post.info).slice(0, 320),
+      },
+      // mobile
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    ],
+  },
   data() {
     return {
       postSeq: null,

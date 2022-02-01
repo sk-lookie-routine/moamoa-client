@@ -37,9 +37,6 @@
             <div class="check_bad" v-if="!checkValid">
               {{ message }}
             </div>
-            <div class="check_bad" v-if="nickname.find">
-              {{ message }}
-            </div>
             <div class="check_good" v-else>{{ message }}</div>
           </div>
           <div class="description">
@@ -61,13 +58,14 @@
               nickname !== '' &&
               desc !== '' &&
               isClickedButton &&
-              !isNicknameDuplicated
+              !isNicknameDuplicated &&
+              checkValid
             "
             @click="moveToHome"
           >
             MOAMOA 시작하기
           </base-button>
-          <base-button v-else class="base-button-disable"
+          <base-button v-else class="base-button" :disabled="true"
             >MOAMOA 시작하기</base-button
           >
         </div>
@@ -131,17 +129,25 @@ export default {
       this.isAllFilled = true;
       this.getImageSubstr();
 
-      const myUser = {
-        email: this.$store.state.auth.email,
-        username: this.nickname,
-        userId: this.$store.state.auth.userId,
-        image: this.imgName,
-        userInfo: this.desc,
-        userType: 'NORMAL',
-      };
+      if (
+        this.nickname !== '' &&
+        this.desc !== '' &&
+        this.isClickedButton &&
+        !this.isNicknameDuplicated &&
+        this.checkValid
+      ) {
+        const myUser = {
+          email: this.$store.state.auth.email,
+          username: this.nickname,
+          userId: this.$store.state.auth.userId,
+          image: this.imgName,
+          userInfo: this.desc,
+          userType: 'NORMAL',
+        };
 
-      const res = await postUserData(myUser);
-      this.$store.commit('setUser', res.data);
+        const res = await postUserData(myUser);
+        this.$store.commit('setUser', res.data);
+      }
     },
     randomImage() {
       let randomNumber = Math.floor(Math.random() * this.imgList.length);
@@ -154,27 +160,27 @@ export default {
     },
     async checkIdDuplicate() {
       this.isClickedButton = true;
+      if (
+        this.nickname.search(/\s/) != -1 ||
+        this.special_pattern.test(this.nickname)
+      ) {
+        this.checkValid = false;
+        this.message = '공백이나 특수문자 입력은 불가능합니다.';
+        return;
+      }
 
       await searchUserByName(this.nickname).then(response => {
         if (typeof response.data.content === 'undefined') {
           this.isNicknameDuplicated = false;
-          this.message = '사용 가능한 닉네임입니다.';
           this.checkValid = true;
+          this.message = '사용 가능한 닉네임입니다.';
         } else {
           if (
             response.data.content[0].username != this.$store.state.auth.username
           ) {
-            if (
-              this.nickname.search(/\s/) != -1 ||
-              this.special_pattern.test(this.nickname)
-            ) {
-              this.checkValid = false;
-              this.message = '공백이나 특수문자 입력은 불가능합니다.';
-              return;
-            }
             this.isNicknameDuplicated = true;
-            this.message = '이미 사용중인 닉네임입니다.';
             this.checkValid = false;
+            this.message = '이미 사용중인 닉네임입니다.';
           } else {
             this.message = '';
           }

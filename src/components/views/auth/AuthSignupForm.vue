@@ -130,6 +130,7 @@ export default {
     async moveToHome() {
       this.isAllFilled = true;
       this.getImageSubstr();
+
       const myUser = {
         email: this.$store.state.auth.email,
         username: this.nickname,
@@ -153,7 +154,6 @@ export default {
     },
     async checkIdDuplicate() {
       this.isClickedButton = true;
-      this.nickname.replace(/\s| /gi, '');
 
       await searchUserByName(this.nickname).then(response => {
         if (typeof response.data.content === 'undefined') {

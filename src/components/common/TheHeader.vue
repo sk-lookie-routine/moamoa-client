@@ -31,7 +31,7 @@
       </div>
       <div v-else>
         <button class="auth-btn" @click="menuToggled">
-          <router-link to="/home" @click="signout"> 로그아웃 </router-link>
+          <a @click="showDialog = true"> 로그아웃 </a>
         </button>
         <button class="signup-link" @click="menuToggled">
           <a @click="showUserPage(this.$store.state.auth.userSeq)"
@@ -54,6 +54,13 @@
       </button>
     </div>
   </header>
+  <base-dialog
+    :showDialog="showDialog"
+    @closed="showDialog = false"
+    :content="content"
+  >
+    <base-dialog-button @click="signout">확인</base-dialog-button>
+  </base-dialog>
 </template>
 
 <script>
@@ -66,6 +73,8 @@ export default {
         { name: '스터디룸', linkTo: '/room' },
       ],
       isMenuClicked: false,
+      content: '로그아웃 하시겠습니까?',
+      showDialog: false,
     };
   },
   methods: {
@@ -87,8 +96,10 @@ export default {
       this.isMenuClicked = !this.isMenuClicked;
     },
     signout() {
+      this.showDialog = false;
       this.$store.commit('initUser');
       this.$store.commit('logout');
+      this.$router.push({ name: 'home' });
       if (this.$store.state.auth.providerType == 'GOOGLE') {
         const authInst = window.gapi.auth2.getAuthInstance();
         authInst.signOut();

@@ -38,16 +38,16 @@ export default {
 
       const userResponse = await getUser(this.$store.state.auth.userId);
       if (userResponse.data == '') {
-        this.$store.commit('login');
         // NO CONTENT
         this.$router.push({ name: 'signup-form' });
+        this.$store.commit('login');
       } else if (userResponse.data.content[0].userType == 'NORMAL') {
         //이미 가입한 회원인 경우
-        this.$store.commit('login');
         this.$store.commit('setUser', userResponse.data.content[0]);
         this.$router.push({
           name: 'home',
         });
+        this.$store.commit('login');
       } else if (userResponse.data.content[0].userType == 'REJECT') {
         //탈퇴한 적이 있는 회원인 경우
         alert('한번 탈퇴한 회원은 다시 가입하실 수 없습니다.');
